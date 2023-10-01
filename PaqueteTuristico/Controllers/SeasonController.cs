@@ -52,7 +52,7 @@ namespace PaqueteTuristico.Controllers
             }
             return season;
         }
-
+        
         // POST api/<SeasonController1>
         [HttpPost]
         public  async Task<IActionResult> Post(int id , string name, DateTime date)
