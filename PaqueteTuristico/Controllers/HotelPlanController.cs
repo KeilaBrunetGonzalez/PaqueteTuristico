@@ -67,17 +67,16 @@ namespace PaqueteTuristico.Controllers
     }
 
     // DELETE api/<HotelPlanController>/5
-    [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int Seasonid , int Hotelid)
+    [HttpDelete]
+        public async Task<IActionResult> Delete(int Hotelid, int Seasonid)
         {
+            var current = await context.HotelPlanSet.FindAsync(Hotelid, Seasonid);
+            var temp = await context.Seasons.FindAsync(Seasonid);
+            var temp1 = await context.HotelSet.FindAsync(Hotelid);   
             try
             {
-                var current = await context.HotelPlanSet.FindAsync(Seasonid, Hotelid);
-                var temp = await context.Seasons.FindAsync(Seasonid);
-                var temp1 = await context.HotelSet.FindAsync(Hotelid);
-                context.Seasons.Remove(temp);
                 context.HotelPlanSet.Remove(current);
-                context.HotelSet.Remove(temp1);
+                
                 await context.SaveChangesAsync();
             }
             catch (ArgumentNullException ex)
