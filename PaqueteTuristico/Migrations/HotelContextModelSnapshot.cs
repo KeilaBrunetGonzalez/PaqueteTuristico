@@ -32,70 +32,117 @@ namespace PaqueteTuristico.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar");
 
                     b.Property<int>("Price")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.ToTable("HotelSet");
+                    b.ToTable("Hotel");
+                });
+
+            modelBuilder.Entity("PaqueteTuristico.Models.HotelPlan", b =>
+                {
+                    b.Property<int>("HotelId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SeasonId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("HotelId", "SeasonId");
+
+                    b.ToTable("Hotel_Plan");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.Meal", b =>
                 {
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar");
 
                     b.Property<int?>("HotelId")
                         .IsRequired()
                         .HasColumnType("integer");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar");
 
                     b.Property<int>("Price")
                         .HasColumnType("integer");
 
-                    b.HasKey("Name");
+                    b.HasKey("Id");
 
                     b.HasIndex("HotelId");
 
-                    b.ToTable("MealSet");
+                    b.ToTable("Meal");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.Room", b =>
                 {
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar");
 
                     b.Property<int?>("HotelId")
-                        .IsRequired()
                         .HasColumnType("integer");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar");
 
                     b.Property<int>("Price")
                         .HasColumnType("integer");
 
-                    b.HasKey("Name");
+                    b.HasKey("Id");
 
                     b.HasIndex("HotelId");
 
-                    b.ToTable("RoomSet");
+                    b.ToTable("Room");
+                });
+
+            modelBuilder.Entity("PaqueteTuristico.Models.Season", b =>
+                {
+                    b.Property<int>("SeasonId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SeasonId"));
+
+                    b.Property<string>("SeasonName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("date");
+
+                    b.HasKey("SeasonId");
+
+                    b.ToTable("Season");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.Meal", b =>
@@ -113,9 +160,7 @@ namespace PaqueteTuristico.Migrations
                 {
                     b.HasOne("PaqueteTuristico.Models.Hotel", "Hotel")
                         .WithMany("Rooms")
-                        .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HotelId");
 
                     b.Navigation("Hotel");
                 });

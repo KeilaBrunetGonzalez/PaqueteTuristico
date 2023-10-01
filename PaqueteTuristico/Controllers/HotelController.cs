@@ -10,11 +10,11 @@ namespace PaqueteTuristico.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class HotelController : ControllerBase
     {
         private readonly HotelContext _context;
 
-        public ValuesController(HotelContext context)
+        public HotelController(HotelContext context)
         {
             _context = context;
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Models;
+using System.Reflection;
 
 namespace PaqueteTuristico.Data
 {
@@ -8,6 +9,8 @@ namespace PaqueteTuristico.Data
         public DbSet<Hotel> HotelSet { get; set; }
         public DbSet<Room> RoomSet { get; set; }
         public DbSet<Meal> MealSet { get; set; }
+        public DbSet<HotelPlan> HotelPlanSet { get; set; }
+        public DbSet<Season> Seasons { get; set; }
 
         public HotelContext(DbContextOptions<HotelContext> options)
         : base(options)
@@ -16,6 +19,8 @@ namespace PaqueteTuristico.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
             modelBuilder.Entity<Room>()
                 .HasOne(r => r.Hotel)
                 .WithMany(h => h.Rooms)
@@ -24,9 +29,14 @@ namespace PaqueteTuristico.Data
             modelBuilder.Entity<Meal>()
                 .HasOne(m => m.Hotel)
                 .WithMany(h2 => h2.Meals)
-                .HasForeignKey(m => m.HotelId);
+                .HasForeignKey(p => p.HotelId);
 
-
+            modelBuilder.Entity<HotelPlan>()
+                .HasKey(e => new {
+                     e.HotelId,
+                     e.SeasonId
+                });
+                
             base.OnModelCreating(modelBuilder);
         }
 
