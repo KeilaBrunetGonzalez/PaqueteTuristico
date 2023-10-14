@@ -12,7 +12,7 @@ using PaqueteTuristico.Data;
 namespace PaqueteTuristico.Migrations
 {
     [DbContext(typeof(HotelContext))]
-    [Migration("20230930151957_InitialCreate")]
+    [Migration("20231014212520_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -47,6 +47,19 @@ namespace PaqueteTuristico.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("HotelSet");
+                });
+
+            modelBuilder.Entity("PaqueteTuristico.Models.HotelPlan", b =>
+                {
+                    b.Property<int>("HotelId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SeasonId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("HotelId", "SeasonId");
+
+                    b.ToTable("Hotel_Plan");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.Meal", b =>
@@ -101,6 +114,46 @@ namespace PaqueteTuristico.Migrations
                     b.ToTable("RoomSet");
                 });
 
+            modelBuilder.Entity("PaqueteTuristico.Models.Season", b =>
+                {
+                    b.Property<int>("SeasonId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SeasonId"));
+
+                    b.Property<string>("SeasonName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("date");
+
+                    b.HasKey("SeasonId");
+
+                    b.ToTable("Season");
+                });
+
+            modelBuilder.Entity("PaqueteTuristico.Models.HotelPlan", b =>
+                {
+                    b.HasOne("PaqueteTuristico.Models.Hotel", "Hotel")
+                        .WithMany("Plans")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PaqueteTuristico.Models.Season", "Seasons")
+                        .WithMany("HotelPlans")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
+
+                    b.Navigation("Seasons");
+                });
+
             modelBuilder.Entity("PaqueteTuristico.Models.Meal", b =>
                 {
                     b.HasOne("PaqueteTuristico.Models.Hotel", "Hotel")
@@ -127,7 +180,14 @@ namespace PaqueteTuristico.Migrations
                 {
                     b.Navigation("Meals");
 
+                    b.Navigation("Plans");
+
                     b.Navigation("Rooms");
+                });
+
+            modelBuilder.Entity("PaqueteTuristico.Models.Season", b =>
+                {
+                    b.Navigation("HotelPlans");
                 });
 #pragma warning restore 612, 618
         }
