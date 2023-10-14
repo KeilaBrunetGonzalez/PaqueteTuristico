@@ -74,8 +74,7 @@ namespace PaqueteTuristico.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar");
 
-                    b.Property<int?>("HotelId")
-                        .IsRequired()
+                    b.Property<int>("HotelId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
@@ -106,7 +105,7 @@ namespace PaqueteTuristico.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar");
 
-                    b.Property<int?>("HotelId")
+                    b.Property<int>("HotelId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
@@ -160,7 +159,9 @@ namespace PaqueteTuristico.Migrations
                 {
                     b.HasOne("PaqueteTuristico.Models.Hotel", "Hotel")
                         .WithMany("Rooms")
-                        .HasForeignKey("HotelId");
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Hotel");
                 });

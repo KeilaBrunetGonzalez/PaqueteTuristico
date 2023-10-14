@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
 using System.Reflection.Metadata;
+using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,18 +23,15 @@ namespace PaqueteTuristico.Controllers
         }
 
         // GET api/<ValuesController>/5
-        [HttpGet("GetHotel")]
+        [HttpGet("/hotels/Hotel_ID")]
         public async Task<ActionResult<Hotel>> GetHotelAsync(int HotelId)
         {
             try
             {
-                var list = await _context.HotelSet.ToListAsync();
-                foreach (var h in list)
-                {
-                    if (HotelId == h.Id)
-                    {
-                        return Ok(h);
-                    }
+                var h = await _context.HotelSet.FirstAsync(H =>  H.Id == HotelId);
+   
+                if(h != null) {
+                    return Ok(h);
                 }
             }
             catch (ArgumentNullException ex)
@@ -45,18 +43,16 @@ namespace PaqueteTuristico.Controllers
         }
 
 
-        [HttpGet("GetRoom")]
+        [HttpGet("/hotels/Hotel_ID/rooms/ROOM_ID")]
         public async Task<ActionResult<Room>> GetRoomAsync(int HotelId,int RoomId)
         {
             try
             {
-                var list = await _context.RoomSet.ToListAsync();
-                foreach (var r in list)
+                var r = await _context.RoomSet.FirstAsync(R => R.Id == RoomId && R.HotelId == HotelId);
+
+                if (r != null)
                 {
-                    if (RoomId == r.Id && HotelId == r.HotelId)
-                    {
-                        return Ok(r);
-                    }
+                    return Ok(r);
                 }
             }
             catch (ArgumentNullException ex)
@@ -68,19 +64,17 @@ namespace PaqueteTuristico.Controllers
         }
 
 
-        [HttpGet("GetMeal")]
+        [HttpGet("/hotels/Hotel_ID/meals/MEAL_ID")]
         public async Task<ActionResult<Meal>> GetMealAsync(int HotelId,int MealId)
         {
             try
             {
-                var list = await _context.MealSet.ToListAsync();
-                foreach (var m in list)
+                var m = await _context.MealSet.FirstAsync(M => M.Id == MealId && M.HotelId == HotelId);
+                if(m != null)
                 {
-                    if (MealId == m.Id && HotelId == m.HotelId)
-                    {
-                        return Ok(m);
-                    }
+                    return Ok(m);
                 }
+               
             }
             catch (ArgumentNullException ex)
             {
@@ -94,96 +88,78 @@ namespace PaqueteTuristico.Controllers
 
 
         // POST api/<ValuesController>
-        [HttpPost("HotelPost")]
+        [HttpPost("/hotels/Hotel_ID")]
         public async Task<IActionResult> PostHotel(int Id, string Name, string Desc, int Price)
         {
-            var existingHotel = await _context.HotelSet.FindAsync(Id);
-            if (existingHotel != null)
+            var h = await _context.HotelSet.FindAsync(Id);
+            if (h != null)
             {
-                if(Name != null)
+                if(Name != h.Name)
                 {
-                    existingHotel.Name = Name;
+                    h.Name = Name;
                 }
-                if(Desc != null)
+                if(Desc != h.Description)
                 {
-                    existingHotel.Description = Desc;
+                    h.Description = Desc;
                 }
-                if (Price != 0)
+                if (Price != h.Price)
                 {
-                    existingHotel.Price = Price;
+                    h.Price = Price;
                 }
-            }
-            else
-            {
-                return NotFound();
+
+                return Ok();
             }
 
-            return Ok();
-        }
-
-        [HttpPost("RoomPost")]
-        public async Task<IActionResult> PostRoom(int HotelId, int RoomId, string Name, string Desc, int Price)
-        {
-            try
-            {
-                var list = await _context.RoomSet.ToListAsync();
-                foreach (var r in list)
-                {
-                    if (RoomId == r.Id && HotelId == r.HotelId)
-                    {
-                        if (Name != null)
-                        {
-                            r.Name = Name;
-                        }
-                        if (Desc != null)
-                        {
-                            r.Description = Desc;
-                        }
-                        if (Price != 0)
-                        {
-                            r.Price = Price;
-                        }
-                        return Ok();
-                    }
-                }
-            }
-            catch (ArgumentNullException ex)
-            {
-                return BadRequest(ex.Message);
-            }
 
             return NotFound();
         }
 
-        [HttpPost("MealPost")]
+        [HttpPost("/hotels/Hotel_ID/rooms/ROOM_ID")]
+        public async Task<IActionResult> PostRoom(int HotelId, int RoomId, string Name, string Desc, int Price)
+        {
+
+                var r = await _context.RoomSet.FindAsync(RoomId,HotelId);
+
+                if (r != null)
+                {
+                    if (Name != r.Name)
+                    {
+                        r.Name = Name;
+                    }
+                    if (Desc != r.Description)
+                    {
+                        r.Description = Desc;
+                    }
+                    if (Price != r.Price)
+                    {
+                        r.Price = Price;
+                    }
+                    return Ok();
+                }
+
+            return NotFound();
+        }
+
+        [HttpPost("/hotels/Hotel_ID/meals/MEAL_ID")]
         public async Task<IActionResult> PostMeal(int HotelId, int MealId, string Name, string Desc, int Price)
         {
-            try
+            var m = await _context.MealSet.FindAsync(MealId, HotelId);
+
+            if (m != null)
             {
-                var list = await _context.MealSet.ToListAsync();
-                foreach (var m in list)
+                if (Name != m.Name)
                 {
-                    if (MealId == m.Id && HotelId == m.HotelId)
-                    {
-                        if (Name != null)
-                        {
-                            m.Name = Name;
-                        }
-                        if (Desc != null)
-                        {
-                            m.Description = Desc;
-                        }
-                        if (Price != 0)
-                        {
-                            m.Price = Price;
-                        }
-                        return Ok();
-                    }
+                    m.Name = Name;
                 }
-            }
-            catch (ArgumentNullException ex)
-            {
-                return BadRequest(ex.Message);
+                if (Desc != m.Description)
+                {
+                    m.Description = Desc;
+                }
+                if (Price != m.Price)
+                {
+                    m.Price = Price;
+                }
+                return Ok();
             }
 
             return NotFound();
@@ -191,7 +167,7 @@ namespace PaqueteTuristico.Controllers
 
 
         // PUT api/<ValuesController>/5
-        [HttpPut("PutHotel")]
+        [HttpPut("/hotels/Hotel_ID")]
         public async Task<ActionResult<Hotel>> PutHotel(int Id,string Name,string Desc,int Price)
         {
             var existingHotel = await _context.HotelSet.FindAsync(Id);
@@ -210,80 +186,84 @@ namespace PaqueteTuristico.Controllers
                     await _context.HotelSet.AddAsync(h);
                     await _context.SaveChangesAsync();
                 }
-                catch (ArgumentNullException ex)
+                catch (Exception ex)
                 {
                     return BadRequest(ex.Message);
 
                 }
 
-
-
             }
 
             return Ok();
         }
 
-        [HttpPut("PutRoom")]
+        [HttpPut("/hotels/Hotel_ID/rooms/ROOM_ID")]
         public async Task<ActionResult<Room>> PutRoom(int Id, string Name, string Desc, int Price,int HotelId)
         {
-            var existingRoom = await _context.MealSet.FindAsync(Id);
+            var existingRoom = await _context.RoomSet.FindAsync(Id);
 
             if (existingRoom == null)
             {
-                if (FindHotel(HotelId))
+                var hotel = await _context.HotelSet.FindAsync(HotelId);
+                if (hotel == null)
                 {
-                    var r = new Room
-                    {
-                        Id = Id,
-                        Name = Name,
-                        Description = Desc,
-                        Price = Price,
-                        HotelId = HotelId,
-                    };
-                    try
-                    {
-                        await _context.RoomSet.AddAsync(r);
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (ArgumentNullException ex)
-                    {
-                        return BadRequest(ex.Message);
+                    return NotFound("Hotel not found");
 
-                    }
                 }
 
-            }
+                var newRoom = new Room
+                {
+                    Id = Id,
+                    Name = Name,
+                    Description = Desc,
+                    Price = Price,
+                };
+                    
+                try
+                {
+                    hotel.Rooms.Add(newRoom);
+                    await _context.RoomSet.AddAsync(newRoom);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                  return BadRequest(ex.Message);
 
+                }
+            }
             return Ok();
         }
 
-        [HttpPut("PutMeal")]
+        [HttpPut("/hotels/Hotel_ID/meals/MEAL_ID")]
         public async Task<ActionResult<Meal>> PutMeal(int Id, string Name, string Desc, int Price, int HotelId)
         {
             var existingMeal = await _context.MealSet.FindAsync(Id);
 
             if (existingMeal == null)
             {
-                if (FindHotel(HotelId))
+                var hotel = await _context.HotelSet.FindAsync(HotelId);
+                if (hotel == null)
                 {
-                    var m = new Meal
-                    {
-                        Id = Id,
-                        Name = Name,
-                        Description = Desc,
-                        Price = Price,
-                        HotelId = HotelId,
-                    };
-                    try
-                    {
-                        await _context.MealSet.AddAsync(m);
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (ArgumentNullException ex)
-                    {
-                        return BadRequest(ex.Message);
+                    return NotFound("Hotel not found");
 
-                    }
+                }
+                var newMeal = new Meal
+                {
+                    Id = Id,
+                    Name = Name,
+                    Description = Desc,
+                    Price = Price,
+                };
+                try
+                {
+                    hotel.Meals.Add(newMeal);
+                    await _context.MealSet.AddAsync(newMeal);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+
                 }
 
             }
@@ -292,84 +272,34 @@ namespace PaqueteTuristico.Controllers
         }
         // DELETE api/<ValuesController>/5
 
-        [HttpDelete("DeleteHotel")]
+        [HttpDelete("/hotels/Hotel_ID")]
         public async Task<IActionResult> DeleteHotel(int id)
         {
-            var hotel = await _context.HotelSet.FindAsync(id);
+            var hotel = _context.HotelSet.Include(H => H.Rooms).Include(M => M.Meals).Single(H => H.Id == id);
+
             if (hotel == null)
             {
                 return NotFound();
             }
             else
             {
-                DeleteRooms(id);
-                DeleteMeal(id);
-
-                await _context.SaveChangesAsync();
-
                 _context.HotelSet.Remove(hotel);
                 await _context.SaveChangesAsync();
             }
-
-            
-
             return NoContent();
         }
 
-        private  void DeleteMeal(int id)
+        [HttpDelete("/hotels/Hotel_ID/meals/MEAL_ID")]
+        public async Task<ActionResult<Meal>> DeleteMeal(int MealId, int HotelId)
         {
-
-            try { 
-            var list =  _context.MealSet.ToList();
-            foreach (var m in list)
+            try
             {
-                if (id == m.HotelId)
+                var m = await _context.MealSet.FirstAsync(M => M.Id == MealId && M.HotelId == HotelId);
+
+                if (m != null)
                 {
                     _context.MealSet.Remove(m);
-                }
-            }
-            }
-            catch (ArgumentNullException ex)
-            {
-                BadRequest(ex.Message);
-
-            }
-
-        }
-
-        private void DeleteRooms(int id)
-        {
-            try
-            {
-                var list =  _context.RoomSet.ToList();
-                foreach (var r in list)
-                {
-                    if (id == r.HotelId)
-                    {
-                        _context.RoomSet.Remove(r);
-                    }
-                }
-            }
-            catch (ArgumentNullException ex)
-            {
-                BadRequest(ex.Message);
-
-            }
-        }
-
-        [HttpDelete("DeleteMeal")]
-        public async Task<ActionResult<Room>> DeleteMeal(int MealId, int HotelId)
-        {
-            try
-            {
-                var list = await _context.MealSet.ToListAsync();
-                foreach (var m in list)
-                {
-                    if (MealId == m.Id && HotelId == m.HotelId)
-                    {
-                        _context.MealSet.Remove(m);
-                        await _context.SaveChangesAsync();
-                    }
+                    await _context.SaveChangesAsync();
                 }
             }
             catch (ArgumentNullException ex)
@@ -381,19 +311,16 @@ namespace PaqueteTuristico.Controllers
 
         }
 
-        [HttpDelete("DeleteRoom")]
+        [HttpDelete("/hotels/Hotel_ID/rooms/ROOM_ID")]
         public async Task<ActionResult<Room>> DeleteRoom(int RoomId,int HotelId)
         {
             try
             {
-                var list = await _context.RoomSet.ToListAsync();
-                foreach (var r in list)
+                var r = await _context.RoomSet.FirstAsync(R => R.Id == RoomId && R.HotelId == HotelId);
+                if(r != null)
                 {
-                    if (RoomId == r.Id && HotelId == r.HotelId)
-                    {
-                        _context.RoomSet.Remove(r);
-                        await _context.SaveChangesAsync();
-                    }
+                    _context.RoomSet.Remove(r);
+                    await _context.SaveChangesAsync();
                 }
             }
             catch (ArgumentNullException ex)
@@ -402,22 +329,6 @@ namespace PaqueteTuristico.Controllers
             }
 
             return NotFound();
-        }
-
-        private bool FindHotel(int HotelId)
-        { 
-
-            var list =  _context.HotelSet.ToList();
-            foreach (var h in list)
-            {
-                if (HotelId == h.Id)
-                {
-                    return true;
-                }
-                else { 
-                }
-            }
-            return false;
         }
 
 

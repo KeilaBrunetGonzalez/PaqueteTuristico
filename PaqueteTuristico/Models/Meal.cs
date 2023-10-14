@@ -22,10 +22,11 @@ namespace PaqueteTuristico.Models
         public int Price { get; set; }
 
         [Required]
-        public int? HotelId { get; set; }
+        [ForeignKey(nameof(Meal))]   
+        public int HotelId { get; set; }
 
         [Required]
-        public Hotel? Hotel { get; set; }
+        public virtual Hotel? Hotel { get; set; }
 
     }
 }

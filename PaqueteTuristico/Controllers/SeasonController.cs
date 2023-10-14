@@ -3,6 +3,8 @@ using Microsoft.IdentityModel.Tokens;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
 using System.Linq.Expressions;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,7 +29,7 @@ namespace PaqueteTuristico.Controllers
         }
 
         // GET: api/<SeasonController1>
-        [HttpGet(Name = "Season")]
+        [HttpGet(Name = "/Season/Default/")]
         public IEnumerable<Season> Get()
         {
             
@@ -41,10 +43,10 @@ namespace PaqueteTuristico.Controllers
         }
 
             // GET api/<SeasonController1>/5
-            [HttpGet("{id}")]
+            [HttpGet("/Season/Season_ID")]
         public async Task<ActionResult<Season>> GetSeasonAsync(int id)
         {
-            var season = await context.Seasons.FindAsync(id);
+            var season = await context.Seasons.FirstAsync(n => n.SeasonId == id);
             if (season == null)
             {
                return NotFound();
@@ -57,7 +59,7 @@ namespace PaqueteTuristico.Controllers
         [HttpPost]
         public  async Task<IActionResult> Post(int id , string name, DateTime date)
         {
-            var current = await context.Seasons.FindAsync(id);
+            var current = await context.Seasons.FirstAsync(s => s.SeasonId == id);
             if (current == null)
             {
                 return NotFound();
@@ -76,7 +78,7 @@ namespace PaqueteTuristico.Controllers
         }
 
         // PUT api/<SeasonController1>/5
-        [HttpPut("{id}")]
+        [HttpPut("/Season/Season_ID")]
         public async Task<ActionResult<Season>> Put(int id, string name, DateTime date)
         {
             var current = new Season
@@ -97,11 +99,11 @@ namespace PaqueteTuristico.Controllers
         }
 
         // DELETE api/<SeasonController1>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("/Season/Season_ID")]
         public async Task<IActionResult> Delete(int id)
         {   try
             {
-            var current = await context.Seasons.FindAsync(id);
+            var current = await context.Seasons.FirstAsync(x => x.SeasonId == id);
             context.Seasons.Remove(current);
             await context.SaveChangesAsync();
         }catch(ArgumentNullException ex)

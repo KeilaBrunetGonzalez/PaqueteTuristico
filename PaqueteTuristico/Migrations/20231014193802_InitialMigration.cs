@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace PaqueteTuristico.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -84,7 +84,7 @@ namespace PaqueteTuristico.Migrations
                     Name = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
                     Price = table.Column<int>(type: "integer", nullable: false),
-                    HotelId = table.Column<int>(type: "integer", nullable: true)
+                    HotelId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,7 +93,8 @@ namespace PaqueteTuristico.Migrations
                         name: "FK_Room_Hotel_HotelId",
                         column: x => x.HotelId,
                         principalTable: "Hotel",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

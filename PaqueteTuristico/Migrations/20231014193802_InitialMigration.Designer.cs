@@ -12,8 +12,8 @@ using PaqueteTuristico.Data;
 namespace PaqueteTuristico.Migrations
 {
     [DbContext(typeof(HotelContext))]
-    [Migration("20230930211452_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20231014193802_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,8 +77,7 @@ namespace PaqueteTuristico.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar");
 
-                    b.Property<int?>("HotelId")
-                        .IsRequired()
+                    b.Property<int>("HotelId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
@@ -109,7 +108,7 @@ namespace PaqueteTuristico.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar");
 
-                    b.Property<int?>("HotelId")
+                    b.Property<int>("HotelId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
@@ -163,7 +162,9 @@ namespace PaqueteTuristico.Migrations
                 {
                     b.HasOne("PaqueteTuristico.Models.Hotel", "Hotel")
                         .WithMany("Rooms")
-                        .HasForeignKey("HotelId");
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Hotel");
                 });

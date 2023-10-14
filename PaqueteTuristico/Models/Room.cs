@@ -19,13 +19,15 @@ namespace PaqueteTuristico.Models
         [MaxLength(100)]
         public string Description { get; set; } = "";
 
-        
+        [Required]
         public int Price { get; set; }
 
-        
-        public int? HotelId { get; set; }
+        [Required]
+        [ForeignKey(nameof(Room))]
+        public int HotelId { get; set; }
 
-        public Hotel? Hotel { get; set; }
+        [Required]
+        public virtual Hotel? Hotel { get; set; }
 
     }
 }
