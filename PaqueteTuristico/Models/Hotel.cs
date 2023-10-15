@@ -6,6 +6,10 @@ namespace PaqueteTuristico.Models
     [Table("Hotel")]
     public class Hotel
     {
+        public Hotel() { 
+            this.Rooms = new HashSet<Room>();
+            this.Meals = new HashSet<Meal>();
+        }
         [Key]
         public int Id { get; set; }
 
@@ -22,8 +26,10 @@ namespace PaqueteTuristico.Models
         [Required]
         public int Price { get; set; }
 
-        public ICollection<HotelPlan>?Plans { get; set; }    
-        public ICollection<Room>? Rooms { get; set; }
-        public ICollection<Meal>? Meals { get; set; }    
+
+        public ICollection<HotelPlan>?Plans { get; set; }  
+        public virtual ICollection<Room> Rooms { get; set; }
+        public virtual ICollection<Meal> Meals { get; set; }    
+
     }
 }

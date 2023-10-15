@@ -47,6 +47,7 @@ namespace PaqueteTuristico.Controllers
     {
             var temp = await context.HotelSet.FirstAsync(s => s.Id == hotelid);
             var temp1 = await context.Seasons.FirstAsync(s => s.SeasonId == seasonid);
+
             if (temp == null || temp1 == null)
             {
                 return BadRequest();

@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PaqueteTuristico.Models
@@ -11,10 +12,10 @@ namespace PaqueteTuristico.Models
         public int HotelId { get; set; }
         [Key]
         public int SeasonId { get; set; }
-
+      
         [ForeignKey(nameof(HotelId))]
         public Hotel? Hotel { get; set; }
         [ForeignKey(nameof(HotelId))]
-        public Season? Seasons { get; set; } 
+        public Season? Seasons { get; set; }
     }
 }
