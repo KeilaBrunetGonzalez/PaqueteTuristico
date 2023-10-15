@@ -17,9 +17,9 @@ namespace PaqueteTuristico.Data
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
 
-       base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
@@ -46,10 +46,12 @@ namespace PaqueteTuristico.Data
 
             modelBuilder.Entity<Hotel>()
                 .HasMany(t => t.Plans)
-                .WithOne(s => s.Hotel);
-                
+                .WithOne(s => s.Hotel); 
+
+        }          
                
 
     }
 
 }
+ 
