@@ -27,7 +27,7 @@ namespace PaqueteTuristico.Controllers
 
 
         // GET api/<HotelPlanController>/5
-        [HttpGet("{id}")]
+        [HttpGet("/HotelPlan/Hotelplan_id")]
         public async Task<ActionResult<HotelPlan>> GetHotelPlanAsync(int HotelId, int seasonId)
         {
             var current = await context.HotelPlanSet.FirstAsync(s => s.HotelId == HotelId && s.SeasonId == seasonId);
@@ -42,7 +42,7 @@ namespace PaqueteTuristico.Controllers
  
 
         // PUT api/<HotelPlanController>/5
-        [HttpPut("{id}")]
+        [HttpPut("/HotelPlan/Hotelplan_id")]
     public async Task<ActionResult<HotelPlan>> Put(int hotelid, int seasonid)
     {
             var temp = await context.HotelSet.FirstAsync(s => s.Id == hotelid);
@@ -70,7 +70,8 @@ namespace PaqueteTuristico.Controllers
     }
 
     // DELETE api/<HotelPlanController>/5
-    [HttpDelete]
+
+    [HttpDelete("/HotelPlan/Hotelplan_id")]
         public async Task<IActionResult> Delete(int Hotelid, int Seasonid)
         {
             var current = await context.HotelPlanSet.FirstAsync(s => s.HotelId == Hotelid && s.SeasonId == Seasonid);

@@ -61,19 +61,6 @@ namespace PaqueteTuristico.Migrations
                     b.ToTable("Hotel_Plan");
                 });
 
-            modelBuilder.Entity("PaqueteTuristico.Models.HotelPlan", b =>
-                {
-                    b.Property<int>("HotelId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SeasonId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("HotelId", "SeasonId");
-
-                    b.ToTable("Hotel_Plan");
-                });
-
             modelBuilder.Entity("PaqueteTuristico.Models.Meal", b =>
                 {
                     b.Property<int>("Id")
@@ -134,27 +121,6 @@ namespace PaqueteTuristico.Migrations
                     b.HasIndex("HotelId");
 
                     b.ToTable("Room");
-                });
-
-            modelBuilder.Entity("PaqueteTuristico.Models.Season", b =>
-                {
-                    b.Property<int>("SeasonId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SeasonId"));
-
-                    b.Property<string>("SeasonName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("date");
-
-                    b.HasKey("SeasonId");
-
-                    b.ToTable("Season");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.Season", b =>

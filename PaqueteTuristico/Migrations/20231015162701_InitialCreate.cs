@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace PaqueteTuristico.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,18 +25,6 @@ namespace PaqueteTuristico.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Hotel", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Hotel_Plan",
-                columns: table => new
-                {
-                    HotelId = table.Column<int>(type: "integer", nullable: false),
-                    SeasonId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Hotel_Plan", x => new { x.HotelId, x.SeasonId });
                 });
 
             migrationBuilder.CreateTable(
@@ -94,6 +82,30 @@ namespace PaqueteTuristico.Migrations
                         column: x => x.HotelId,
                         principalTable: "Hotel",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Hotel_Plan",
+                columns: table => new
+                {
+                    HotelId = table.Column<int>(type: "integer", nullable: false),
+                    SeasonId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Hotel_Plan", x => new { x.HotelId, x.SeasonId });
+                    table.ForeignKey(
+                        name: "FK_Hotel_Plan_Hotel_HotelId",
+                        column: x => x.HotelId,
+                        principalTable: "Hotel",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Hotel_Plan_Season_HotelId",
+                        column: x => x.HotelId,
+                        principalTable: "Season",
+                        principalColumn: "SeasonId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
