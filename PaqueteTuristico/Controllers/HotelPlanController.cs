@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
 
@@ -29,7 +30,7 @@ namespace PaqueteTuristico.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<HotelPlan>> GetHotelPlanAsync(int HotelId, int seasonId)
         {
-            var current = await context.HotelPlanSet.FindAsync(HotelId, seasonId);
+            var current = await context.HotelPlanSet.FirstAsync(s => s.HotelId == HotelId && s.SeasonId == seasonId);
             if (current == null)
             {
                 return NotFound();
@@ -43,8 +44,10 @@ namespace PaqueteTuristico.Controllers
         // PUT api/<HotelPlanController>/5
         [HttpPut("{id}")]
     public async Task<ActionResult<HotelPlan>> Put(int hotelid, int seasonid)
-    {      var temp = await context.HotelSet.FindAsync(hotelid);
-            var temp1 = await context.Seasons.FindAsync(seasonid);
+    {
+            var temp = await context.HotelSet.FirstAsync(s => s.Id == hotelid);
+            var temp1 = await context.Seasons.FirstAsync(s => s.SeasonId == seasonid);
+
             if (temp == null || temp1 == null)
             {
                 return BadRequest();
@@ -70,9 +73,8 @@ namespace PaqueteTuristico.Controllers
     [HttpDelete]
         public async Task<IActionResult> Delete(int Hotelid, int Seasonid)
         {
-            var current = await context.HotelPlanSet.FindAsync(Hotelid, Seasonid);
-            var temp = await context.Seasons.FindAsync(Seasonid);
-            var temp1 = await context.HotelSet.FindAsync(Hotelid);   
+            var current = await context.HotelPlanSet.FirstAsync(s => s.HotelId == Hotelid && s.SeasonId == Seasonid);
+            
             try
             {
                 context.HotelPlanSet.Remove(current);

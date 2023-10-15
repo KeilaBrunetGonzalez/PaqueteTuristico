@@ -18,8 +18,9 @@ namespace PaqueteTuristico.Data
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+
+       base.OnModelCreating(modelBuilder);
+
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             modelBuilder.Entity<Room>()
@@ -33,12 +34,21 @@ namespace PaqueteTuristico.Data
                 .HasForeignKey(m => m.HotelId);
 
             modelBuilder.Entity<HotelPlan>()
-                .HasKey(e => new {
-                     e.HotelId,
-                     e.SeasonId
+                .HasKey(p => new
+                {
+                    p.HotelId,
+                    p.SeasonId
                 });
-              
-        }
+
+            modelBuilder.Entity<Season>()
+                .HasMany(t => t.HotelPlans)
+                .WithOne(x => x.Seasons);
+
+            modelBuilder.Entity<Hotel>()
+                .HasMany(t => t.Plans)
+                .WithOne(s => s.Hotel);
+                
+               
 
     }
 

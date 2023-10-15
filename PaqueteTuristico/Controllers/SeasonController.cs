@@ -29,7 +29,9 @@ namespace PaqueteTuristico.Controllers
         }
 
         // GET: api/<SeasonController1>
+        
         [HttpGet(Name = "/Season/Default/")]
+
         public IEnumerable<Season> Get()
         {
             
@@ -43,10 +45,12 @@ namespace PaqueteTuristico.Controllers
         }
 
             // GET api/<SeasonController1>/5
+
             [HttpGet("/Season/Season_ID")]
         public async Task<ActionResult<Season>> GetSeasonAsync(int id)
         {
             var season = await context.Seasons.FirstAsync(n => n.SeasonId == id);
+            
             if (season == null)
             {
                return NotFound();
@@ -59,7 +63,9 @@ namespace PaqueteTuristico.Controllers
         [HttpPost]
         public  async Task<IActionResult> Post(int id , string name, DateTime date)
         {
+
             var current = await context.Seasons.FirstAsync(s => s.SeasonId == id);
+
             if (current == null)
             {
                 return NotFound();
@@ -78,7 +84,9 @@ namespace PaqueteTuristico.Controllers
         }
 
         // PUT api/<SeasonController1>/5
+
         [HttpPut("/Season/Season_ID")]
+
         public async Task<ActionResult<Season>> Put(int id, string name, DateTime date)
         {
             var current = new Season
@@ -99,6 +107,7 @@ namespace PaqueteTuristico.Controllers
         }
 
         // DELETE api/<SeasonController1>/5
+
         [HttpDelete("/Season/Season_ID")]
         public async Task<IActionResult> Delete(int id)
         {   try

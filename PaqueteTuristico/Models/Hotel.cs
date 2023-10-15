@@ -26,8 +26,10 @@ namespace PaqueteTuristico.Models
         [Required]
         public int Price { get; set; }
 
-        
+
+        public ICollection<HotelPlan>?Plans { get; set; }  
         public virtual ICollection<Room> Rooms { get; set; }
         public virtual ICollection<Meal> Meals { get; set; }    
+
     }
 }
