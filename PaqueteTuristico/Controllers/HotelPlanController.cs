@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
-using System.Linq;
-using System.Linq.Expressions;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,10 +27,10 @@ namespace PaqueteTuristico.Controllers
 
 
         // GET api/<HotelPlanController>/5
-        [HttpGet("/HotelPlan/HotelPlan_Hotelid/HotelPlan_SeasonId")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<HotelPlan>> GetHotelPlanAsync(int HotelId, int seasonId)
         {
-            var current = await context.HotelPlans.FirstAsync(s => s.HotelId== HotelId && s.SeasonId == seasonId);
+            var current = await context.HotelPlanSet.FirstAsync(s => s.HotelId == HotelId && s.SeasonId == seasonId);
             if (current == null)
             {
                 return NotFound();
@@ -44,9 +42,10 @@ namespace PaqueteTuristico.Controllers
  
 
         // PUT api/<HotelPlanController>/5
-        [HttpPut("/HotelPlan/HotelPlan_Hotelid/HotelPlan_SeasonId")]
+        [HttpPut("{id}")]
     public async Task<ActionResult<HotelPlan>> Put(int hotelid, int seasonid)
-    {      var temp = await context.HotelSet.FirstAsync(s => s.Id==hotelid);
+    {
+            var temp = await context.HotelSet.FirstAsync(s => s.Id == hotelid);
             var temp1 = await context.Seasons.FirstAsync(s => s.SeasonId == seasonid);
             if (temp == null || temp1 == null)
             {
@@ -59,7 +58,7 @@ namespace PaqueteTuristico.Controllers
         };
         try
         {
-            await context.HotelPlans.AddAsync(current);
+            await context.HotelPlanSet.AddAsync(current);
             await context.SaveChangesAsync();
         }
         catch (Exception ex)
@@ -70,15 +69,14 @@ namespace PaqueteTuristico.Controllers
     }
 
     // DELETE api/<HotelPlanController>/5
-    [HttpDelete("/HotelPlan/HotelPlan_Hotelid/HotelPlan_SeasonId")]
+    [HttpDelete]
         public async Task<IActionResult> Delete(int Hotelid, int Seasonid)
         {
-            var current = await context.HotelPlans.FirstAsync(s => s.HotelId == Hotelid && s.SeasonId == Seasonid);
-
-
+            var current = await context.HotelPlanSet.FirstAsync(s => s.HotelId == Hotelid && s.SeasonId == Seasonid);
+            
             try
             {
-                context.HotelPlans.Remove(current);
+                context.HotelPlanSet.Remove(current);
                 
                 await context.SaveChangesAsync();
             }
