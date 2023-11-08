@@ -11,7 +11,7 @@ using PaqueteTuristico.Data;
 
 namespace PaqueteTuristico.Migrations
 {
-    [DbContext(typeof(HotelContext))]
+    [DbContext(typeof(ConocecubaContext))]
     [Migration("20231015162701_InitialCreate")]
     partial class InitialCreate
     {

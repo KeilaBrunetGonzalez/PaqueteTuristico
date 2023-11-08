@@ -13,10 +13,10 @@ namespace PaqueteTuristico.Controllers
     [ApiController]
     public class HotelController : ControllerBase
     {
-        private readonly HotelContext _context;
+        private readonly ConocecubaContext _context;
         private readonly ILogger<HotelController> logger;
 
-        public HotelController(HotelContext context, ILogger<HotelController> logger)
+        public HotelController(ConocecubaContext context, ILogger<HotelController> logger)
         {
             this._context = context;
             this.logger = logger;

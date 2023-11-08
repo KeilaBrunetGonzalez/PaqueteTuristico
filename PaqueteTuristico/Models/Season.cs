@@ -6,18 +6,19 @@ namespace PaqueteTuristico.Models
     [Table("Season")]
     public class Season
     {
+        public Season() { 
+            this.Plans = new HashSet<HotelPlan>();
+        }
         [Key]
-        
         public int SeasonId { get; set; }
         [Required]
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
-        public string SeasonName { get; set; } = " ";
+        public string SeasonName { get; set; } = "";
         [Required]
         [Column(TypeName = "date")]
         public DateTime StartDate { get; set; }
       
-        [Required]
-        public ICollection<HotelPlan>? HotelPlans { get; set; }
+        public ICollection<HotelPlan> Plans { get; set; }
     }
 }

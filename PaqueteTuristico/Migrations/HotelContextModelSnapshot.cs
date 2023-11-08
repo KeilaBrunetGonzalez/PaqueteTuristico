@@ -10,7 +10,7 @@ using PaqueteTuristico.Data;
 
 namespace PaqueteTuristico.Migrations
 {
-    [DbContext(typeof(HotelContext))]
+    [DbContext(typeof(ConocecubaContext))]
     partial class HotelContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

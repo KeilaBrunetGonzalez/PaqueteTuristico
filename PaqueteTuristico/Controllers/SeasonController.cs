@@ -21,8 +21,8 @@ namespace PaqueteTuristico.Controllers
         "Alta"," Baja"
         };
 
-        private readonly HotelContext context;
-        public SeasonController(ILogger<SeasonController> logger,HotelContext context)
+        private readonly ConocecubaContext context;
+        public SeasonController(ILogger<SeasonController> logger,ConocecubaContext context)
         {
             this.context = context;
             this.logger = logger;

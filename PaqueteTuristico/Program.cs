@@ -5,7 +5,7 @@ using PaqueteTuristico.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Conecction to DB
-builder.Services.AddDbContext<HotelContext>(options =>
+builder.Services.AddDbContext<ConocecubaContext>(options =>
 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
