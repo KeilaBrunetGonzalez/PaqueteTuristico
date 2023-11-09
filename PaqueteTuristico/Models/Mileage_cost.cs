@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PaqueteTuristico.Models
-{ 
+{  [Table("Mileage_cost")]
     public class Mileage_cost:Modality
     {
         [Required]

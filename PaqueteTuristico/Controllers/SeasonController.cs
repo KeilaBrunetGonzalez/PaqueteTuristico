@@ -58,10 +58,33 @@ namespace PaqueteTuristico.Controllers
             }
             return season;
         }
-        
-        // POST api/<SeasonController1>
+        //  POST api/<SeasonController1>/5
+
         [HttpPost]
-        public  async Task<IActionResult> Post(int id , string name, DateTime date)
+
+        public async Task<ActionResult<Season>> Post(int id, string name, DateTime date)
+        {
+            var current = new Season
+            {
+                SeasonId = id,
+                SeasonName = name,
+                StartDate = date,
+            };
+            try
+            {
+                await context.Seasons.AddAsync(current);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return Ok();
+        }
+
+        //  PUT api/<SeasonController1>
+        [HttpPut]
+        public  async Task<IActionResult> Put(int id , string name, DateTime date)
         {
 
             var current = await context.Seasons.FirstAsync(s => s.SeasonId == id);
@@ -83,28 +106,7 @@ namespace PaqueteTuristico.Controllers
             return Ok();
         }
 
-        // PUT api/<SeasonController1>/5
-
-        [HttpPut("/Season/Season_ID")]
-
-        public async Task<ActionResult<Season>> Put(int id, string name, DateTime date)
-        {
-            var current = new Season
-            {
-                SeasonId = id,
-                SeasonName = name,
-                StartDate = date,
-            };
-            try
-            {
-            await context.Seasons.AddAsync(current);
-            await context.SaveChangesAsync();
-            }catch(Exception ex)
-            {
-                ex.ToString();  
-            }
-        return Ok();
-        }
+        
 
         // DELETE api/<SeasonController1>/5
 
@@ -115,9 +117,9 @@ namespace PaqueteTuristico.Controllers
             var current = await context.Seasons.FirstAsync(x => x.SeasonId == id);
             context.Seasons.Remove(current);
             await context.SaveChangesAsync();
-        }catch(ArgumentNullException ex)
+        }catch(ArgumentNullException e)
             {
-                ex.ToString();
+                e.ToString();
                 return NotFound();
             }
             return Ok();

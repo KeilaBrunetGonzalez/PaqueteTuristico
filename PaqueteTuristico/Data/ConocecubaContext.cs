@@ -40,7 +40,12 @@ namespace PaqueteTuristico.Data
                 .WithMany(h2 => h2.Meals)
                 .HasForeignKey(m => m.HotelId);
 
-           
+           modelBuilder.Entity<HotelPlan>()
+                .HasKey(r => new 
+                { r.HotelId, 
+                  r.SeasonId }
+                );
+
             modelBuilder.Entity<HotelPlan>()
                 .HasOne(h => h.Hotel)
                 .WithMany(s => s.Plans)
@@ -51,6 +56,13 @@ namespace PaqueteTuristico.Data
                 .HasOne(t => t.Season)
                 .WithMany(s => s.Plans) 
                 .HasForeignKey(h => h.SeasonId);
+
+            modelBuilder.Entity<Transport>()
+                .HasKey(t => new
+                {
+                    t.ModalityId,
+                    t.VehicleId
+                });
 
             modelBuilder.Entity<Transport>()
                 .HasOne(t => t.Modality)
