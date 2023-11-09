@@ -9,6 +9,7 @@ namespace PaqueteTuristico.Models
         public Hotel() { 
             this.Rooms = new HashSet<Room>();
             this.Meals = new HashSet<Meal>();
+            this.Plans = new HashSet<HotelPlan>();
         }
 
         [Key]
