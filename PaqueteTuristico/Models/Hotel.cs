@@ -10,6 +10,7 @@ namespace PaqueteTuristico.Models
             this.Rooms = new HashSet<Room>();
             this.Meals = new HashSet<Meal>();
         }
+
         [Key]
         public int Id { get; set; }
 
@@ -21,13 +22,55 @@ namespace PaqueteTuristico.Models
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
         [Required]
-        public string Description { get; set; } = "";
+        public string Chain { get; set; } = "";
+
+        [Column(TypeName = "varchar")]
+        [MaxLength(100)]
+        [Required]
+        public string Province { get; set; } = "";
+
+        [Column(TypeName = "varchar")]
+        [MaxLength(100)]
+        [Required]
+        public string Category { get; set; } = "";
 
         [Required]
-        public int Price { get; set; }
+        public int Phone { get; set; }
+
+        [Column(TypeName = "varchar")]
+        [MaxLength(100)]
+        [Required]
+        public string Email { get; set; } = "";
+
+        [Required]
+        public int NumberOfRooms { get; set; }
 
 
-        public ICollection<HotelPlan>?Plans { get; set; }  
+        [Required]
+        public int DisNearCity { get; set; }
+
+        [Required]
+        public int DisAirport { get; set; }
+
+        [Required]
+        public int NumberOfFloors { get; set; }
+
+        [Column(TypeName = "varchar")]
+        [MaxLength(100)]
+        [Required]
+        public string Address { get; set; } = "";
+
+        [Column(TypeName = "varchar")]
+        [MaxLength(100)]
+        [Required]
+        public string ComercializationMode { get; set; } = "";
+
+        [Column(TypeName = "money")]
+        [Required]
+        public decimal Price { get; set; }
+
+        [Column(TypeName = "boolean")]
+        public bool Enabled { get; set; } = true;
         public virtual ICollection<Room> Rooms { get; set; }
         public virtual ICollection<Meal> Meals { get; set; }    
 
