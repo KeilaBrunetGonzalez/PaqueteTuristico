@@ -39,7 +39,7 @@ namespace PaqueteTuristico.Migrations
                         .HasColumnType("varchar");
 
                     b.Property<TimeOnly>("Hour")
-                        .HasColumnType("Time");
+                        .HasColumnType("time");
 
                     b.Property<float>("Price")
                         .HasColumnType("real");

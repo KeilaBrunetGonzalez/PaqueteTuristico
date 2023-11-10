@@ -20,7 +20,7 @@ namespace PaqueteTuristico.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Day = table.Column<int>(type: "integer", nullable: false),
                     Description = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
-                    Hour = table.Column<TimeOnly>(type: "Time", nullable: false),
+                    Hour = table.Column<TimeOnly>(type: "time", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>

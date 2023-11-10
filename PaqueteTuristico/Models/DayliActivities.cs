@@ -14,8 +14,8 @@ namespace PaqueteTuristico.Models
         [MaxLength(100)]
         public string Description { get; set; } = "";
         [Required]
-        [Column(TypeName = "Time")]
-        public TimeOnly Hour {  get; set; }
+        [Column(TypeName = "time")]
+        public TimeOnly Hour {  get; set; } =  TimeOnly.FromDateTime(DateTime.Now);
         [Required]
         public float Price { get; set; }
     }

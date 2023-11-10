@@ -12,7 +12,7 @@ using PaqueteTuristico.Data;
 namespace PaqueteTuristico.Migrations
 {
     [DbContext(typeof(ConocecubaContext))]
-    [Migration("20231109050307_InitialCreate")]
+    [Migration("20231110023854_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -42,7 +42,7 @@ namespace PaqueteTuristico.Migrations
                         .HasColumnType("varchar");
 
                     b.Property<TimeOnly>("Hour")
-                        .HasColumnType("Time");
+                        .HasColumnType("time");
 
                     b.Property<float>("Price")
                         .HasColumnType("real");
