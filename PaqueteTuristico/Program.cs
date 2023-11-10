@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using PaqueteTuristico.Data;
+using PaqueteTuristico.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")
 
 
 // Add services to the container.
+builder.Services.AddScoped<DayliActivityServices>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

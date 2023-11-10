@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
+using PaqueteTuristico.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,12 +12,14 @@ namespace PaqueteTuristico.Controllers
     [ApiController]
     public class VehiclesController : ControllerBase
     {
+        private readonly VehicleServices _vehicleServices;
         private readonly ILogger<HotelController> logger;
-        private readonly ConocecubaContext context;
-        public VehiclesController(ILogger<HotelController> logger, ConocecubaContext context)
+        private readonly conocubaContext context;
+        public VehiclesController(ILogger<HotelController> logger, conocubaContext context, VehicleServices _vehicleServices)
         {
             this.logger = logger;
             this.context = context;
+            this._vehicleServices = _vehicleServices;
         }
 
         // GET: api/<Vehicles>
@@ -31,8 +34,8 @@ namespace PaqueteTuristico.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Vehicle>> Get(int id)
         {
-            var temp = await context.VehicleSet.FirstOrDefaultAsync();
-            if (temp != null)
+            var temp = await context.VehicleSet.FirstAsync(n => n.VehicleId == id);
+            if (temp == null)
             {
                 return NotFound();
             }
@@ -41,16 +44,15 @@ namespace PaqueteTuristico.Controllers
 
         // POST api/<Vehicles>
         [HttpPost]
-        public  async Task<ActionResult<string>> Post([FromBody] Vehicle vehicle)
+        public async Task<ActionResult<string>> Post([FromBody] Vehicle vehicle)
         {
-            await context.VehicleSet.AddAsync(vehicle);
-            await context.SaveChangesAsync();
+            _vehicleServices.CreateVehicle(vehicle);
             return Ok("Vehicle Inserted");
         }
 
         // PUT api/<Vehicles>/5
-        [HttpPut("{id}")]
-        public  async Task<ActionResult<string>> Put( [FromBody] Vehicle vehicle)
+        [HttpPut]
+        public  async Task<ActionResult<string>> Put([FromBody] Vehicle vehicle)
         {
             var temp =  await context.VehicleSet.FirstOrDefaultAsync(v => v.VehicleId == vehicle.VehicleId);
             if (temp == null)
@@ -83,6 +85,8 @@ namespace PaqueteTuristico.Controllers
                     temp.Year_of_Manufacture = vehicle.Year_of_Manufacture;
                 }
             }
+            context.VehicleSet.Update(temp);
+            await context.SaveChangesAsync();
             return Ok("Vehicle Updated");
         }
 

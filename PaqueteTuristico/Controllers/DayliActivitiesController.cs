@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
+using PaqueteTuristico.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,14 +10,16 @@ namespace PaqueteTuristico.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DayliActivitiesControler : ControllerBase
+    public class DayliActivitiesController : ControllerBase
     {
+        private readonly DayliActivityServices _services;
         private readonly ILogger<HotelController> logger;
-        private readonly ConocecubaContext context;
-        public DayliActivitiesControler(ILogger<HotelController> logger, ConocecubaContext context)
+        private readonly conocubaContext context;
+        public DayliActivitiesController(ILogger<HotelController> logger, conocubaContext context , DayliActivityServices _services)
         {
             this.logger = logger;
             this.context = context;
+            this._services = _services;
         }
 
         // GET: api/<DayliActivitiesControler>
@@ -38,8 +41,7 @@ namespace PaqueteTuristico.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> Post([FromBody] DayliActivities dayli)
         {
-            await context.DayliActivitieSet.AddAsync(dayli);
-            await context.SaveChangesAsync();
+            _services.CreateDayliActivitie(dayli);
             return Ok("Activity inserted");
         }
 

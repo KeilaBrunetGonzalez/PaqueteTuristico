@@ -15,12 +15,14 @@ namespace PaqueteTuristico.Data
         public DbSet<HotelContract> HotelContractSet { get; set; }
         public DbSet<TransportationContract> TransportationContractSet { get; set; }
         public DbSet<HotelPlan> HotelPlanSet { get; set; }
-        public DbSet<Season> Seasons { get; set; }
+        public DbSet<Season> SeasonSet { get; set; }
         public DbSet<Modality> ModalitySet { get; set; }
         public DbSet<CostPerHour> Cost_Per_HoursSet { get; set; }
         public DbSet<CostPerTour> Cost_Per_ToursSet { get; set; }
         public DbSet<MileageCost> Mileage_CostsSet { get; set; }
-
+        public DbSet<DayliActivities> DayliActivitieSet { get; set; }
+        public DbSet<Transport> TransportSet { get; set; }
+        public DbSet<Vehicle> VehicleSet { get; set; }
 
         public conocubaContext(DbContextOptions<conocubaContext> options)
         : base(options)
@@ -29,7 +31,7 @@ namespace PaqueteTuristico.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
 
-            base.OnModelCreating(modelBuilder);
+           
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
@@ -52,13 +54,36 @@ namespace PaqueteTuristico.Data
                     p.SeasonId
                 });
 
-            modelBuilder.Entity<Season>()
-                .HasMany(t => t.HotelPlans)
-                .WithOne(x => x.Seasons);
+            modelBuilder.Entity<HotelPlan>()
+                .HasOne(x => x.Season)
+                .WithMany(r => r.Plans)
+                .HasForeignKey(y => y.SeasonId);
+
+            modelBuilder.Entity<HotelPlan>()
+                .HasOne(n => n.Hotel)
+                .WithMany(x => x.Plans)
+                .HasForeignKey(y => y.HotelId);
+
+            modelBuilder.Entity<Transport>()
+                .HasKey(n => new
+                {
+                    n.ModalityId,
+                    n.VehicleId
+                });
+
+            modelBuilder.Entity<Transport>()
+                .HasOne(s => s.Vehicle)
+                .WithMany(t => t.Transports)
+                .HasForeignKey(r => r.VehicleId);
+
+            modelBuilder.Entity<Transport>()
+                .HasOne(s => s.Modality)
+                .WithMany(n => n.Transports)
+                .HasForeignKey(r => r.ModalityId);
 
 
 
-
+            base.OnModelCreating(modelBuilder);
         }          
                
 

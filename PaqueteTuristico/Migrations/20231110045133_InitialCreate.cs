@@ -29,14 +29,42 @@ namespace PaqueteTuristico.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EContract",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Desc = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
+                    StarDate = table.Column<DateTime>(type: "date", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "date", nullable: false),
+                    ConcilTime = table.Column<DateTime>(type: "date", nullable: false),
+                    Enabled = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EContract", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Hotel",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
-                    Price = table.Column<int>(type: "integer", nullable: false)
+                    Chain = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
+                    Province = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
+                    Category = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
+                    Phone = table.Column<int>(type: "integer", nullable: false),
+                    Email = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
+                    NumberOfRooms = table.Column<int>(type: "integer", nullable: false),
+                    DisNearCity = table.Column<int>(type: "integer", nullable: false),
+                    DisAirport = table.Column<int>(type: "integer", nullable: false),
+                    NumberOfFloors = table.Column<int>(type: "integer", nullable: false),
+                    Address = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
+                    ComercializationMode = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
+                    Price = table.Column<decimal>(type: "money", nullable: false),
+                    Enabled = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -89,6 +117,65 @@ namespace PaqueteTuristico.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ComplementaryContract",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    ServiceType = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
+                    CostPerPerson = table.Column<decimal>(type: "money", nullable: false),
+                    ComplementaryServiceProvince = table.Column<string>(type: "varchar", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ComplementaryContract", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ComplementaryContract_EContract_Id",
+                        column: x => x.Id,
+                        principalTable: "EContract",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HotelContract",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Address = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
+                    HotelTotalPrice = table.Column<decimal>(type: "money", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HotelContract", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HotelContract_EContract_Id",
+                        column: x => x.Id,
+                        principalTable: "EContract",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TransportationContract",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    TransportationProvider = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
+                    IncluedVehicles = table.Column<int>(type: "integer", nullable: false),
+                    LicensePlateNumber = table.Column<string>(type: "varchar", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TransportationContract", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TransportationContract_EContract_Id",
+                        column: x => x.Id,
+                        principalTable: "EContract",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Meal",
                 columns: table => new
                 {
@@ -96,7 +183,7 @@ namespace PaqueteTuristico.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
-                    Price = table.Column<int>(type: "integer", nullable: false),
+                    Price = table.Column<decimal>(type: "money", nullable: false),
                     HotelId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -118,7 +205,7 @@ namespace PaqueteTuristico.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
-                    Price = table.Column<int>(type: "integer", nullable: false),
+                    Price = table.Column<decimal>(type: "money", nullable: false),
                     HotelId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -133,20 +220,20 @@ namespace PaqueteTuristico.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cost_per_hour",
+                name: "CostPerHour",
                 columns: table => new
                 {
                     ModalityId = table.Column<int>(type: "integer", nullable: false),
-                    CostperHour = table.Column<float>(type: "real", nullable: false),
-                    CostperKilometerTraveled = table.Column<float>(type: "real", nullable: false),
-                    ExtraKilometer_cost = table.Column<float>(type: "real", nullable: false),
-                    ExtraHour_cost = table.Column<float>(type: "real", nullable: false)
+                    cost_per_hour = table.Column<float>(type: "real", nullable: false),
+                    cost_per_kilometer_traveled = table.Column<float>(type: "real", nullable: false),
+                    extra_kilometer_cost = table.Column<float>(type: "real", nullable: false),
+                    extra_hour_cost = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cost_per_hour", x => x.ModalityId);
+                    table.PrimaryKey("PK_CostPerHour", x => x.ModalityId);
                     table.ForeignKey(
-                        name: "FK_Cost_per_hour_Modality_ModalityId",
+                        name: "FK_CostPerHour_Modality_ModalityId",
                         column: x => x.ModalityId,
                         principalTable: "Modality",
                         principalColumn: "ModalityId",
@@ -154,19 +241,19 @@ namespace PaqueteTuristico.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "cost_per_tour",
+                name: "CostPerTour",
                 columns: table => new
                 {
                     ModalityId = table.Column<int>(type: "integer", nullable: false),
-                    Rout_Description = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
-                    Route_cost = table.Column<float>(type: "real", nullable: false),
-                    Round_Trip_cost = table.Column<float>(type: "real", nullable: false)
+                    rout_description = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
+                    route_cost = table.Column<float>(type: "real", nullable: false),
+                    round_trip_cost = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_cost_per_tour", x => x.ModalityId);
+                    table.PrimaryKey("PK_CostPerTour", x => x.ModalityId);
                     table.ForeignKey(
-                        name: "FK_cost_per_tour_Modality_ModalityId",
+                        name: "FK_CostPerTour_Modality_ModalityId",
                         column: x => x.ModalityId,
                         principalTable: "Modality",
                         principalColumn: "ModalityId",
@@ -174,7 +261,7 @@ namespace PaqueteTuristico.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Mileage_cost",
+                name: "MileageCost",
                 columns: table => new
                 {
                     ModalityId = table.Column<int>(type: "integer", nullable: false),
@@ -184,9 +271,9 @@ namespace PaqueteTuristico.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Mileage_cost", x => x.ModalityId);
+                    table.PrimaryKey("PK_MileageCost", x => x.ModalityId);
                     table.ForeignKey(
-                        name: "FK_Mileage_cost_Modality_ModalityId",
+                        name: "FK_MileageCost_Modality_ModalityId",
                         column: x => x.ModalityId,
                         principalTable: "Modality",
                         principalColumn: "ModalityId",
@@ -267,10 +354,13 @@ namespace PaqueteTuristico.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Cost_per_hour");
+                name: "ComplementaryContract");
 
             migrationBuilder.DropTable(
-                name: "cost_per_tour");
+                name: "CostPerHour");
+
+            migrationBuilder.DropTable(
+                name: "CostPerTour");
 
             migrationBuilder.DropTable(
                 name: "Dayli_Activities");
@@ -279,13 +369,19 @@ namespace PaqueteTuristico.Migrations
                 name: "Hotel_Plan");
 
             migrationBuilder.DropTable(
+                name: "HotelContract");
+
+            migrationBuilder.DropTable(
                 name: "Meal");
 
             migrationBuilder.DropTable(
-                name: "Mileage_cost");
+                name: "MileageCost");
 
             migrationBuilder.DropTable(
                 name: "Room");
+
+            migrationBuilder.DropTable(
+                name: "TransportationContract");
 
             migrationBuilder.DropTable(
                 name: "TransportSet");
@@ -295,6 +391,9 @@ namespace PaqueteTuristico.Migrations
 
             migrationBuilder.DropTable(
                 name: "Hotel");
+
+            migrationBuilder.DropTable(
+                name: "EContract");
 
             migrationBuilder.DropTable(
                 name: "Modality");

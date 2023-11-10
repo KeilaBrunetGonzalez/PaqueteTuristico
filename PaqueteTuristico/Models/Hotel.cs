@@ -72,6 +72,7 @@ namespace PaqueteTuristico.Models
 
         [Column(TypeName = "boolean")]
         public bool Enabled { get; set; } = true;
+        public ICollection<HotelPlan> Plans { get; set; }
         public virtual ICollection<Room> Rooms { get; set; }
         public virtual ICollection<Meal> Meals { get; set; }    
 

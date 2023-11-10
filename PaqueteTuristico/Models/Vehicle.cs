@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PaqueteTuristico.Models
 {
@@ -31,7 +32,7 @@ namespace PaqueteTuristico.Models
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
         public string Manufacturing_Mode { get; set; } = "";
-
+        [JsonIgnore]
         public ICollection<Transport> Transports { get; set; }
     }
 }

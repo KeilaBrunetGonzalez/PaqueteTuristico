@@ -21,8 +21,8 @@ namespace PaqueteTuristico.Controllers
         "Alta"," Baja"
         };
 
-        private readonly ConocecubaContext context;
-        public SeasonController(ILogger<SeasonController> logger,ConocecubaContext context)
+        private readonly conocubaContext context;
+        public SeasonController(ILogger<SeasonController> logger,conocubaContext context)
         {
             this.context = context;
             this.logger = logger;
@@ -49,7 +49,7 @@ namespace PaqueteTuristico.Controllers
             [HttpGet("/Season/Season_ID")]
         public async Task<ActionResult<Season>> GetSeasonAsync(int id)
         {
-            var season = await context.Seasons.FirstAsync(n => n.SeasonId == id);
+            var season = await context.SeasonSet.FirstAsync(n => n.SeasonId == id);
             
             if (season == null)
             {
@@ -62,17 +62,12 @@ namespace PaqueteTuristico.Controllers
 
         [HttpPost]
 
-        public async Task<ActionResult<Season>> Post(int id, string name, DateTime date)
+        public async Task<ActionResult<Season>> Post([FromBody] Season season)
         {
-            var current = new Season
-            {
-                SeasonId = id,
-                SeasonName = name,
-                StartDate = date,
-            };
+            
             try
             {
-                await context.Seasons.AddAsync(current);
+                await context.SeasonSet.AddAsync(season);
                 await context.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -84,10 +79,10 @@ namespace PaqueteTuristico.Controllers
 
         //  PUT api/<SeasonController1>
         [HttpPut]
-        public  async Task<IActionResult> Put(int id , string name, DateTime date)
+        public  async Task<IActionResult> Put([FromBody] Season season)
         {
 
-            var current = await context.Seasons.FirstAsync(s => s.SeasonId == id);
+            var current = await context.SeasonSet.FirstAsync(s => s.SeasonId == season.SeasonId);
 
             if (current == null)
             {
@@ -95,12 +90,15 @@ namespace PaqueteTuristico.Controllers
             }
             else
             {
-                if (!(name.Length == 0))
+                if (!(current.SeasonName != season.SeasonName))
                 {
-                    current.SeasonName = name;
-                } 
-            current.StartDate = date;
-                context.Seasons.Update(current);
+                    current.SeasonName = season.SeasonName;
+                }
+                if (!(current.StartDate != season.StartDate))
+                {
+                    current.StartDate = season.StartDate;
+                }
+                context.SeasonSet.Update(current);
                 await context.SaveChangesAsync();   
             }
             return Ok();
@@ -114,8 +112,8 @@ namespace PaqueteTuristico.Controllers
         public async Task<IActionResult> Delete(int id)
         {   try
             {
-            var current = await context.Seasons.FirstAsync(x => x.SeasonId == id);
-            context.Seasons.Remove(current);
+            var current = await context.SeasonSet.FirstAsync(x => x.SeasonId == id);
+            context.SeasonSet.Remove(current);
             await context.SaveChangesAsync();
         }catch(ArgumentNullException e)
             {

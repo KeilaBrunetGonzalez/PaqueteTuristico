@@ -18,8 +18,8 @@ namespace PaqueteTuristico.Controllers
         "Alta"," Baja"
         };
 
-        private readonly ConocecubaContext context;
-        public HotelPlanController(ILogger<HotelPlanController> logger, ConocecubaContext context)
+        private readonly conocubaContext context;
+        public HotelPlanController(ILogger<HotelPlanController> logger, conocubaContext context)
         {
             this.context = context;
             this.logger = logger;
@@ -46,7 +46,7 @@ namespace PaqueteTuristico.Controllers
     public async Task<ActionResult<HotelPlan>> Put(int hotelid, int seasonid)
     {
             var temp = await context.HotelSet.FirstAsync(s => s.Id == hotelid);
-            var temp1 = await context.Seasons.FirstAsync(s => s.SeasonId == seasonid);
+            var temp1 = await context.SeasonSet.FirstAsync(s => s.SeasonId == seasonid);
 
             if (temp == null || temp1 == null)
             {
