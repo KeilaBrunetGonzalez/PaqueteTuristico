@@ -18,15 +18,13 @@ namespace PaqueteTuristico.Models
         [Required]
         public string Description { get; set; } = "";
 
+        [Column(TypeName = "money")]
         [Required]
-        public int Price { get; set; }
+        public decimal Price { get; set; }
 
         [Required]
         [ForeignKey(nameof(Meal))]   
         public int HotelId { get; set; }
-
-        [Required]
-        public virtual Hotel? Hotel { get; set; }
 
     }
 }

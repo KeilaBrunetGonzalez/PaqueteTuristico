@@ -12,8 +12,8 @@ namespace PaqueteTuristico.Controllers
     public class VehiclesController : ControllerBase
     {
         private readonly ILogger<HotelController> logger;
-        private readonly ConocecubaContext context;
-        public VehiclesController(ILogger<HotelController> logger, ConocecubaContext context)
+        private readonly conocubaContext context;
+        public VehiclesController(ILogger<HotelController> logger, conocubaContext context)
         {
             this.logger = logger;
             this.context = context;
@@ -31,8 +31,8 @@ namespace PaqueteTuristico.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Vehicle>> Get(int id)
         {
-            var temp = await context.VehicleSet.FirstOrDefaultAsync();
-            if (temp != null)
+            var temp = await context.VehicleSet.FirstOrDefaultAsync(V => V.VehicleId == id);
+            if (temp == null)
             {
                 return NotFound();
             }

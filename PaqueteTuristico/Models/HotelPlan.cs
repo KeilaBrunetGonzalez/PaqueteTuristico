@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,18 +8,18 @@ namespace PaqueteTuristico.Models
     [Table("Hotel_Plan")]
     public class HotelPlan
     {
-        public HotelPlan() { 
-        this.Hotel = new Hotel();
-        this.Season = new Season();
-        }
+
         [Key]
+        [ForeignKey(nameof(HotelPlan))]
         public int HotelId { get; set; }
+
         [Key]
+        [ForeignKey(nameof(Season))]
         public int SeasonId { get; set; }
-      
-        [ForeignKey(nameof(HotelId))]
-        public Hotel Hotel { get; set; }
-        [ForeignKey(nameof(HotelId))]
-        public Season Season { get; set; }
+
+        [Required]
+        [Column(TypeName = "money")]
+        public decimal TotalPrice;
+
     }
 }

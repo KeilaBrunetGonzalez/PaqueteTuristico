@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PaqueteTuristico.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class SeasonController : ControllerBase
 
     {   private readonly ILogger<SeasonController> logger;
@@ -21,8 +21,8 @@ namespace PaqueteTuristico.Controllers
         "Alta"," Baja"
         };
 
-        private readonly ConocecubaContext context;
-        public SeasonController(ILogger<SeasonController> logger,ConocecubaContext context)
+        private readonly conocubaContext context;
+        public SeasonController(ILogger<SeasonController> logger, conocubaContext context)
         {
             this.context = context;
             this.logger = logger;

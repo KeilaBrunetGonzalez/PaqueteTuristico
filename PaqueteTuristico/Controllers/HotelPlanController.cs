@@ -18,8 +18,8 @@ namespace PaqueteTuristico.Controllers
         "Alta"," Baja"
         };
 
-        private readonly ConocecubaContext context;
-        public HotelPlanController(ILogger<HotelPlanController> logger, ConocecubaContext context)
+        private readonly conocubaContext context;
+        public HotelPlanController(ILogger<HotelPlanController> logger, conocubaContext context)
         {
             this.context = context;
             this.logger = logger;

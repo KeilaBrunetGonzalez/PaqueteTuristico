@@ -12,8 +12,8 @@ namespace PaqueteTuristico.Controllers
     public class TransportController : ControllerBase
     {
         private readonly ILogger<HotelController> logger;
-        private readonly ConocecubaContext context;
-        public TransportController(ILogger<HotelController> logger, ConocecubaContext context)
+        private readonly conocubaContext context;
+        public TransportController(ILogger<HotelController> logger, conocubaContext context)
         {
             this.logger = logger;
             this.context = context;

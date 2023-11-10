@@ -9,11 +9,11 @@ namespace PaqueteTuristico.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DayliActivitiesControler : ControllerBase
+    public class DayliActivitiesController : ControllerBase
     {
         private readonly ILogger<HotelController> logger;
-        private readonly ConocecubaContext context;
-        public DayliActivitiesControler(ILogger<HotelController> logger, ConocecubaContext context)
+        private readonly conocubaContext context;
+        public DayliActivitiesController(ILogger<HotelController> logger, conocubaContext context)
         {
             this.logger = logger;
             this.context = context;

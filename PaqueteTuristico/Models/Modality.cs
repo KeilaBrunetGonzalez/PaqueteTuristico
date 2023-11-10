@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Cryptography.Xml;
+using System.Text.Json.Serialization;
 
 namespace PaqueteTuristico.Models
 {
@@ -12,7 +14,9 @@ namespace PaqueteTuristico.Models
         [Key]
         public virtual int ModalityId { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<Transport> Transports { get; set; }
 
     }
 }
+

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PaqueteTuristico.Models
 {
@@ -11,25 +12,75 @@ namespace PaqueteTuristico.Models
             this.Meals = new HashSet<Meal>();
             this.Plans = new HashSet<HotelPlan>();
         }
+
         [Key]
         public int Id { get; set; }
 
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
         [Required]
-        public string Name { get; set; } = "";
+        public string Name { get; set; } = ""; 
 
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
         [Required]
-        public string Description { get; set; } = "";
+        public string Chain { get; set; } = "";
+
+        [Column(TypeName = "varchar")]
+        [MaxLength(100)]
+        [Required]
+        public string Province { get; set; } = "";
+
+        [Column(TypeName = "varchar")]
+        [MaxLength(100)]
+        [Required]
+        public string Category { get; set; } = "";
 
         [Required]
-        public int Price { get; set; }
+        public int Phone { get; set; }
+
+        [Column(TypeName = "varchar")]
+        [MaxLength(100)]
+        [Required]
+        public string Email { get; set; } = "";
+
+        [Required]
+        public int NumberOfRooms { get; set; }
 
 
-        public ICollection<HotelPlan> Plans { get; set; }  
+        [Required]
+        public int DisNearCity { get; set; }
+
+        [Required]
+        public int DisAirport { get; set; }
+
+        [Required]
+        public int NumberOfFloors { get; set; }
+
+        [Column(TypeName = "varchar")]
+        [MaxLength(100)]
+        [Required]
+        public string Address { get; set; } = "";
+
+        [Column(TypeName = "varchar")]
+        [MaxLength(100)]
+        [Required]
+        public string ComercializationMode { get; set; } = "";
+
+        [Column(TypeName = "money")]
+        [Required]
+        public decimal Price { get; set; }
+
+        [Column(TypeName = "boolean")]
+        public bool Enabled { get; set; } = true;
+
+        [JsonIgnore]
+        public virtual ICollection<HotelPlan> Plans { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<Room> Rooms { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<Meal> Meals { get; set; }    
 
     }
