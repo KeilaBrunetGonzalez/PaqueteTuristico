@@ -63,7 +63,8 @@ namespace PaqueteTuristico.Controllers
             {
                 return BadRequest("Ese contrato no existe");
             }
-                await _context.SaveChangesAsync();
+            _context.Entry(econtract).CurrentValues.SetValues(contract);
+            await _context.SaveChangesAsync();
 
                 return Ok("Contrato de transporte actualizado exitosamente");
             }

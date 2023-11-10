@@ -21,7 +21,7 @@ namespace PaqueteTuristico.Controllers
 
         // GET: api/<DayliActivitiesControler>
         [HttpGet]
-        public  async Task<ActionResult<IEnumerable<DayliActivities>>> Get()
+        public async Task<ActionResult<IEnumerable<DayliActivities>>> Get()
         {
             return await context.DayliActivitieSet.ToListAsync();
         }
@@ -30,7 +30,7 @@ namespace PaqueteTuristico.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<DayliActivities>> Get(int id)
         {
-            var temp = await context.DayliActivitieSet.FirstAsync(d =>d.ActivityId == id);
+            var temp = await context.DayliActivitieSet.FirstAsync(d => d.ActivityId == id);
             return Ok(temp);
         }
 
@@ -59,15 +59,15 @@ namespace PaqueteTuristico.Controllers
                 {
                     current.Price = dayli.Price;
                 }
-                if(current.Description != dayli.Description)
+                if (current.Description != dayli.Description)
                 {
                     current.Description = dayli.Description;
                 }
-                if(current.Day != dayli.Day)
+                if (current.Day != dayli.Day)
                 {
                     current.Day = dayli.Day;
                 }
-                if(current.Hour != dayli.Hour)
+                if (current.Hour != dayli.Hour)
                 {
                     current.Hour = dayli.Hour;
                 }
@@ -81,11 +81,13 @@ namespace PaqueteTuristico.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<string>> Delete(int id)
         {
-            try { 
-            var temp =  await context.DayliActivitieSet.FirstAsync(d =>d.ActivityId == id);
-            context.DayliActivitieSet.Remove(temp);
-            await context.SaveChangesAsync();
-            }catch (Exception ex)
+            try
+            {
+                var temp = await context.DayliActivitieSet.FirstAsync(d => d.ActivityId == id);
+                context.DayliActivitieSet.Remove(temp);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
             {
                 ex.ToString();
             }

@@ -1,13 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PaqueteTuristico.Models
 {
     [Table("vehicles")]
     public class Vehicle
     {
-        public Vehicle() { 
-        this.Transports = new HashSet<Transport>();
+        public Vehicle()
+        {
+            this.Transports = new HashSet<Transport>();
         }
         [Key]
         public int VehicleId { get; set; }
@@ -31,7 +33,7 @@ namespace PaqueteTuristico.Models
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
         public string Manufacturing_Mode { get; set; } = "";
-
+        [JsonIgnore]
         public ICollection<Transport> Transports { get; set; }
     }
 }

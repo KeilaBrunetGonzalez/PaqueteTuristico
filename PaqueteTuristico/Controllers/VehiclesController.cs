@@ -21,17 +21,17 @@ namespace PaqueteTuristico.Controllers
 
         // GET: api/<Vehicles>
         [HttpGet]
-        public  async Task<ActionResult<IEnumerable<Vehicle>>> Get()
+        public async Task<ActionResult<IEnumerable<Vehicle>>> Get()
         {
 
-            return  await context.VehicleSet.ToListAsync();
+            return await context.VehicleSet.ToListAsync();
         }
 
         // GET api/<Vehicles>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Vehicle>> Get(int id)
         {
-            var temp = await context.VehicleSet.FirstOrDefaultAsync(V => V.VehicleId == id);
+            var temp = await context.VehicleSet.FirstAsync(n => n.VehicleId == id);
             if (temp == null)
             {
                 return NotFound();
@@ -41,7 +41,7 @@ namespace PaqueteTuristico.Controllers
 
         // POST api/<Vehicles>
         [HttpPost]
-        public  async Task<ActionResult<string>> Post([FromBody] Vehicle vehicle)
+        public async Task<ActionResult<string>> Post([FromBody] Vehicle vehicle)
         {
             await context.VehicleSet.AddAsync(vehicle);
             await context.SaveChangesAsync();
@@ -49,40 +49,43 @@ namespace PaqueteTuristico.Controllers
         }
 
         // PUT api/<Vehicles>/5
-        [HttpPut("{id}")]
-        public  async Task<ActionResult<string>> Put( [FromBody] Vehicle vehicle)
+        [HttpPut]
+        public async Task<ActionResult<string>> Put([FromBody] Vehicle vehicle)
         {
-            var temp =  await context.VehicleSet.FirstOrDefaultAsync(v => v.VehicleId == vehicle.VehicleId);
+            var temp = await context.VehicleSet.FirstOrDefaultAsync(v => v.VehicleId == vehicle.VehicleId);
             if (temp == null)
             {
                 return NotFound();
             }
-            else { 
-               if (temp.Capacity_Without_Equipement != vehicle.Capacity_Without_Equipement)
+            else
+            {
+                if (temp.Capacity_Without_Equipement != vehicle.Capacity_Without_Equipement)
                 {
                     temp.Capacity_Without_Equipement = vehicle.Capacity_Without_Equipement;
                 }
-               if(temp.Capacity_With_Equipement != vehicle.Capacity_With_Equipement)
+                if (temp.Capacity_With_Equipement != vehicle.Capacity_With_Equipement)
                 {
                     temp.Capacity_With_Equipement = vehicle.Capacity_With_Equipement;
                 }
-               if(temp.Manufacturing_Mode != vehicle.Manufacturing_Mode)
+                if (temp.Manufacturing_Mode != vehicle.Manufacturing_Mode)
                 {
                     temp.Manufacturing_Mode = vehicle.Manufacturing_Mode;
                 }
-               if(temp.Total_Capacity != vehicle.Total_Capacity)
+                if (temp.Total_Capacity != vehicle.Total_Capacity)
                 {
                     temp.Total_Capacity = vehicle.Total_Capacity;
                 }
-               if(temp.License_Plate_Number != vehicle.License_Plate_Number)
+                if (temp.License_Plate_Number != vehicle.License_Plate_Number)
                 {
                     temp.License_Plate_Number = vehicle.License_Plate_Number;
                 }
-               if(temp.Year_of_Manufacture != vehicle.Year_of_Manufacture)
+                if (temp.Year_of_Manufacture != vehicle.Year_of_Manufacture)
                 {
                     temp.Year_of_Manufacture = vehicle.Year_of_Manufacture;
                 }
             }
+            context.VehicleSet.Update(temp);
+            await context.SaveChangesAsync();
             return Ok("Vehicle Updated");
         }
 
@@ -90,11 +93,13 @@ namespace PaqueteTuristico.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<string>> Delete(int id)
         {
-            try { 
-            var temp = await context.VehicleSet.FindAsync(id);
-            context.VehicleSet.Remove(temp);
+            try
+            {
+                var temp = await context.VehicleSet.FindAsync(id);
+                context.VehicleSet.Remove(temp);
                 await context.SaveChangesAsync();
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 ex.ToString();
             }

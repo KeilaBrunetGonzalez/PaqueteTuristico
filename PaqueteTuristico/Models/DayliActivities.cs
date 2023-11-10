@@ -8,14 +8,14 @@ namespace PaqueteTuristico.Models
         [Key]
         public int ActivityId { get; set; }
         [Required]
-        public int Day {  get; set; }
+        public int Day { get; set; }
         [Required]
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
         public string Description { get; set; } = "";
         [Required]
         [Column(TypeName = "time")]
-        public TimeOnly Hour {  get; set; }
+        public TimeOnly Hour { get; set; } = TimeOnly.FromDateTime(DateTime.Now);
         [Required]
         public float Price { get; set; }
     }
