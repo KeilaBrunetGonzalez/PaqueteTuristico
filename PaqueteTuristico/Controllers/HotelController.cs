@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
+using PaqueteTuristico.Service;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,13 +14,14 @@ namespace PaqueteTuristico.Controllers
     public class HotelController : ControllerBase
     {
         private readonly conocubaContext _context;
-        private readonly ILogger<HotelController> logger;
+        private readonly HotelServices _services;
 
-        public HotelController(conocubaContext context, ILogger<HotelController> logger)
+        public HotelController(conocubaContext context, HotelServices _services)
         {
             this._context = context;
-            this.logger = logger;
+            this._services = _services;
         }
+
 
         // GET api/<ValuesController>/5
         [HttpGet("/hotels/Hotel_ID")]
@@ -49,17 +51,15 @@ namespace PaqueteTuristico.Controllers
         [HttpPost("/hotels/Hotel_ID")]
         public async Task<ActionResult<String>> PostHotel([FromBody] Hotel hotel)
         {
-            var existingHotel = await _context.HotelSet.FindAsync(hotel.Id);
+            var insertedHotel = _services.InsertHotelAsync(hotel);
+            var inserted = await insertedHotel;
 
-            if (existingHotel == null)
+            if (inserted)
             {
-               await _context.HotelSet.AddAsync(hotel);
-               await _context.SaveChangesAsync();
-               
                 return Ok("Hotel inserted");
             }
 
-            return BadRequest("Hotel already found");   
+            return BadRequest("Hotel already exist");   
         }
 
         // PUT api/<ValuesController>
