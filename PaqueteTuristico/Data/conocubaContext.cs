@@ -29,15 +29,17 @@ namespace PaqueteTuristico.Data
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+
+           
+
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             modelBuilder.Entity<Hotel>()
                 .HasMany(h => h.Rooms)
                 .WithOne()
                 .HasForeignKey(r => r.HotelId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade); 
 
             modelBuilder.Entity<Hotel>()
                 .HasMany(h => h.Meals)
@@ -82,9 +84,10 @@ namespace PaqueteTuristico.Data
 
 
             base.OnModelCreating(modelBuilder);
-        }
-
+        }          
+               
 
     }
 
 }
+ 

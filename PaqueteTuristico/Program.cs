@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using PaqueteTuristico;
 using PaqueteTuristico.Data;
+using PaqueteTuristico.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text.Json.Serialization;
 

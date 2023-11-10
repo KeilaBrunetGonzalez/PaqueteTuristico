@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
+using PaqueteTuristico.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,17 +12,19 @@ namespace PaqueteTuristico.Controllers
     [ApiController]
     public class DayliActivitiesController : ControllerBase
     {
+        private readonly DayliActivityServices _services;
         private readonly ILogger<HotelController> logger;
         private readonly conocubaContext context;
-        public DayliActivitiesController(ILogger<HotelController> logger, conocubaContext context)
+        public DayliActivitiesController(ILogger<HotelController> logger, conocubaContext context , DayliActivityServices _services)
         {
             this.logger = logger;
             this.context = context;
+            this._services = _services;
         }
 
         // GET: api/<DayliActivitiesControler>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DayliActivities>>> Get()
+        public  async Task<ActionResult<IEnumerable<DayliActivities>>> Get()
         {
             return await context.DayliActivitieSet.ToListAsync();
         }
@@ -30,7 +33,7 @@ namespace PaqueteTuristico.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<DayliActivities>> Get(int id)
         {
-            var temp = await context.DayliActivitieSet.FirstAsync(d => d.ActivityId == id);
+            var temp = await context.DayliActivitieSet.FirstAsync(d =>d.ActivityId == id);
             return Ok(temp);
         }
 
@@ -38,8 +41,7 @@ namespace PaqueteTuristico.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> Post([FromBody] DayliActivities dayli)
         {
-            await context.DayliActivitieSet.AddAsync(dayli);
-            await context.SaveChangesAsync();
+            _services.CreateDayliActivitie(dayli);
             return Ok("Activity inserted");
         }
 
@@ -59,15 +61,15 @@ namespace PaqueteTuristico.Controllers
                 {
                     current.Price = dayli.Price;
                 }
-                if (current.Description != dayli.Description)
+                if(current.Description != dayli.Description)
                 {
                     current.Description = dayli.Description;
                 }
-                if (current.Day != dayli.Day)
+                if(current.Day != dayli.Day)
                 {
                     current.Day = dayli.Day;
                 }
-                if (current.Hour != dayli.Hour)
+                if(current.Hour != dayli.Hour)
                 {
                     current.Hour = dayli.Hour;
                 }
@@ -81,13 +83,11 @@ namespace PaqueteTuristico.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<string>> Delete(int id)
         {
-            try
-            {
-                var temp = await context.DayliActivitieSet.FirstAsync(d => d.ActivityId == id);
-                context.DayliActivitieSet.Remove(temp);
-                await context.SaveChangesAsync();
-            }
-            catch (Exception ex)
+            try { 
+            var temp =  await context.DayliActivitieSet.FirstAsync(d =>d.ActivityId == id);
+            context.DayliActivitieSet.Remove(temp);
+            await context.SaveChangesAsync();
+            }catch (Exception ex)
             {
                 ex.ToString();
             }

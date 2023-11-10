@@ -13,7 +13,6 @@ namespace PaqueteTuristico.Models
         }
         [Key]
         public virtual int ModalityId { get; set; }
-
         [JsonIgnore]
         public virtual ICollection<Transport> Transports { get; set; }
 
