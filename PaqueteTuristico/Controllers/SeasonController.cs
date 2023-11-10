@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PaqueteTuristico.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class SeasonController : ControllerBase
 
     {   private readonly ILogger<SeasonController> logger;

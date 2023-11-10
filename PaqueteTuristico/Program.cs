@@ -1,12 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.OpenApi.Models;
 using PaqueteTuristico.Data;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Conecction to DB
-builder.Services.AddDbContext<ConocecubaContext>(options =>
+builder.Services.AddDbContext<conocubaContext>(options =>
 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 
 // Add services to the container.
