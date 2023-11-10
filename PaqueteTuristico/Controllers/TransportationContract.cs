@@ -63,12 +63,10 @@ namespace PaqueteTuristico.Controllers
             {
                 return BadRequest("Ese contrato no existe");
             }
-            _context.Entry(econtract).CurrentValues.SetValues(contract);
+                await _context.SaveChangesAsync();
 
-            await _context.SaveChangesAsync();
-
-            return Ok("Contrato de transporte actualizado exitosamente");
-        }
+                return Ok("Contrato de transporte actualizado exitosamente");
+            }
 
         //DELETE
 
@@ -82,8 +80,8 @@ namespace PaqueteTuristico.Controllers
                 return BadRequest("Ese contrato no existe");
             }
 
-            _context.TransportationContractSet.Remove(econtract);
-            await _context.SaveChangesAsync();
+                _context.TransportationContractSet.Remove(econtract);
+                await _context.SaveChangesAsync();
 
             return Ok("Contrato de transporte eliminado exitosamente");
         }

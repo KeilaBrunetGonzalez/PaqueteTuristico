@@ -69,6 +69,8 @@ namespace PaqueteTuristico.Data
             .HasForeignKey(s => s.HotelId);
 
             modelBuilder.Entity<Season>()
+                .HasMany(t => t.HotelPlans)
+                .WithOne(x => x.Seasons);
                 .HasMany(s => s.Plans)
                 .WithOne()
                 .HasForeignKey(h => h.SeasonId);
