@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
+using PaqueteTuristico.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,11 +9,11 @@ namespace PaqueteTuristico.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ComplementaryContract : ControllerBase
+    public class ComplementaryContractController : ControllerBase
     {
         private readonly conocubaContext _context;
 
-        public ComplementaryContract(conocubaContext context)
+        public ComplementaryContractController(conocubaContext context)
         {
             this._context = context;
         }
@@ -50,19 +51,16 @@ namespace PaqueteTuristico.Controllers
         public async Task<ActionResult<string>> UpdateComplementaryContract([FromBody] Models.ComplementaryContract contract)
         {
             var econtract = await _context.ComplementaryContractSet.FindAsync(contract.Id);
+
             if (econtract == null)
             {
                 return BadRequest("Ese contrato no existe");
             }
-            else
-            {
-                _context.EContractSet.Update(contract);
-                await _context.SaveChangesAsync();
-                _context.ComplementaryContractSet.Update(contract);
-                await _context.SaveChangesAsync();
+            _context.Entry(econtract).CurrentValues.SetValues(contract);
 
-                return Ok("Contrato complementario actualizado exitosamente");
-            }
+            await _context.SaveChangesAsync();
+
+            return Ok("Contrato complementario actualizado exitosamente");
         }
 
         //Delete
@@ -71,19 +69,16 @@ namespace PaqueteTuristico.Controllers
         public async Task<ActionResult<string>> DeleteComplementaryContract(int Id)
         {
             var econtract = await _context.ComplementaryContractSet.FindAsync(Id);
+
             if (econtract == null)
             {
                 return BadRequest("Ese contrato no existe");
             }
-            else
-            {
-                _context.ComplementaryContractSet.Remove(econtract);
-                await _context.SaveChangesAsync();
-                _context.EContractSet.Remove(econtract);
-                await _context.SaveChangesAsync();
 
-                return Ok("Contrato complementario eliminado exitosamente");
-            }
+            _context.ComplementaryContractSet.Remove(econtract);
+            await _context.SaveChangesAsync();
+
+            return Ok("Contrato complementario eliminado exitosamente");
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PaqueteTuristico.Models
 {
@@ -18,7 +19,7 @@ namespace PaqueteTuristico.Models
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
         [Required]
-        public string Name { get; set; } = "";
+        public string Name { get; set; } = ""; 
 
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
@@ -72,8 +73,14 @@ namespace PaqueteTuristico.Models
 
         [Column(TypeName = "boolean")]
         public bool Enabled { get; set; } = true;
-        public ICollection<HotelPlan> Plans { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<HotelPlan> Plans { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<Room> Rooms { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<Meal> Meals { get; set; }    
 
     }

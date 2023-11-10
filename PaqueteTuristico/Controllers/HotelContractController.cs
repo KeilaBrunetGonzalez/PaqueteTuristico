@@ -9,11 +9,11 @@ namespace PaqueteTuristico.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HotelContract : ControllerBase
+    public class HotelContractController : ControllerBase
     {
         private readonly conocubaContext _context;
 
-        public HotelContract(conocubaContext context)
+        public HotelContractController(conocubaContext context)
         {
             this._context = context;
         }
@@ -52,19 +52,15 @@ namespace PaqueteTuristico.Controllers
         public async Task<ActionResult<string>> UpdateHotelContract([FromBody] Models.HotelContract contract)
         {
             var econtract = await _context.HotelContractSet.FindAsync(contract.Id);
+
             if (econtract == null)
             {
                 return BadRequest("Ese contrato no existe");
             }
-            else
-            {
-                _context.EContractSet.Update(contract);
-                await _context.SaveChangesAsync();
-                _context.HotelContractSet.Update(contract);
-                await _context.SaveChangesAsync();
+            _context.Entry(econtract).CurrentValues.SetValues(contract);
+            await _context.SaveChangesAsync();
 
-                return Ok("Contrato hotelero actualizado exitosamente");
-            }
+            return Ok("Contrato hotel actualizado exitosamente");
         }
 
         //DELETE
@@ -72,19 +68,16 @@ namespace PaqueteTuristico.Controllers
         public async Task<ActionResult<string>> DeleteHotelContract(int Id)
         {
             var econtract = await _context.HotelContractSet.FindAsync(Id);
-            if (econtract != null)
+
+            if (econtract == null)
             {
                 return BadRequest("Ese contrato no existe");
             }
-            else
-            {
-                _context.HotelContractSet.Remove(econtract);
-                await _context.SaveChangesAsync();
-                _context.EContractSet.Remove(econtract);
-                await _context.SaveChangesAsync();
 
-                return Ok("Contrato hotelero eliminado exitosamente");
-            }
+            _context.HotelContractSet.Remove(econtract);
+            await _context.SaveChangesAsync();
+
+            return Ok("Contrato de transporte eliminado exitosamente");
         }
     }
 }

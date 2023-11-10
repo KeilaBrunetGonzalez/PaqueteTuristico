@@ -32,6 +32,18 @@ namespace PaqueteTuristico.Controllers
 
             return NotFound();
         }
+
+        [HttpGet("/hotels/rooms/Hotel_ID")]
+        public async Task<ActionResult<List<Models.Meal>>> GetMealsByHotelCode(int hotelCode)
+        {
+            var list = await _context.MealSet
+            .Where(H => H.Id == hotelCode)
+            .ToListAsync();
+
+            return Ok(list);
+
+        }
+
         //POST
         [HttpPost("/hotels/Hotel_ID/meals/MEAL_ID")]
         public async Task<ActionResult<Meal>> PostMeal([FromBody] Meal meal)

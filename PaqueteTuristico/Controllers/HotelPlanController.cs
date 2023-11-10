@@ -38,13 +38,13 @@ namespace PaqueteTuristico.Controllers
             }
             return current;
         }
-            
- 
+
+
 
         // PUT api/<HotelPlanController>/5
         [HttpPut("/HotelPlan/Hotelplan_id")]
-    public async Task<ActionResult<HotelPlan>> Put(int hotelid, int seasonid)
-    {
+        public async Task<ActionResult<HotelPlan>> Put(int hotelid, int seasonid)
+        {
             var temp = await context.HotelSet.FirstAsync(s => s.Id == hotelid);
             var temp1 = await context.SeasonSet.FirstAsync(s => s.SeasonId == seasonid);
 
@@ -53,33 +53,33 @@ namespace PaqueteTuristico.Controllers
                 return BadRequest();
             }
             var current = new HotelPlan
-        {
-            SeasonId = seasonid,
-            HotelId = hotelid,
-        };
-        try
-        {
-            await context.HotelPlanSet.AddAsync(current);
-            await context.SaveChangesAsync();
+            {
+                SeasonId = seasonid,
+                HotelId = hotelid,
+            };
+            try
+            {
+                await context.HotelPlanSet.AddAsync(current);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return Ok();
         }
-        catch (Exception ex)
-        {
-            ex.ToString();
-        }
-        return Ok();
-    }
 
-    // DELETE api/<HotelPlanController>/5
+        // DELETE api/<HotelPlanController>/5
 
-    [HttpDelete("/HotelPlan/Hotelplan_id")]
+        [HttpDelete("/HotelPlan/Hotelplan_id")]
         public async Task<IActionResult> Delete(int Hotelid, int Seasonid)
         {
             var current = await context.HotelPlanSet.FirstAsync(s => s.HotelId == Hotelid && s.SeasonId == Seasonid);
-            
+
             try
             {
                 context.HotelPlanSet.Remove(current);
-                
+
                 await context.SaveChangesAsync();
             }
             catch (ArgumentNullException ex)

@@ -36,7 +36,7 @@ namespace PaqueteTuristico.Controllers
                 return NotFound();
             }
             return Ok(temp);
-            
+
         }
 
         // POST api/<TransportController>
@@ -50,15 +50,16 @@ namespace PaqueteTuristico.Controllers
 
         // PUT api/<TransportController>/5
         [HttpPut]
-        public async Task<ActionResult<string>> Put( [FromBody] Transport transport)
+        public async Task<ActionResult<string>> Put([FromBody] Transport transport)
         {
-            var temp = await context.TransportSet.FirstOrDefaultAsync(t => t.ModalityId == transport.ModalityId && t.VehicleId == transport.VehicleId );
+            var temp = await context.TransportSet.FirstOrDefaultAsync(t => t.ModalityId == transport.ModalityId && t.VehicleId == transport.VehicleId);
             if (temp == null)
             {
                 return NotFound();
             }
-            else{
-                if(temp.Transport_Cost != transport.Transport_Cost)
+            else
+            {
+                if (temp.Transport_Cost != transport.Transport_Cost)
                     temp.Transport_Cost = transport.Transport_Cost;
             }
             context.TransportSet.Update(temp);
@@ -75,7 +76,8 @@ namespace PaqueteTuristico.Controllers
                 var temp = context.TransportSet.FirstOrDefault(t => t.ModalityId == modalityid && t.VehicleId == vehicleid);
                 context.TransportSet.Remove(temp);
                 await context.SaveChangesAsync();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 ex.ToString();
             }

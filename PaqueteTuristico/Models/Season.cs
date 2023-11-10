@@ -6,7 +6,8 @@ namespace PaqueteTuristico.Models
     [Table("Season")]
     public class Season
     {
-        public Season() { 
+        public Season()
+        {
             this.Plans = new HashSet<HotelPlan>();
         }
         [Key]
@@ -18,7 +19,7 @@ namespace PaqueteTuristico.Models
         [Required]
         [Column(TypeName = "date")]
         public DateTime StartDate { get; set; }
-      
+
         public ICollection<HotelPlan> Plans { get; set; }
     }
 }

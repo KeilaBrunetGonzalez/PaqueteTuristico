@@ -7,8 +7,9 @@ namespace PaqueteTuristico.Models
     [Table("vehicles")]
     public class Vehicle
     {
-        public Vehicle() { 
-        this.Transports = new HashSet<Transport>();
+        public Vehicle()
+        {
+            this.Transports = new HashSet<Transport>();
         }
         [Key]
         public int VehicleId { get; set; }

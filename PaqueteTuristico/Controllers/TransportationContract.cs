@@ -58,20 +58,16 @@ namespace PaqueteTuristico.Controllers
         public async Task<ActionResult<string>> UpdateTransportationContract([FromBody] Models.TransportationContract contract)
         {
             var econtract = await _context.TransportationContractSet.FindAsync(contract.Id);
+
             if (econtract == null)
             {
                 return BadRequest("Ese contrato no existe");
             }
-            else
-            {
-                _context.EContractSet.Update(contract);
-                await _context.SaveChangesAsync();
-                _context.TransportationContractSet.Update(contract);
-                await _context.SaveChangesAsync();
+            _context.Entry(econtract).CurrentValues.SetValues(contract);
+            await _context.SaveChangesAsync();
 
                 return Ok("Contrato de transporte actualizado exitosamente");
             }
-        }
 
         //DELETE
 
@@ -79,19 +75,16 @@ namespace PaqueteTuristico.Controllers
         public async Task<ActionResult<string>> DeleteTransportationContract(int Id)
         {
             var econtract = await _context.TransportationContractSet.FindAsync(Id);
-            if (econtract != null)
+
+            if (econtract == null)
             {
                 return BadRequest("Ese contrato no existe");
             }
-            else
-            {
+
                 _context.TransportationContractSet.Remove(econtract);
                 await _context.SaveChangesAsync();
-                _context.EContractSet.Remove(econtract);
-                await _context.SaveChangesAsync();
 
-                return Ok("Contrato de transporte actualizado exitosamente");
-            }
+            return Ok("Contrato de transporte eliminado exitosamente");
         }
 
     }

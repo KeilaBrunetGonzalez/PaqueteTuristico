@@ -35,6 +35,15 @@ namespace PaqueteTuristico.Controllers
                 return NotFound();
         }
 
+        [HttpGet("/hotels")]
+
+        public async Task<ActionResult<List<Models.Hotel>>> GetHotelsByHotelId()
+        {
+            var list = await _context.HotelSet.ToListAsync();
+
+            return Ok(list);
+        }
+
 
         // POST api/<ValuesController>/5
         [HttpPost("/hotels/Hotel_ID")]

@@ -19,7 +19,7 @@ namespace PaqueteTuristico.Controllers
         }
 
         //GET
-        [HttpGet("/hotels/Hotel_ID/rooms/ROOM_ID")]
+        [HttpGet("/hotels/rooms/ROOM_ID")]
         public async Task<ActionResult<Room>> GetRoomAsync(int RoomId)
         {
             var r = await _context.RoomSet.FindAsync(RoomId);
@@ -32,9 +32,21 @@ namespace PaqueteTuristico.Controllers
             return NotFound();
         }
 
+        [HttpGet("/hotels/rooms/HOTEl_ID")]
+        public async Task<ActionResult<List<Models.Room>>> GetRoomsByHotelId(int hotelCode)
+        {
+            var list = await _context.RoomSet
+            .Where(H => H.Id == hotelCode)
+            .ToListAsync();
+
+            return Ok(list);
+
+        }
+
+
         //POST
 
-        [HttpPost("/hotels/Hotel_ID/rooms/ROOM_ID")]
+        [HttpPost("/hotels/rooms/")]
         public async Task<ActionResult<string>> PostRoom([FromBody] Room room)
         {
             var roomExists = await _context.RoomSet.AnyAsync(r => r.Id == room.Id && r.HotelId == room.HotelId);
