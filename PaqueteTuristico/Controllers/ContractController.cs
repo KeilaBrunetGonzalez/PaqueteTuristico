@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
+using PaqueteTuristico.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,18 +12,18 @@ namespace PaqueteTuristico.Controllers
     [ApiController]
     public class ContractController : ControllerBase
     {
-        private readonly conocubaContext _context;
+        private readonly ContractServices _services;
 
-        public ContractController(conocubaContext context)
+        public ContractController(ContractServices services)
         {
-            this._context = context;
+            this._services = services;
         }
 
         // GET
-        [HttpGet("/contracts/{ContactID}")]
+        [HttpGet("/contracts/ContactID")]
         public async Task<ActionResult<EContract>> GetContract(int id)
         {
-            var contract = await _context.EContractSet.FirstAsync(c => c.Id == id);
+            var contract = await _services.GetContractAsync(id);
 
             if (contract != null)
             {

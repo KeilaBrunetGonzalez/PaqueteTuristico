@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
+using PaqueteTuristico.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,75 +13,70 @@ namespace PaqueteTuristico.Controllers
     [ApiController]
     public class MealController : ControllerBase
     {
-        private readonly conocubaContext _context;
+        private readonly MealServices _services;
 
-        public MealController(conocubaContext context)
+        public MealController(MealServices _services)
         {
-            this._context = context;
+            this._services = _services;
         }
 
         //GET
-
-        [HttpGet("/hotels/Hotel_ID/meals/MEAL_ID")]
-        public async Task<ActionResult<Meal>> GetMealAsync(int MealId)
+        [HttpGet("/hotels/meals/MEAL_ID")]
+        public async Task<ActionResult<Meal>> GetMeal(int mealCode)
         {
-            var m = await _context.MealSet.FindAsync(MealId);
+            var meal = await _services.GetMealAsync(mealCode);
 
-            if (m != null)
+            if (meal != null)
             {
-                return Ok(m);
+                return Ok(meal);
             }
 
             return NotFound();
         }
 
-        [HttpGet("/hotels/rooms/Hotel_ID")]
-        public async Task<ActionResult<List<Models.Meal>>> GetMealsByHotelCode(int hotelCode)
+        [HttpGet("/hotels/meals/HOTEl_ID")]
+        public async Task<ActionResult<List<Models.Meal>>> GetMealsByHotelId(int hotelCode)
         {
-            var list = await _context.MealSet
-            .Where(H => H.Id == hotelCode)
-            .ToListAsync();
-
+            var list = await _services.GetMealsAsync(hotelCode);
+            if (list.IsNullOrEmpty())
+            {
+                return NotFound();
+            }
             return Ok(list);
 
         }
 
-        //POST
-        [HttpPost("/hotels/Hotel_ID/meals/MEAL_ID")]
-        public async Task<ActionResult<Meal>> PostMeal([FromBody] Meal meal)
-        {
-            var mealExists = await _context.MealSet.AnyAsync(M => M.Id == meal.Id && M.HotelId == meal.HotelId);
 
-            if (mealExists)
+        //POST
+
+        [HttpPost("/hotels/meals")]
+        public async Task<ActionResult<string>> PostMeal([FromBody] Meal meal)
+        {
+            var option = await _services.InsertMealAsync(meal);
+
+            if (option == 1)
             {
                 return BadRequest("Meal with the specified Id already exists in the hotel");
             }
 
-            var hotel = await _context.HotelSet.FindAsync(meal.HotelId);
-
-            if (hotel == null)
+            if (option == 2)
             {
                 return NotFound("Hotel not found");
             }
 
-            hotel.Meals.Add(meal);
-            await _context.MealSet.AddAsync(meal);
-            await _context.SaveChangesAsync();
-
             return Ok("Hotel Meal created");
         }
 
+
         //PUT
         [HttpPut("/hotels/Hotel_ID/meals/MEAL_ID")]
-        public async Task<IActionResult> PutMeal([FromBody] Meal meal)
+        public async Task<ActionResult<string>> PutMeal([FromBody] Meal meal)
         {
-            var mealExists = await _context.MealSet.FirstAsync(M => M.Id == meal.Id && M.HotelId == meal.HotelId);
 
-            if (mealExists != null)
+            var updated = await _services.UpdateMealAsync(meal);
+
+            if (updated)
             {
-                _context.Entry(mealExists).CurrentValues.SetValues(meal);
-                await _context.SaveChangesAsync();
-
                 return Ok("Hotel Meal updated");
             }
 
@@ -87,22 +84,17 @@ namespace PaqueteTuristico.Controllers
         }
 
         //DELETE
-
         [HttpDelete("/hotels/Hotel_ID/meals/MEAL_ID")]
-        public async Task<ActionResult<Meal>> DeleteMeal(int MealId, int HotelId)
+        public async Task<ActionResult<string>> DeleteMeal(int mealCode)
         {
 
-           var m = await _context.MealSet.FirstAsync(M => M.Id == MealId && M.HotelId == HotelId);
-
-           if (m != null)
-           {
-                _context.MealSet.Remove(m);
-                await _context.SaveChangesAsync();
+            var removed = await _services.DeleteMealAsync(mealCode);
+            if (removed)
+            {
                 return Ok("Hotel Meal removed");
             }
 
             return NotFound("Hotel Meal not found");
-
         }
 
     }
