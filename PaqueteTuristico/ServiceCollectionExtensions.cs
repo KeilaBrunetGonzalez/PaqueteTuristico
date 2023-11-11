@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using PaqueteTuristico.Service;
-using PaqueteTuristico.Services;
+﻿using PaqueteTuristico.Services;
 
 namespace PaqueteTuristico
 {

@@ -60,10 +60,7 @@ namespace PaqueteTuristico.Services
                 {
                     current.Day = dayli.Day;
                 }
-                if (current.Hour != dayli.Hour)
-                {
-                    current.Hour = dayli.Hour;
-                }
+              
                 context.DayliActivitieSet.Update(current);
                 await context.SaveChangesAsync();
             }

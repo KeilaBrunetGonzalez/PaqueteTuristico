@@ -52,7 +52,7 @@ namespace PaqueteTuristico.Services
             return await context.HotelPlanSet.ToListAsync();
 
         }
-        public async Task<HotelPlan> GetVehicleById(int HotelId, int seasonId)
+        public async Task<HotelPlan> GetHotelPlanById(int HotelId, int seasonId)
         {
             var temp = await context.HotelPlanSet.FirstAsync(s => s.HotelId == HotelId && s.SeasonId == seasonId);
             return temp;

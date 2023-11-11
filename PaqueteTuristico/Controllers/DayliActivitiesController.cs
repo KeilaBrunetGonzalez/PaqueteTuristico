@@ -26,14 +26,18 @@ namespace PaqueteTuristico.Controllers
         [HttpGet]
         public  async Task<ActionResult<IEnumerable<DayliActivities>>> Get()
         {
-            return await context.DayliActivitieSet.ToListAsync();
+            return await _services.GetAll();
         }
 
         // GET api/<DayliActivitiesControler>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DayliActivities>> Get(int id)
         {
-            var temp = await context.DayliActivitieSet.FirstAsync(d =>d.ActivityId == id);
+            var temp = await _services.GetDayliActivitieById(id);
+            if (temp == null)
+            {
+                return BadRequest();
+            }
             return Ok(temp);
         }
 
@@ -41,7 +45,12 @@ namespace PaqueteTuristico.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> Post([FromBody] DayliActivities dayli)
         {
-             await _services.CreateDayliActivitie(dayli);
+             var temp = await _services.CreateDayliActivitie(dayli);
+            if (!temp)
+            {
+                return BadRequest();
+            }
+
             return Ok("Activity inserted");
         }
 
@@ -49,34 +58,15 @@ namespace PaqueteTuristico.Controllers
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] DayliActivities dayli)
         {
-            var current = await context.DayliActivitieSet.FirstAsync(s => s.ActivityId == dayli.ActivityId);
+            var current = await _services.UpdateDayliActivities(dayli);
 
-            if (current == null)
+            if (!current)
             {
                 return NotFound();
             }
-            else
-            {
-                if (current.Price != dayli.Price)
-                {
-                    current.Price = dayli.Price;
-                }
-                if(current.Description != dayli.Description)
-                {
-                    current.Description = dayli.Description;
-                }
-                if(current.Day != dayli.Day)
-                {
-                    current.Day = dayli.Day;
-                }
-                if(current.Hour != dayli.Hour)
-                {
-                    current.Hour = dayli.Hour;
-                }
-                context.DayliActivitieSet.Update(current);
-                await context.SaveChangesAsync();
-            }
-            return Ok();
+            
+                
+            return Ok("Dayli Activitie Updated");
         }
 
         // DELETE api/<DayliActivitiesControler>/5
@@ -84,9 +74,11 @@ namespace PaqueteTuristico.Controllers
         public async Task<ActionResult<string>> Delete(int id)
         {
             try { 
-            var temp =  await context.DayliActivitieSet.FirstAsync(d =>d.ActivityId == id);
-            context.DayliActivitieSet.Remove(temp);
-            await context.SaveChangesAsync();
+            var temp =  await _services.DeletedayliActivities(id);
+                if (!temp)
+                {
+                    return BadRequest();
+                }
             }catch (Exception ex)
             {
                 ex.ToString();

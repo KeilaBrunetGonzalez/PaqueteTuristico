@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
+using PaqueteTuristico.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,10 +13,12 @@ namespace PaqueteTuristico.Controllers
     public class MilageCostController : ControllerBase
     {
         private readonly conocubaContext _context;
+        private readonly Mileage_CostServices _mileageCostServices;
 
-        public MilageCostController(conocubaContext context)
+        public MilageCostController(conocubaContext context, Mileage_CostServices _mileageCostServices)
         {
             this._context = context;
+            this._mileageCostServices = _mileageCostServices;
         }
 
         // GET
@@ -24,7 +27,7 @@ namespace PaqueteTuristico.Controllers
 
         public async Task<ActionResult<List<Models.MileageCost>>> GetMileageCost()
         {
-            var list = await _context.Mileage_CostsSet.ToListAsync();
+            var list = await _mileageCostServices.GetMileageCosts();
 
             return Ok(list);
         }
@@ -33,15 +36,11 @@ namespace PaqueteTuristico.Controllers
         [HttpPost("/modality/milage_cost")]
         public async Task<ActionResult<String>> PostMilageCost([FromBody] MileageCost modality)
         {
-            var mod = await _context.Mileage_CostsSet.FindAsync(modality.ModalityId);
-            if (mod != null)
+            var mod = await _mileageCostServices.CreateMileage_Cost(modality);
+            if (!mod)
             {
                 return NotFound("Milage cost not found");
             }
-
-            await _context.ModalitySet.AddAsync(modality);
-            await _context.Mileage_CostsSet.AddAsync(modality);
-            await _context.SaveChangesAsync();
             return Ok("Milage cost inserted");
         }
 
@@ -49,11 +48,9 @@ namespace PaqueteTuristico.Controllers
         [HttpPut("/modality/milage_cost")]
         public async Task<ActionResult<String>> PutMilageCost([FromBody] MileageCost modality)
         {
-            var mod = await _context.Mileage_CostsSet.FindAsync(modality.ModalityId);
-            if (mod != null)
+            var mod = await _mileageCostServices.UpdateMileage_Cost(modality);
+            if (mod)
             {
-                _context.Entry(mod).CurrentValues.SetValues(modality);
-                await _context.SaveChangesAsync();
                 return Ok("Milage cost updated");
             }
             return NotFound("Milage cost not found");
@@ -63,16 +60,12 @@ namespace PaqueteTuristico.Controllers
         [HttpDelete("/modality/milage_cost_id")]
         public async Task<ActionResult<string>> DeleteMilageCost(int Id)
         {
-            var mod = await _context.Mileage_CostsSet.FindAsync(Id);
+            var mod = await _mileageCostServices.DeleteMileage_Cost(Id);
 
-            if (mod == null)
+            if (!mod)
             {
                 return BadRequest("Milage cost not found");
             }
-
-            _context.Mileage_CostsSet.Remove(mod);
-            await _context.SaveChangesAsync();
-
             return Ok("Milage cost not removed");
         }
 

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PaqueteTuristico.Models
 {
@@ -19,7 +20,7 @@ namespace PaqueteTuristico.Models
         [Required]
         [Column(TypeName = "date")]
         public DateTime StartDate { get; set; }
-
+        [JsonIgnore]
         public ICollection<HotelPlan> Plans { get; set; }
     }
 }

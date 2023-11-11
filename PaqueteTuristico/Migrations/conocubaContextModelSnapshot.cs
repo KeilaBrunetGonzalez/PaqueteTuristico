@@ -38,9 +38,6 @@ namespace PaqueteTuristico.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar");
 
-                    b.Property<TimeOnly>("Hour")
-                        .HasColumnType("time");
-
                     b.Property<float>("Price")
                         .HasColumnType("real");
 

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
+using PaqueteTuristico.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,10 +13,12 @@ namespace PaqueteTuristico.Controllers
     public class CostPerTourController : ControllerBase
     {
         private readonly conocubaContext _context;
+        private readonly Cost_per_tourServices _services;
 
-        public CostPerTourController(conocubaContext context)
+        public CostPerTourController(conocubaContext context, Cost_per_tourServices _services)
         {
             this._context = context;
+            this._services = _services;
         }
 
         // GET
@@ -24,7 +27,7 @@ namespace PaqueteTuristico.Controllers
 
         public async Task<ActionResult<List<Models.CostPerTour>>> GetCostPerTour()
         {
-            var list = await _context.Cost_Per_ToursSet.ToListAsync();
+            var list = await _services.GetPerTours();
 
             return Ok(list);
         }
@@ -33,15 +36,11 @@ namespace PaqueteTuristico.Controllers
         [HttpPost("/modality/cos_per_tour")]
         public async Task<ActionResult<String>> PostCostPerTour([FromBody] CostPerTour modality)
         {
-            var mod = await _context.Cost_Per_ToursSet.FindAsync(modality.ModalityId);
-            if (mod != null)
+            var mod = await _services.CreateCostperTour(modality);
+            if (!mod)
             {
                 return NotFound("Cost per tour not found");
             }
-
-            await _context.ModalitySet.AddAsync(modality);
-            await _context.Cost_Per_ToursSet.AddAsync(modality);
-            await _context.SaveChangesAsync();
             return Ok("Cost per tour inserted");
         }
 
@@ -49,11 +48,9 @@ namespace PaqueteTuristico.Controllers
         [HttpPut("/modality/cos_per_tour")]
         public async Task<ActionResult<String>> PutCostPerTour([FromBody] CostPerTour modality)
         {
-            var mod = await _context.Cost_Per_ToursSet.FindAsync(modality.ModalityId);
-            if (mod != null)
+            var mod = await _services.UpdateCostPerTour(modality);
+            if (mod)
             {
-                _context.Entry(mod).CurrentValues.SetValues(modality);
-                await _context.SaveChangesAsync();
                 return Ok("Cost Per Tour updated");
             }
             return NotFound("Cost Per Tour not found");
@@ -63,16 +60,12 @@ namespace PaqueteTuristico.Controllers
         [HttpDelete("/modality/cos_per_tour_id")]
         public async Task<ActionResult<string>> DeleteCostPerTour(int Id)
         {
-            var mod = await _context.Cost_Per_ToursSet.FindAsync(Id);
+            var mod = await _services.DeleteCostPerTour(Id);
 
-            if (mod == null)
+            if (!mod)
             {
                 return BadRequest("Cost Per Tour not found");
             }
-
-            _context.Cost_Per_ToursSet.Remove(mod);
-            await _context.SaveChangesAsync();
-
             return Ok("Cost Per Tour not removed");
         }
 

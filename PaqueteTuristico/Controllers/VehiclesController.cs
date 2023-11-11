@@ -46,7 +46,9 @@ namespace PaqueteTuristico.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> Post([FromBody] Vehicle vehicle)
         {
-             await _vehicleServices.CreateVehicle(vehicle);
+             var temp = await _vehicleServices.CreateVehicle(vehicle);
+            if(!temp)
+               return BadRequest();
             return Ok("Vehicle Inserted");
         }
 
@@ -54,53 +56,23 @@ namespace PaqueteTuristico.Controllers
         [HttpPut]
         public  async Task<ActionResult<string>> Put([FromBody] Vehicle vehicle)
         {
-            var temp =  await context.VehicleSet.FirstOrDefaultAsync(v => v.VehicleId == vehicle.VehicleId);
-            if (temp == null)
+            var temp =  await _vehicleServices.UpdateVehicle(vehicle);
+            if (temp)
             {
-                return NotFound();
+                return Ok("Vehicle Updated");
             }
-            else { 
-               if (temp.Capacity_Without_Equipement != vehicle.Capacity_Without_Equipement)
-                {
-                    temp.Capacity_Without_Equipement = vehicle.Capacity_Without_Equipement;
-                }
-               if(temp.Capacity_With_Equipement != vehicle.Capacity_With_Equipement)
-                {
-                    temp.Capacity_With_Equipement = vehicle.Capacity_With_Equipement;
-                }
-               if(temp.Manufacturing_Mode != vehicle.Manufacturing_Mode)
-                {
-                    temp.Manufacturing_Mode = vehicle.Manufacturing_Mode;
-                }
-               if(temp.Total_Capacity != vehicle.Total_Capacity)
-                {
-                    temp.Total_Capacity = vehicle.Total_Capacity;
-                }
-               if(temp.License_Plate_Number != vehicle.License_Plate_Number)
-                {
-                    temp.License_Plate_Number = vehicle.License_Plate_Number;
-                }
-               if(temp.Year_of_Manufacture != vehicle.Year_of_Manufacture)
-                {
-                    temp.Year_of_Manufacture = vehicle.Year_of_Manufacture;
-                }
-            }
-            context.VehicleSet.Update(temp);
-            await context.SaveChangesAsync();
-            return Ok("Vehicle Updated");
+            return NotFound();
         }
 
         // DELETE api/<Vehicles>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<string>> Delete(int id)
         {
-            try { 
-            var temp = await context.VehicleSet.FindAsync(id);
-            context.VehicleSet.Remove(temp);
-                await context.SaveChangesAsync();
-            }catch (Exception ex)
+            
+            var temp = await _vehicleServices.DeleteVehicle(id);
+            if (!temp)
             {
-                ex.ToString();
+                return BadRequest();
             }
             return Ok("Vehicle Deleted");
         }

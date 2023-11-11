@@ -17,7 +17,7 @@ namespace PaqueteTuristico.Services
         public  async Task<bool> CreateVehicle(Vehicle vehicle) 
         {
             var temp = await context.VehicleSet.FindAsync(vehicle.VehicleId);
-            if (temp != null) { 
+            if (temp == null) { 
                 await context.VehicleSet.AddAsync(vehicle);
                 await context.SaveChangesAsync();
                 return true;

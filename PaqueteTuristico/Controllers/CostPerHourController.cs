@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
+using PaqueteTuristico.Services;
 using System.Diagnostics.Contracts;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,10 +14,12 @@ namespace PaqueteTuristico.Controllers
     public class CostPerHourController : ControllerBase
     {
         private readonly conocubaContext _context;
+        private readonly Cost_per_hourServicescs _cost_per_hourServicescs;
 
-        public CostPerHourController(conocubaContext context)
+        public CostPerHourController(conocubaContext context, Cost_per_hourServicescs _cost_per_hourServicescs)
         {
             this._context = context;
+            this._cost_per_hourServicescs = _cost_per_hourServicescs;
         }
 
         // GET
@@ -25,7 +28,7 @@ namespace PaqueteTuristico.Controllers
 
         public async Task<ActionResult<List<Models.CostPerHour>>> GetCostPerHour()
         {
-            var list = await _context.Cost_Per_HoursSet.ToListAsync();
+            var list = await _cost_per_hourServicescs.GetCostPerHours();
 
             return Ok(list);
         }
@@ -34,15 +37,11 @@ namespace PaqueteTuristico.Controllers
         [HttpPost("/modality/cos_per_hour")]
         public async Task<ActionResult<String>> PostCostPerHour([FromBody] CostPerHour modality)
         {
-            var mod = await _context.HotelSet.FindAsync(modality.ModalityId);
-            if (mod != null)
+            var mod = await _cost_per_hourServicescs.CreateCostperhour(modality);
+            if (!mod)
             {
                 return NotFound("Cost per hour not found");
             }
-
-            await _context.ModalitySet.AddAsync(modality);
-            await _context.Cost_Per_HoursSet.AddAsync(modality);
-            await _context.SaveChangesAsync();
             return Ok("Cost per hour inserted");
         }
 
@@ -50,11 +49,9 @@ namespace PaqueteTuristico.Controllers
         [HttpPut("/modality/cos_per_hour")]
         public async Task<ActionResult<String>> PutCostPerHour([FromBody] CostPerHour modality)
         {
-            var mod = await _context.Cost_Per_HoursSet.FindAsync(modality.ModalityId);
-            if (mod != null)
+            var mod = await _cost_per_hourServicescs.UpdateCostPerHour(modality);
+            if (mod)
             {
-                _context.Entry(mod).CurrentValues.SetValues(modality);
-                await _context.SaveChangesAsync();
                 return Ok("Cost Per Hour updated");
             }
             return NotFound("Cost Per Hour not found");
@@ -64,16 +61,12 @@ namespace PaqueteTuristico.Controllers
         [HttpDelete("/modality/cos_per_hour_id")]
         public async Task<ActionResult<string>> DeleteCostPerHour(int Id)
         {
-            var mod = await _context.Cost_Per_HoursSet.FindAsync(Id);
+            var mod = await _cost_per_hourServicescs.DeleteCostPerHour(Id);
 
-            if (mod == null)
+            if (!mod)
             {
                 return BadRequest("Cost Per Hour not found");
             }
-
-            _context.Cost_Per_HoursSet.Remove(mod);
-            await _context.SaveChangesAsync();
-
             return Ok("Cost Per Hour not removed");
         }
 
