@@ -20,7 +20,7 @@ namespace PaqueteTuristico.Controllers
         }
 
         // GET
-        [HttpGet("/modalities/{modality_id}")]
+        [HttpGet("/modalities/modality_id")]
         public async Task<ActionResult<Modality>> GetModality(int id)
         {
             var modality = await _context.ModalitySet.FirstAsync(c => c.ModalityId == id);

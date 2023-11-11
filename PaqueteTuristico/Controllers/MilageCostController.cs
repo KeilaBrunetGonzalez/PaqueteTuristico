@@ -19,18 +19,6 @@ namespace PaqueteTuristico.Controllers
         }
 
         // GET
-        [HttpGet("/modality/milage_cost_id")]
-        public async Task<ActionResult<MileageCost>> GetMilageCost(int id)
-        {
-            var mod = await _context.Mileage_CostsSet.FirstAsync(C => C.ModalityId == id);
-
-            if (mod != null)
-            {
-                return Ok(mod);
-            }
-
-            return NotFound();
-        }
 
         [HttpGet("/modality/milage_cost")]
 

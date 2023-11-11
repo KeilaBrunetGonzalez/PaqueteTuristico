@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
+using PaqueteTuristico.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,22 +13,22 @@ namespace PaqueteTuristico.Controllers
     [ApiController]
     public class RoomController : ControllerBase
     {
-        private readonly conocubaContext _context;
+        private readonly RoomServices _services;
 
-        public RoomController(conocubaContext context)
+        public RoomController(RoomServices _services)
         {
-            this._context = context;
+            this._services = _services;
         }
 
         //GET
         [HttpGet("/hotels/rooms/ROOM_ID")]
-        public async Task<ActionResult<Room>> GetRoomAsync(int RoomId)
+        public async Task<ActionResult<Room>> GetRoom(int roomCode)
         {
-            var r = await _context.RoomSet.FindAsync(RoomId);
+            var room = await _services.GetRoomAsync(roomCode);
 
-            if (r != null)
+            if (room != null)
             {
-                return Ok(r);
+                return Ok(room);
             }
 
             return NotFound();
@@ -35,10 +37,11 @@ namespace PaqueteTuristico.Controllers
         [HttpGet("/hotels/rooms/HOTEl_ID")]
         public async Task<ActionResult<List<Models.Room>>> GetRoomsByHotelId(int hotelCode)
         {
-            var list = await _context.RoomSet
-            .Where(H => H.Id == hotelCode)
-            .ToListAsync();
-
+            var list = await _services.GetRoomsAsync(hotelCode);
+            if (list.IsNullOrEmpty())
+            {
+                return NotFound();
+            }
             return Ok(list);
 
         }
@@ -46,26 +49,20 @@ namespace PaqueteTuristico.Controllers
 
         //POST
 
-        [HttpPost("/hotels/rooms/")]
+        [HttpPost("/hotels/rooms")]
         public async Task<ActionResult<string>> PostRoom([FromBody] Room room)
         {
-            var roomExists = await _context.RoomSet.AnyAsync(r => r.Id == room.Id && r.HotelId == room.HotelId);
+            var option = await _services.InsertRoomAsync(room);
 
-            if (roomExists)
+            if (option == 1)
             {
                 return BadRequest("Room with the specified Id already exists in the hotel");
             }
 
-            var hotel = await _context.HotelSet.FindAsync(room.HotelId);
-
-            if (hotel == null)
+            if (option == 2)
             {
                 return NotFound("Hotel not found");
             }
-
-            hotel.Rooms.Add(room);
-            await _context.RoomSet.AddAsync(room);
-            await _context.SaveChangesAsync();
 
             return Ok("Hotel Room created");
         }
@@ -76,30 +73,26 @@ namespace PaqueteTuristico.Controllers
         public async Task<ActionResult<string>> PutRoom([FromBody] Room room)
         {
 
-            var roomExists = await _context.RoomSet.FirstAsync(R => R.Id == room.Id && R.HotelId == room.HotelId);
+            var updated = await _services.UpdateRoomAsync(room);
 
-            if (roomExists != null)
+            if (updated)
             {
-                _context.Entry(roomExists).CurrentValues.SetValues(room);
-                await _context.SaveChangesAsync();
-
                 return Ok("Hotel Room updated");
             }
 
             return NotFound("Hotel Room not found");
         }
+
         //DELETE
         [HttpDelete("/hotels/Hotel_ID/rooms/ROOM_ID")]
-        public async Task<ActionResult<string>> DeleteRoom(int RoomId, int HotelId)
+        public async Task<ActionResult<string>> DeleteRoom(int RoomId)
         {
 
-                var r = await _context.RoomSet.FirstAsync(R => R.Id == RoomId && R.HotelId == HotelId);
-                if (r != null)
-                {
-                    _context.RoomSet.Remove(r);
-                    await _context.SaveChangesAsync();
-                    return Ok("Hotel Room removed");
-                }
+            var removed = await _services.DeleteRoomAsync(RoomId);
+            if (removed)
+            {
+                return Ok("Hotel Room removed");
+            }
 
             return NotFound("Hotel Room not found");
         }

@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
+using PaqueteTuristico.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,73 +12,63 @@ namespace PaqueteTuristico.Controllers
     [ApiController]
     public class HotelContractController : ControllerBase
     {
-        private readonly conocubaContext _context;
-
-        public HotelContractController(conocubaContext context)
+        private readonly HotelContractServices _services;
+        public HotelContractController(HotelContractServices services)
         {
-            this._context = context;
+            this._services = services;
         }
 
         //GET
         [HttpGet("/contracts/HotelContract")]
-
-        public async Task<ActionResult<List<Models.HotelContract>>> GetHotelContract()
+        public async Task<ActionResult<List<HotelContract>>> GetHotelContract()
         {
-            var list = await _context.HotelContractSet.ToListAsync();
-
-            return Ok(list);
+            var contractList = await _services.GetHotelContractAsync();
+            if (contractList.IsNullOrEmpty())
+            {
+                return NotFound();
+            }
+            return Ok(contractList);
         }
 
         //POST
         [HttpPost("/contracts/HotelContract")]
-        public async Task<ActionResult<string>> CreateHotelContract([FromBody] Models.HotelContract contract)
+        public async Task<ActionResult<string>> CreateHotelContract([FromBody] HotelContract contract)
         {
-            var econtract = await _context.HotelContractSet.FindAsync(contract.Id);
-            if (econtract != null)
-            {
-                return BadRequest("Ese contrato ya existe");
-            }
-            else
-            {
-                await _context.EContractSet.AddAsync(contract);
-                await _context.HotelContractSet.AddAsync(contract);
-                await _context.SaveChangesAsync();
+            var insertContract = await _services.InsertHotelContractAsync(contract);
 
-                return Ok("Contrato hotelero introducido exitosamente");
+            if (insertContract)
+            {
+                return BadRequest("This contract exist");
             }
+
+            return Ok("Hotel contract inserted");
+
         }
 
         //PUT
         [HttpPut("/contracts/HotelContract")]
-        public async Task<ActionResult<string>> UpdateHotelContract([FromBody] Models.HotelContract contract)
+        public async Task<ActionResult<string>> UpdateHotelContract([FromBody] HotelContract cont)
         {
-            var econtract = await _context.HotelContractSet.FindAsync(contract.Id);
+            var upContract = await _services.UpdateHotelContractAsync(cont);
 
-            if (econtract == null)
+            if (upContract)
             {
-                return BadRequest("Ese contrato no existe");
+                return Ok("Hotel contract updated");
             }
-            _context.Entry(econtract).CurrentValues.SetValues(contract);
-            await _context.SaveChangesAsync();
-
-            return Ok("Contrato hotel actualizado exitosamente");
+            return NotFound("Hotel contract not found");
         }
 
         //DELETE
         [HttpDelete("/contracts/HotelContract")]
         public async Task<ActionResult<string>> DeleteHotelContract(int Id)
         {
-            var econtract = await _context.HotelContractSet.FindAsync(Id);
+            var removedContract = await _services.DeleteHotelContractAsync(Id);
 
-            if (econtract == null)
+            if (removedContract)
             {
-                return BadRequest("Ese contrato no existe");
+                return Ok("Hotel contract removed");
             }
-
-            _context.HotelContractSet.Remove(econtract);
-            await _context.SaveChangesAsync();
-
-            return Ok("Contrato de transporte eliminado exitosamente");
+            return NotFound("Hotel contract not found");
         }
     }
 }

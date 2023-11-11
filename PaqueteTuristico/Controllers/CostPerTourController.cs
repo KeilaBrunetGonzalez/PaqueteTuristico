@@ -19,18 +19,6 @@ namespace PaqueteTuristico.Controllers
         }
 
         // GET
-        [HttpGet("/modality/cos_per_tour_id")]
-        public async Task<ActionResult<CostPerTour>> GetCostPerTour(int id)
-        {
-            var mod = await _context.Cost_Per_ToursSet.FirstAsync(C => C.ModalityId == id);
-
-            if (mod != null)
-            {
-                return Ok(mod);
-            }
-
-            return NotFound();
-        }
 
         [HttpGet("/modality/cos_per_tour")]
 
