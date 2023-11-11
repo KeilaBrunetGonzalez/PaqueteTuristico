@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PaqueteTuristico.Service;
-
+using PaqueteTuristico.Services;
 
 namespace PaqueteTuristico
 {
@@ -9,7 +9,14 @@ namespace PaqueteTuristico
         public static IServiceCollection AddCustomServices(this IServiceCollection services)
         {
             services.AddScoped<HotelServices, HotelServices>();
-
+            services.AddScoped<HotelPlanServices, HotelPlanServices>();
+            services.AddScoped<DayliActivityServices, DayliActivityServices>();
+            services.AddScoped<VehicleServices, VehicleServices>();
+            services.AddScoped<ModalityServices, ModalityServices>();
+            services.AddScoped<Mileage_CostServices, Mileage_CostServices>();
+            services.AddScoped<Cost_per_hourServicescs, Cost_per_hourServicescs>();
+            services.AddScoped<Cost_per_tourServices, Cost_per_tourServices>();
+            services.AddScoped<TransportServices, TransportServices>();
             return services;
         }
     }

@@ -24,17 +24,17 @@ namespace PaqueteTuristico.Controllers
 
         // GET: api/<Vehicles>
         [HttpGet]
-        public  async Task<ActionResult<IEnumerable<Vehicle>>> Get()
+        public  async Task<ActionResult<List<Vehicle>>> Get()
         {
 
-            return  await context.VehicleSet.ToListAsync();
+            return await _vehicleServices.GetAll();
         }
 
         // GET api/<Vehicles>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Vehicle>> Get(int id)
         {
-            var temp = await context.VehicleSet.FirstAsync(n => n.VehicleId == id);
+            var temp = await _vehicleServices.GetVehicleById(id);
             if (temp == null)
             {
                 return NotFound();
@@ -46,7 +46,7 @@ namespace PaqueteTuristico.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> Post([FromBody] Vehicle vehicle)
         {
-            _vehicleServices.CreateVehicle(vehicle);
+             await _vehicleServices.CreateVehicle(vehicle);
             return Ok("Vehicle Inserted");
         }
 

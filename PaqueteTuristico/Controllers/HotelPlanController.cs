@@ -43,23 +43,18 @@ namespace PaqueteTuristico.Controllers
 
         // PUT api/<HotelPlanController>/5
         [HttpPut("/HotelPlan/Hotelplan_id")]
-        public async Task<ActionResult<HotelPlan>> Put(int hotelid, int seasonid)
+        public async Task<ActionResult<HotelPlan>> Put(HotelPlan hotel)
         {
-            var temp = await context.HotelSet.FirstAsync(s => s.Id == hotelid);
-            var temp1 = await context.SeasonSet.FirstAsync(s => s.SeasonId == seasonid);
+            var temp = await context.HotelPlanSet.FirstAsync(s => s.HotelId == hotel.HotelId &&  s.SeasonId == hotel.SeasonId);
+            
 
-            if (temp == null || temp1 == null)
+            if (temp == null)
             {
                 return BadRequest();
             }
-            var current = new HotelPlan
-            {
-                SeasonId = seasonid,
-                HotelId = hotelid,
-            };
             try
             {
-                await context.HotelPlanSet.AddAsync(current);
+                await context.HotelPlanSet.AddAsync(hotel);
                 await context.SaveChangesAsync();
             }
             catch (Exception ex)

@@ -60,7 +60,7 @@ namespace PaqueteTuristico.Controllers
 
         // PUT 
         [HttpPut("/modality/cos_per_hour")]
-        public async Task<ActionResult<String>> PtCostPerHour([FromBody] CostPerHour modality)
+        public async Task<ActionResult<String>> PutCostPerHour([FromBody] CostPerHour modality)
         {
             var mod = await _context.Cost_Per_HoursSet.FindAsync(modality.ModalityId);
             if (mod != null)

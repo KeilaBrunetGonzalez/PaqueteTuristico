@@ -41,7 +41,7 @@ namespace PaqueteTuristico.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> Post([FromBody] DayliActivities dayli)
         {
-            _services.CreateDayliActivitie(dayli);
+             await _services.CreateDayliActivitie(dayli);
             return Ok("Activity inserted");
         }
 

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
+using System.Security.Cryptography.Xml;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,9 +29,9 @@ namespace PaqueteTuristico.Controllers
 
         // GET api/<TransportController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Transport>> Get(int id)
+        public async Task<ActionResult<Transport>> Get(int vehicleid , int modalityid)
         {
-            var temp = await context.TransportSet.FirstOrDefaultAsync();
+            var temp = await context.TransportSet.FirstAsync(t => t.ModalityId == modalityid && t.VehicleId == vehicleid);
             if (temp != null)
             {
                 return NotFound();
