@@ -20,18 +20,6 @@ namespace PaqueteTuristico.Controllers
         }
 
         // GET
-        [HttpGet("/modality/cos_per_hour_id")]
-        public async Task<ActionResult<CostPerHour>> GetCostPerHour(int id)
-        {
-            var mod = await _context.Cost_Per_HoursSet.FirstAsync(C => C.ModalityId == id);
-
-            if (mod != null)
-            {
-                return Ok(mod);
-            }
-
-            return NotFound();
-        }
 
         [HttpGet("/modality/cos_per_hour")]
 
