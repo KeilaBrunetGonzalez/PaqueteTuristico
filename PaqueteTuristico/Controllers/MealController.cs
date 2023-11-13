@@ -69,7 +69,7 @@ namespace PaqueteTuristico.Controllers
 
 
         //PUT
-        [HttpPut("/hotels/Hotel_ID/meals/MEAL_ID")]
+        [HttpPut("/hotels/meals/MEAL_ID")]
         public async Task<ActionResult<string>> PutMeal([FromBody] Meal meal)
         {
 
@@ -84,7 +84,7 @@ namespace PaqueteTuristico.Controllers
         }
 
         //DELETE
-        [HttpDelete("/hotels/Hotel_ID/meals/MEAL_ID")]
+        [HttpDelete("/hotels/meals/MEAL_ID")]
         public async Task<ActionResult<string>> DeleteMeal(int mealCode)
         {
 
