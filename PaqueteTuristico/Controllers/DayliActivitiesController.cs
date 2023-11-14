@@ -14,11 +14,11 @@ namespace PaqueteTuristico.Controllers
     {
         private readonly DayliActivityServices _services;
         private readonly ILogger<HotelController> logger;
-        private readonly conocubaContext context;
+        
         public DayliActivitiesController(ILogger<HotelController> logger, conocubaContext context , DayliActivityServices _services)
         {
             this.logger = logger;
-            this.context = context;
+            
             this._services = _services;
         }
 

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace PaqueteTuristico.Models
 {
@@ -14,7 +15,9 @@ namespace PaqueteTuristico.Models
         public int VehicleId { get; set; }
         [Required] 
         public float Transport_Cost { get; set; }
+        [JsonIgnore]
         public Vehicle Vehicle { get; set; }
+        [JsonIgnore]
         public Modality Modality { get; set; }
 
     }

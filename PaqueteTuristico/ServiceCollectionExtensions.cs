@@ -15,6 +15,8 @@ namespace PaqueteTuristico
             services.AddScoped<Cost_per_hourServicescs, Cost_per_hourServicescs>();
             services.AddScoped<Cost_per_tourServices, Cost_per_tourServices>();
             services.AddScoped<TransportServices, TransportServices>();
+            services.AddScoped<SeasonServices, SeasonServices>();
+
             return services;
         }
     }

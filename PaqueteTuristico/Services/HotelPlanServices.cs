@@ -11,15 +11,21 @@ namespace PaqueteTuristico.Services
         }
         public async Task<bool> CreateHotelPlan( HotelPlan hotel)
         {
-            var temp = await context.HotelPlanSet.FirstAsync(s => s.HotelId == hotel.HotelId && s.SeasonId == hotel.SeasonId);
+            var temp = await context.HotelPlanSet.FirstOrDefaultAsync(s => s.HotelId == hotel.HotelId && s.SeasonId == hotel.SeasonId);
 
 
-            if (temp == null)
+            if (temp != null)
             {
                 return false;
             }
             try
             {
+                var hoteltemp = await context.HotelSet.FirstAsync(s => s.Id == hotel.HotelId);
+                var seasontemp = await context.SeasonSet.FirstAsync(s => s.SeasonId == hotel.SeasonId);
+                hotel.Hotel = hoteltemp;
+                hotel.Season = seasontemp;
+                hoteltemp.Plans.Add(hotel);
+                seasontemp.Plans.Add(hotel);
                 await context.HotelPlanSet.AddAsync(hotel);
                 await context.SaveChangesAsync();
             }

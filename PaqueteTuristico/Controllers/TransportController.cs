@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
+using PaqueteTuristico.Dtos;
 using PaqueteTuristico.Models;
+using PaqueteTuristico.Services;
 using System.Security.Cryptography.Xml;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,77 +14,76 @@ namespace PaqueteTuristico.Controllers
     [ApiController]
     public class TransportController : ControllerBase
     {
-        private readonly ILogger<HotelController> logger;
-        private readonly conocubaContext context;
-        public TransportController(ILogger<HotelController> logger, conocubaContext context)
+        private readonly TransportServices services;
+        
+        public TransportController(TransportServices services)
         {
-            this.logger = logger;
-            this.context = context;
+            this.services = services;
+            
         }
         // GET: api/<TransportController>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Transport>>> Get()
         {
-            return await context.TransportSet.ToListAsync();
+            return await services.GetAll();
 
         }
 
         // GET api/<TransportController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Transport>> Get(int vehicleid , int modalityid)
-        {
-            var temp = await context.TransportSet.FirstAsync(t => t.ModalityId == modalityid && t.VehicleId == vehicleid);
-            if (temp != null)
-            {
-                return NotFound();
-            }
-            return Ok(temp);
+        {  
+            return await services.GetTransportById(vehicleid, modalityid);  
 
         }
 
         // POST api/<TransportController>
         [HttpPost]
-        public async Task<ActionResult<string>> Post([FromBody] Transport transport)
+        public async Task<ActionResult<string>> Post([FromBody] TransportDTO transport)
         {
-            await context.TransportSet.AddAsync(transport);
-            await context.SaveChangesAsync();
-            return Ok("Transport Inserted");
+            Transport transport1 = new Transport();
+            transport1.ModalityId = transport.ModalityId;
+            transport1.VehicleId = transport.VehicleId;
+            transport1.Transport_Cost = transport.Transport_Cost;   
+            var t = await services.CreateTransport(transport1);
+
+            if (t)
+            {
+                return Ok("Transport inserted");
+            }
+
+            return BadRequest("Transport already exist");
         }
 
         // PUT api/<TransportController>/5
         [HttpPut]
-        public async Task<ActionResult<string>> Put([FromBody] Transport transport)
+        public async Task<ActionResult<string>> Put([FromBody] TransportDTO transport)
         {
-            var temp = await context.TransportSet.FirstOrDefaultAsync(t => t.ModalityId == transport.ModalityId && t.VehicleId == transport.VehicleId);
-            if (temp == null)
+            Transport transport1 = new Transport();
+            transport1.ModalityId = transport.ModalityId;
+            transport1.VehicleId = transport.VehicleId;
+            transport1.Transport_Cost = transport.Transport_Cost;
+            var r = await services.Updatetransport(transport1);
+
+            if (r)
             {
-                return NotFound();
+                return Ok("Transport updated");
             }
-            else
-            {
-                if (temp.Transport_Cost != transport.Transport_Cost)
-                    temp.Transport_Cost = transport.Transport_Cost;
-            }
-            context.TransportSet.Update(temp);
-            await context.SaveChangesAsync();
-            return Ok("Transport Updated");
+            return NotFound("Transport not found");
+
         }
 
         // DELETE api/<TransportController>/5
-        [HttpDelete("{modalityid,vehicleid}")]
+        [HttpDelete("{modalityid}/{vehicleid}")]
         public async Task<ActionResult<string>> Delete(int modalityid, int vehicleid)
         {
-            try
+            var r = await services.DeleteTransport(modalityid, vehicleid);
+
+            if (r)
             {
-                var temp = context.TransportSet.FirstOrDefault(t => t.ModalityId == modalityid && t.VehicleId == vehicleid);
-                context.TransportSet.Remove(temp);
-                await context.SaveChangesAsync();
+                return Ok("Transport Deleted");
             }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-            return Ok("Transport Deleted");
+            return NotFound("Transport not found");
         }
     }
 }

@@ -12,7 +12,13 @@ namespace PaqueteTuristico.Services
 
         public async Task<bool> CreateTransport( Transport transport)
         {
-            try { 
+            try {
+                var vehiclecurrent = await context.VehicleSet.FirstAsync(x => x.VehicleId == transport.VehicleId);
+                var modalitycurrent = await context.ModalitySet.FirstAsync(y => y.ModalityId == transport.ModalityId);
+                transport.Modality = modalitycurrent;
+                transport.Vehicle = vehiclecurrent;
+                vehiclecurrent.Transports.Add(transport);
+                modalitycurrent.Transports.Add(transport);
             await context.TransportSet.AddAsync(transport);
             await context.SaveChangesAsync();
             } catch (Exception ex)

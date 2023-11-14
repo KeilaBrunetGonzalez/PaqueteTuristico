@@ -5,6 +5,7 @@ using PaqueteTuristico.Models;
 using System.Linq.Expressions;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using PaqueteTuristico.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,32 +17,24 @@ namespace PaqueteTuristico.Controllers
 
     {   private readonly ILogger<SeasonController> logger;
 
-        private static readonly string[] Summaries = new[]
-       {
-        "Alta"," Baja"
-        };
+        SeasonServices services;
 
         private readonly conocubaContext context;
-        public SeasonController(ILogger<SeasonController> logger,conocubaContext context)
+        public SeasonController(ILogger<SeasonController> logger,conocubaContext context, SeasonServices seasonServices)
         {
             this.context = context;
             this.logger = logger;
+            this.services = seasonServices; 
         }
 
         // GET: api/<SeasonController1>
         
         [HttpGet(Name = "/Season/Default/")]
 
-        public IEnumerable<Season> Get()
+        public async Task<ActionResult<IEnumerable<Season>>>Get()
         {
             
-            return Enumerable.Range(1, 10).Select(index => new Season
-            {
-                StartDate = DateTime.Now.AddDays(index),
-                SeasonName = Summaries[Random.Shared.Next(Summaries.Length)],
-
-            }
-                ).ToArray(); ;
+            return await services.GetAll();
         }
 
             // GET api/<SeasonController1>/5
@@ -49,14 +42,14 @@ namespace PaqueteTuristico.Controllers
             [HttpGet("/Season/Season_ID")]
         public async Task<ActionResult<Season>> GetSeasonAsync(int id)
         {
-            var season = await context.SeasonSet.FirstAsync(n => n.SeasonId == id);
+            var season = await services.GetSeasonById(id);
             
             if (season == null)
             {
                return NotFound();
                 
             }
-            return season;
+            return Ok(season);
         }
         //  POST api/<SeasonController1>/5
 
@@ -67,12 +60,12 @@ namespace PaqueteTuristico.Controllers
             
             try
             {
-                await context.SeasonSet.AddAsync(season);
-                await context.SaveChangesAsync();
+                await services.CreateSeason(season); 
             }
             catch (Exception ex)
             {
                 ex.ToString();
+                return BadRequest(ex);
             }
             return Ok();
         }
@@ -82,24 +75,11 @@ namespace PaqueteTuristico.Controllers
         public  async Task<IActionResult> Put([FromBody] Season season)
         {
 
-            var current = await context.SeasonSet.FirstAsync(s => s.SeasonId == season.SeasonId);
+            var current = await services.UpdateSeasons(season);
 
-            if (current == null)
+            if (!current)
             {
                 return NotFound();
-            }
-            else
-            {
-                if (!(current.SeasonName != season.SeasonName))
-                {
-                    current.SeasonName = season.SeasonName;
-                }
-                if (!(current.StartDate != season.StartDate))
-                {
-                    current.StartDate = season.StartDate;
-                }
-                context.SeasonSet.Update(current);
-                await context.SaveChangesAsync();   
             }
             return Ok();
         }
@@ -112,9 +92,8 @@ namespace PaqueteTuristico.Controllers
         public async Task<IActionResult> Delete(int id)
         {   try
             {
-            var current = await context.SeasonSet.FirstAsync(x => x.SeasonId == id);
-            context.SeasonSet.Remove(current);
-            await context.SaveChangesAsync();
+            var current = await services.DeleteSeason(id);
+            
         }catch(ArgumentNullException e)
             {
                 e.ToString();

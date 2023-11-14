@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
 using PaqueteTuristico.Services;
-
+using PaqueteTuristico.Dtos;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PaqueteTuristico.Controllers
@@ -28,6 +28,12 @@ namespace PaqueteTuristico.Controllers
             this.hotelPlanServices = hotelPlanServices;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<HotelPlan>>> Get() {
+            return await hotelPlanServices.GetAll();
+        }
+
+            
 
         // GET api/<HotelPlanController>/5
         [HttpGet("/HotelPlan/Hotelplan_id")]
@@ -44,11 +50,14 @@ namespace PaqueteTuristico.Controllers
 
 
 
-        // PUT api/<HotelPlanController>/5
-        [HttpPut("/HotelPlan/Hotelplan_id")]
-        public async Task<ActionResult<HotelPlan>> Put(HotelPlan hotel)
+        // Post api/<HotelPlanController>/5
+        [HttpPost("/HotelPlan/Hotelplan_id")]
+        public async Task<ActionResult<HotelPlan>> Post([FromBody] HotelplanDTO hotel)
         {
-            var temp = await hotelPlanServices.CreateHotelPlan(hotel);
+            HotelPlan hotel1 = new HotelPlan(); 
+            hotel1.HotelId = hotel.HotelId;
+            hotel1.SeasonId = hotel.SeasonId;
+            var temp = await hotelPlanServices.CreateHotelPlan(hotel1);
             
 
             if (!temp)
@@ -60,7 +69,7 @@ namespace PaqueteTuristico.Controllers
 
         // DELETE api/<HotelPlanController>/5
 
-        [HttpDelete("/HotelPlan/Hotelplan_id")]
+        [HttpDelete("{Hotelid}/{Seasonid}")]
         public async Task<IActionResult> Delete(int Hotelid, int Seasonid)
         {
             var current = await hotelPlanServices.DeleteHotelPlan(Hotelid, Seasonid);

@@ -20,6 +20,7 @@ namespace PaqueteTuristico.Models
         [Required]
         [Column(TypeName = "date")]
         public DateTime StartDate { get; set; }
+
         [JsonIgnore]
         public ICollection<HotelPlan> Plans { get; set; }
     }

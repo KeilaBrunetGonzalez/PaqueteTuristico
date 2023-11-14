@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PaqueteTuristico.Models
 {
@@ -18,9 +19,11 @@ namespace PaqueteTuristico.Models
         [Key]
         public int SeasonId { get; set; }
 
-        [ForeignKey(nameof(HotelId))]
+        
+        [JsonIgnore]
         public Hotel Hotel { get; set; }
-        [ForeignKey(nameof(HotelId))]
+        
+        [JsonIgnore]
         public Season Season { get; set; }
     }
 }
