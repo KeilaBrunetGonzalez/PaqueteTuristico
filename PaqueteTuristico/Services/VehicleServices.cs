@@ -93,5 +93,12 @@ namespace PaqueteTuristico.Services
            Vehicle temp =  await context.VehicleSet.FirstAsync(n => n.VehicleId == id);
             return temp;
         }
+
+        public async Task<int> GetVehicleCount()
+        {
+            var count = await context.VehicleSet.CountAsync();
+
+            return count;
+        }
     }
 }

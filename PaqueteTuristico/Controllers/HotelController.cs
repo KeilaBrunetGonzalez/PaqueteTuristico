@@ -21,7 +21,7 @@ namespace PaqueteTuristico.Controllers
 
 
         // GET 
-        [HttpGet("/hotels/Hotel_ID")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Hotel>> GetHotelAsync(int HotelId)
         {
                 var hotel = await _services.GetHotelAsync(HotelId);
@@ -34,7 +34,9 @@ namespace PaqueteTuristico.Controllers
                 return NotFound();
         }
 
-        [HttpGet("/hotels")]
+
+        // DELETE: api/<Hotel>
+        [HttpGet]
 
         public async Task<ActionResult<List<Models.Hotel>>> GetHotelsByHotelId()
         {
@@ -47,8 +49,8 @@ namespace PaqueteTuristico.Controllers
         }
 
 
-        // POST 
-        [HttpPost("/hotels/Hotel_ID")]
+        // POST : api/<Hotel>
+        [HttpPost]
         public async Task<ActionResult<String>> PostHotel([FromBody] Hotel hotel)
         {
             var inserted = await _services.InsertHotelAsync(hotel);
@@ -61,8 +63,8 @@ namespace PaqueteTuristico.Controllers
             return BadRequest("Hotel already exist");   
         }
 
-        // PUT 
-        [HttpPut("/hotels/Hotel_ID")]
+        // PUT: api/<Hotel>
+        [HttpPut]
         public async Task<ActionResult<String>> PutHotel([FromBody] Hotel hotel)
         {
             var updated = await _services.UpdateHotelAsync(hotel);
@@ -75,9 +77,9 @@ namespace PaqueteTuristico.Controllers
         }
 
 
-        // DELETE 
+        // DELETE: api/Hotel
 
-        [HttpDelete("/hotels/Hotel_ID")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<String>> DeleteHotel(int Id)
         {
             var removed = await _services.DeleteHotelAsync(Id);
@@ -89,6 +91,12 @@ namespace PaqueteTuristico.Controllers
             return NotFound("Hotel not found");
         }
 
+        // GET: api/Hoteles/count
+        [HttpGet("count")]
+        public async Task<ActionResult<int>> GetVehicleCount()
+        {
+            return await _services.GetHotelCount();
+        }
     }
 
     

@@ -80,7 +80,12 @@ namespace PaqueteTuristico.Services
             return find;
         }
 
+        public async Task<int> GetHotelCount()
+        {
+            var count = await _context.HotelSet.CountAsync();
 
+            return count;
+        }
 
 
     }

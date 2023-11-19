@@ -76,5 +76,12 @@ namespace PaqueteTuristico.Controllers
             }
             return Ok("Vehicle Deleted");
         }
+
+        // GET: api/Vehicles/count
+        [HttpGet("count")]
+        public async Task<ActionResult<int>> GetVehicleCount()
+        {
+            return await _vehicleServices.GetVehicleCount();
+        }
     }
 }
