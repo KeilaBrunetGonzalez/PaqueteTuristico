@@ -21,10 +21,10 @@ namespace PaqueteTuristico.Controllers
         }
 
         //GET
-        [HttpGet("/hotels/rooms/ROOM_ID")]
-        public async Task<ActionResult<Room>> GetRoom(int roomCode)
+        [HttpGet("{roomId}")]
+        public async Task<ActionResult<Room>> GetRoom(int roomId)
         {
-            var room = await _services.GetRoomAsync(roomCode);
+            var room = await _services.GetRoomAsync(roomId);
 
             if (room != null)
             {
@@ -34,10 +34,10 @@ namespace PaqueteTuristico.Controllers
             return NotFound();
         }
 
-        [HttpGet("/hotels/rooms/HOTEl_ID")]
-        public async Task<ActionResult<List<Models.Room>>> GetRoomsByHotelId(int hotelCode)
+        [HttpGet("{hotelCode}")]
+        public async Task<ActionResult<List<Models.Room>>> GetRoomsByHotelId(int hotelId)
         {
-            var list = await _services.GetRoomsAsync(hotelCode);
+            var list = await _services.GetHotelRoomsAsync(hotelId);
             if (list.IsNullOrEmpty())
             {
                 return NotFound();
@@ -46,12 +46,27 @@ namespace PaqueteTuristico.Controllers
 
         }
 
+        [HttpGet]
+
+        public async Task<ActionResult<List<Models.Room>>> GetRooms()
+        {
+            var list = await _services.GetRoomsAsync();
+            if (list.IsNullOrEmpty())
+            {
+                return NotFound();
+            }
+            return Ok(list);
+        }
+
 
         //POST
 
-        [HttpPost("/hotels/rooms")]
+        [HttpPost]
         public async Task<ActionResult<string>> PostRoom([FromBody] Room room)
         {
+            var id = await _services.GetLastRoomIdAsync();
+            room.Id = ++id;
+            
             var option = await _services.InsertRoomAsync(room);
 
             if (option == 1)
@@ -69,7 +84,7 @@ namespace PaqueteTuristico.Controllers
 
 
         //PUT
-        [HttpPut("/hotels/rooms")]
+        [HttpPut]
         public async Task<ActionResult<string>> PutRoom([FromBody] Room room)
         {
 
@@ -84,7 +99,7 @@ namespace PaqueteTuristico.Controllers
         }
 
         //DELETE
-        [HttpDelete("/hotels/rooms/ROOM_ID")]
+        [HttpDelete("{roomId}")]
         public async Task<ActionResult<string>> DeleteRoom(int RoomId)
         {
 
@@ -96,6 +111,8 @@ namespace PaqueteTuristico.Controllers
 
             return NotFound("Hotel Room not found");
         }
+
+
 
     }
 }

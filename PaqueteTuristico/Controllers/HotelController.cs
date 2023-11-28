@@ -53,6 +53,9 @@ namespace PaqueteTuristico.Controllers
         [HttpPost]
         public async Task<ActionResult<String>> PostHotel([FromBody] Hotel hotel)
         {
+            var id = await _services.GetLastHotelIdAsync();
+            hotel.Id = ++id;
+
             var inserted = await _services.InsertHotelAsync(hotel);
 
             if (inserted)
@@ -91,12 +94,20 @@ namespace PaqueteTuristico.Controllers
             return NotFound("Hotel not found");
         }
 
-        // GET: api/Hoteles/count
-        [HttpGet("count")]
-        public async Task<ActionResult<int>> GetVehicleCount()
+        
+
+        [HttpPatch("{id}/{enabled}")]
+        public async Task<ActionResult<String>> PatchEnabled(int id, bool enabled)
         {
-            return await _services.GetHotelCount();
+            var updated = await _services.UpdateEnabledAsync(id, enabled);
+
+            if (updated)
+            {
+                return Ok("Hotel updated");
+            }
+            return NotFound("Hotel not found");
         }
+        
     }
 
     

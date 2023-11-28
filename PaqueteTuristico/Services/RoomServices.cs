@@ -28,11 +28,19 @@ namespace PaqueteTuristico.Services
             return existingRoom;
         }
 
-        public async Task<List<Room>?> GetRoomsAsync(int hotelCode)
+        public async Task<List<Room>?> GetHotelRoomsAsync(int hotelCode)
         {
             var list = await _context.RoomSet
             .Where(H => H.HotelId == hotelCode)
             .ToListAsync();
+
+            return list;
+        }
+
+
+        public async Task<List<Room>?> GetRoomsAsync()
+        {
+            var list = await _context.RoomSet.ToListAsync();
 
             return list;
         }
@@ -90,6 +98,16 @@ namespace PaqueteTuristico.Services
 
             }
             return find;
+        }
+
+
+        public async Task<int> GetLastRoomIdAsync()
+        {
+            int ultimoId = await _context.HotelSet.AnyAsync()
+                ? await _context.HotelSet.MaxAsync(e => e.Id)
+                : 0;
+
+            return ultimoId;
         }
     }
 }

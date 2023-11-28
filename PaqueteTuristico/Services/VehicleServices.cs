@@ -94,11 +94,13 @@ namespace PaqueteTuristico.Services
             return temp;
         }
 
-        public async Task<int> GetVehicleCount()
+        public async Task<int> ObtenerUltimoIdVehicleAsync()
         {
-            var count = await context.VehicleSet.CountAsync();
+            int ultimoId = await context.VehicleSet.AnyAsync()
+                ? await context.HotelSet.MaxAsync(e => e.Id)
+                : 0;
 
-            return count;
+            return ultimoId;
         }
     }
 }
