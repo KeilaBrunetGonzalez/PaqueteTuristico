@@ -14,11 +14,11 @@ namespace PaqueteTuristico.Controllers
     {
         private readonly VehicleServices _vehicleServices;
         private readonly ILogger<HotelController> logger;
-        private readonly conocubaContext context;
-        public VehiclesController(ILogger<HotelController> logger, conocubaContext context, VehicleServices _vehicleServices)
+        
+        public VehiclesController(ILogger<HotelController> logger, VehicleServices _vehicleServices)
         {
             this.logger = logger;
-            this.context = context;
+            
             this._vehicleServices = _vehicleServices;
         }
 

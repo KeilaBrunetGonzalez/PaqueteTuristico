@@ -24,7 +24,7 @@ namespace PaqueteTuristico.Controllers
 
         // GET
 
-        [HttpGet("/modality/cos_per_hour")]
+        [HttpGet]
 
         public async Task<ActionResult<List<Models.CostPerHour>>> GetCostPerHour()
         {
@@ -34,7 +34,7 @@ namespace PaqueteTuristico.Controllers
         }
 
         //POST
-        [HttpPost("/modality/cos_per_hour")]
+        [HttpPost]
         public async Task<ActionResult<String>> PostCostPerHour([FromBody] CostPerHour modality)
         {
             var mod = await _cost_per_hourServicescs.CreateCostperhour(modality);
@@ -46,7 +46,7 @@ namespace PaqueteTuristico.Controllers
         }
 
         // PUT 
-        [HttpPut("/modality/cos_per_hour")]
+        [HttpPut]
         public async Task<ActionResult<String>> PutCostPerHour([FromBody] CostPerHour modality)
         {
             var mod = await _cost_per_hourServicescs.UpdateCostPerHour(modality);
@@ -58,7 +58,7 @@ namespace PaqueteTuristico.Controllers
         }
 
         //DELETE
-        [HttpDelete("/modality/cos_per_hour_id")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<string>> DeleteCostPerHour(int Id)
         {
             var mod = await _cost_per_hourServicescs.DeleteCostPerHour(Id);

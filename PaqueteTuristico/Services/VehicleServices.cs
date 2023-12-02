@@ -52,6 +52,10 @@ namespace PaqueteTuristico.Services
                 return false;
             }
             else { 
+                if(temp.Brand!= vehicle.Brand)
+                {
+                    temp.Brand = vehicle.Brand;
+                }
                 if (temp.Capacity_Without_Equipement != vehicle.Capacity_Without_Equipement)
                 {
                     temp.Capacity_Without_Equipement = vehicle.Capacity_Without_Equipement;
