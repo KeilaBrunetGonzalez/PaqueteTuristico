@@ -1,14 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using PaqueteTuristico;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,17 +21,9 @@ builder.Services
         x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     });
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("MyPolicy",
-        builder =>
-        {
-            builder.WithOrigins("http://localhost:9000") // Reemplaza con la URL de tu servidor de desarrollo Quasar
-                   .AllowAnyHeader()
-                   .AllowAnyMethod();
-        });
-});
 builder.Services.AddCustomServices();
+
+
 //builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -47,13 +36,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    
-
 }
 
 app.UseHttpsRedirection();
-
-app.UseRouting();
 
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:9000"));
 

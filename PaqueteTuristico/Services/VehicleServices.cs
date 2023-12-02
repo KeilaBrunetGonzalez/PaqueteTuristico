@@ -97,5 +97,14 @@ namespace PaqueteTuristico.Services
            Vehicle temp =  await context.VehicleSet.FirstAsync(n => n.VehicleId == id);
             return temp;
         }
+
+        public async Task<int> ObtenerUltimoIdVehicleAsync()
+        {
+            int ultimoId = await context.VehicleSet.AnyAsync()
+                ? await context.HotelSet.MaxAsync(e => e.Id)
+                : 0;
+
+            return ultimoId;
+        }
     }
 }

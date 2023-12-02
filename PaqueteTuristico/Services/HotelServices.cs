@@ -80,6 +80,39 @@ namespace PaqueteTuristico.Services
             return find;
         }
 
+        public async Task<int> GetLastHotelIdAsync()
+        {
+            int ultimoId = await _context.HotelSet.AnyAsync()
+                ? await _context.HotelSet.MaxAsync(e => e.Id)
+                : 0;
+
+            return ultimoId;
+        }
+
+        internal async Task<bool> UpdateEnabledAsync(int hotelId, bool enb)
+        {
+            try
+            {  
+                var existingHotel = await _context.HotelSet.FindAsync(hotelId);
+
+                if (existingHotel != null)
+                {
+                    existingHotel.Enabled = enb;
+
+                    await _context.SaveChangesAsync();
+
+                    return true; 
+                }
+
+                return false; 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
 
 
 

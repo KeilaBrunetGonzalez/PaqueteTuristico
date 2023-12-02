@@ -46,7 +46,9 @@ namespace PaqueteTuristico.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> Post([FromBody] Vehicle vehicle)
         {
-             var temp = await _vehicleServices.CreateVehicle(vehicle);
+            var id = await _vehicleServices.ObtenerUltimoIdVehicleAsync();
+            vehicle.VehicleId = ++id;
+            var temp = await _vehicleServices.CreateVehicle(vehicle);
             if(!temp)
                return BadRequest();
             return Ok("Vehicle Inserted");

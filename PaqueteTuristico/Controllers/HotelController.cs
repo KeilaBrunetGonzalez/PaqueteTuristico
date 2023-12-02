@@ -21,7 +21,7 @@ namespace PaqueteTuristico.Controllers
 
 
         // GET 
-        [HttpGet("/hotels/Hotel_ID")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Hotel>> GetHotelAsync(int HotelId)
         {
                 var hotel = await _services.GetHotelAsync(HotelId);
@@ -34,7 +34,9 @@ namespace PaqueteTuristico.Controllers
                 return NotFound();
         }
 
-        [HttpGet("/hotels")]
+
+        // DELETE: api/<Hotel>
+        [HttpGet]
 
         public async Task<ActionResult<List<Models.Hotel>>> GetHotelsByHotelId()
         {
@@ -47,10 +49,13 @@ namespace PaqueteTuristico.Controllers
         }
 
 
-        // POST 
-        [HttpPost("/hotels/Hotel_ID")]
+        // POST : api/<Hotel>
+        [HttpPost]
         public async Task<ActionResult<String>> PostHotel([FromBody] Hotel hotel)
         {
+            var id = await _services.GetLastHotelIdAsync();
+            hotel.Id = ++id;
+
             var inserted = await _services.InsertHotelAsync(hotel);
 
             if (inserted)
@@ -61,8 +66,8 @@ namespace PaqueteTuristico.Controllers
             return BadRequest("Hotel already exist");   
         }
 
-        // PUT 
-        [HttpPut("/hotels/Hotel_ID")]
+        // PUT: api/<Hotel>
+        [HttpPut]
         public async Task<ActionResult<String>> PutHotel([FromBody] Hotel hotel)
         {
             var updated = await _services.UpdateHotelAsync(hotel);
@@ -75,9 +80,9 @@ namespace PaqueteTuristico.Controllers
         }
 
 
-        // DELETE 
+        // DELETE: api/Hotel
 
-        [HttpDelete("/hotels/Hotel_ID")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<String>> DeleteHotel(int Id)
         {
             var removed = await _services.DeleteHotelAsync(Id);
@@ -89,6 +94,20 @@ namespace PaqueteTuristico.Controllers
             return NotFound("Hotel not found");
         }
 
+        
+
+        [HttpPatch("{id}/{enabled}")]
+        public async Task<ActionResult<String>> PatchEnabled(int id, bool enabled)
+        {
+            var updated = await _services.UpdateEnabledAsync(id, enabled);
+
+            if (updated)
+            {
+                return Ok("Hotel updated");
+            }
+            return NotFound("Hotel not found");
+        }
+        
     }
 
     
