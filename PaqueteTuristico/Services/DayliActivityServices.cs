@@ -64,7 +64,7 @@ namespace PaqueteTuristico.Services
                 context.DayliActivitieSet.Update(current);
                 await context.SaveChangesAsync();
             }
-            return false;
+            return true;
         }
         public async Task<List<DayliActivities>> GetAll()
         {
