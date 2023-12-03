@@ -34,6 +34,13 @@ namespace PaqueteTuristico.Services
             return list;
         }
 
+        public async Task<List<Meal>?> GetMealsAsync()
+        {
+            var list = await _context.MealSet.ToListAsync();
+
+            return list;
+        }
+
         //Insert
         public async Task<int> InsertMealAsync(Meal meal)
         {
@@ -87,6 +94,15 @@ namespace PaqueteTuristico.Services
 
             }
             return find;
+        }
+
+        public async Task<int> GetLastMealIdAsync()
+        {
+            int ultimoId = await _context.MealSet.AnyAsync()
+                ? await _context.MealSet.MaxAsync(e => e.Id)
+                : 0;
+
+            return ultimoId;
         }
     }
 }

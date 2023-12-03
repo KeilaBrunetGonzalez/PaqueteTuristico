@@ -103,8 +103,8 @@ namespace PaqueteTuristico.Services
 
         public async Task<int> GetLastRoomIdAsync()
         {
-            int ultimoId = await _context.HotelSet.AnyAsync()
-                ? await _context.HotelSet.MaxAsync(e => e.Id)
+            int ultimoId = await _context.RoomSet.AnyAsync()
+                ? await _context.RoomSet.MaxAsync(e => e.Id)
                 : 0;
 
             return ultimoId;

@@ -88,7 +88,6 @@ namespace PaqueteTuristico.Services
 
             return ultimoId;
         }
-
         internal async Task<bool> UpdateEnabledAsync(int hotelId, bool enb)
         {
             try
