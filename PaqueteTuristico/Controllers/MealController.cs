@@ -21,10 +21,10 @@ namespace PaqueteTuristico.Controllers
         }
 
         //GET
-        [HttpGet("/hotels/meals/MEAL_ID")]
-        public async Task<ActionResult<Meal>> GetMeal(int mealCode)
+        [HttpGet("{mealId}")]
+        public async Task<ActionResult<Meal>> GetMeal(int mealId)
         {
-            var meal = await _services.GetMealAsync(mealCode);
+            var meal = await _services.GetMealAsync(mealId);
 
             if (meal != null)
             {
@@ -34,10 +34,10 @@ namespace PaqueteTuristico.Controllers
             return NotFound();
         }
 
-        [HttpGet("/hotels/meals/HOTEl_ID")]
-        public async Task<ActionResult<List<Models.Meal>>> GetMealsByHotelId(int hotelCode)
+        [HttpGet("{hotelId}")]
+        public async Task<ActionResult<List<Models.Meal>>> GetMealsByHotelId(int hotelId)
         {
-            var list = await _services.GetMealsAsync(hotelCode);
+            var list = await _services.GetMealsAsync(hotelId);
             if (list.IsNullOrEmpty())
             {
                 return NotFound();
@@ -46,12 +46,25 @@ namespace PaqueteTuristico.Controllers
 
         }
 
+        [HttpGet]
+
+        public async Task<ActionResult<List<Models.Meal>>> GetMeals()
+        {
+            var list = await _services.GetMealsAsync();
+            if (list.IsNullOrEmpty())
+            {
+                return NotFound();
+            }
+            return Ok(list);
+        }
 
         //POST
 
-        [HttpPost("/hotels/meals")]
+        [HttpPost]
         public async Task<ActionResult<string>> PostMeal([FromBody] Meal meal)
         {
+            var id = await _services.GetLastMealIdAsync();
+            meal.Id = ++id;
             var option = await _services.InsertMealAsync(meal);
 
             if (option == 1)
@@ -69,7 +82,7 @@ namespace PaqueteTuristico.Controllers
 
 
         //PUT
-        [HttpPut("/hotels/meals/MEAL_ID")]
+        [HttpPut]
         public async Task<ActionResult<string>> PutMeal([FromBody] Meal meal)
         {
 
@@ -84,11 +97,11 @@ namespace PaqueteTuristico.Controllers
         }
 
         //DELETE
-        [HttpDelete("/hotels/meals/MEAL_ID")]
-        public async Task<ActionResult<string>> DeleteMeal(int mealCode)
+        [HttpDelete("{mealId}")]
+        public async Task<ActionResult<string>> DeleteMeal(int mealId)
         {
 
-            var removed = await _services.DeleteMealAsync(mealCode);
+            var removed = await _services.DeleteMealAsync(mealId);
             if (removed)
             {
                 return Ok("Hotel Meal removed");

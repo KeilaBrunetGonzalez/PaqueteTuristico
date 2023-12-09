@@ -24,6 +24,7 @@ namespace PaqueteTuristico
             services.AddScoped<TransportServices, TransportServices>();
             services.AddScoped<SeasonServices, SeasonServices>();
 
+
             return services;
         }
     }
