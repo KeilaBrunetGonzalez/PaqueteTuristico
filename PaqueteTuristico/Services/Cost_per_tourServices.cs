@@ -4,7 +4,7 @@ using PaqueteTuristico.Models;
 
 namespace PaqueteTuristico.Services
 {
-    public class Cost_per_tourServices : ServiceBase
+    public class Cost_per_tourServices : ModalityServices
     {
         public Cost_per_tourServices(conocubaContext context) : base(context)
         {
@@ -16,7 +16,7 @@ namespace PaqueteTuristico.Services
             {
                 return false;
             }
-
+            
             await context.ModalitySet.AddAsync(modality);
             await context.Cost_Per_ToursSet.AddAsync(modality);
             await context.SaveChangesAsync();

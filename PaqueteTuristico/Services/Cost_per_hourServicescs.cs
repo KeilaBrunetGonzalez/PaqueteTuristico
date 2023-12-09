@@ -4,14 +4,14 @@ using PaqueteTuristico.Models;
 
 namespace PaqueteTuristico.Services
 {
-    public class Cost_per_hourServicescs : ServiceBase
+    public class Cost_per_hourServicescs : ModalityServices
     {
         public Cost_per_hourServicescs(conocubaContext context) : base(context)
         {
         }
         public async Task<bool> CreateCostperhour(CostPerHour modality)
         {
-            var mod = await context.HotelSet.FindAsync(modality.ModalityId);
+            var mod = await context.Cost_Per_HoursSet.FindAsync(modality.ModalityId);
             if (mod != null)
             {
                 return false;

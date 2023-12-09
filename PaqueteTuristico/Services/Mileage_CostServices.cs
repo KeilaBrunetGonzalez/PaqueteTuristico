@@ -4,7 +4,7 @@ using PaqueteTuristico.Models;
 
 namespace PaqueteTuristico.Services
 {
-    public class Mileage_CostServices : ServiceBase
+    public class Mileage_CostServices : ModalityServices
     {
         public Mileage_CostServices(conocubaContext context) : base(context)
         {
@@ -19,7 +19,6 @@ namespace PaqueteTuristico.Services
             await context.ModalitySet.AddAsync(modality);
             await context.Mileage_CostsSet.AddAsync(modality);
             await context.SaveChangesAsync();
-
             return true;
         }
         public async Task<bool> UpdateMileage_Cost(MileageCost modality)

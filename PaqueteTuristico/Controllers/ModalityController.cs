@@ -23,7 +23,7 @@ namespace PaqueteTuristico.Controllers
         }
 
         // GET
-        [HttpGet("/modalities/modality_id")]
+        [HttpGet()]
         public async Task<ActionResult<Modality>> GetModality(int id)
         {
             var modality = await _services.GetModalityById(id);

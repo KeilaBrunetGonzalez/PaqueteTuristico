@@ -12,18 +12,18 @@ namespace PaqueteTuristico.Controllers
     [ApiController]
     public class MilageCostController : ControllerBase
     {
-        private readonly conocubaContext _context;
+        
         private readonly Mileage_CostServices _mileageCostServices;
 
-        public MilageCostController(conocubaContext context, Mileage_CostServices _mileageCostServices)
+        public MilageCostController( Mileage_CostServices _mileageCostServices)
         {
-            this._context = context;
+            
             this._mileageCostServices = _mileageCostServices;
         }
 
         // GET
 
-        [HttpGet("/modality/milage_cost")]
+        [HttpGet()]
 
         public async Task<ActionResult<List<Models.MileageCost>>> GetMileageCost()
         {
@@ -33,9 +33,13 @@ namespace PaqueteTuristico.Controllers
         }
 
         //POST
-        [HttpPost("/modality/milage_cost")]
+        [HttpPost()]
         public async Task<ActionResult<String>> PostMilageCost([FromBody] MileageCost modality)
         {
+            //Funcion para coger el ultimo id
+            var id = await _mileageCostServices.GetLastModalityIdAsync();
+            modality.ModalityId = ++id;
+
             var mod = await _mileageCostServices.CreateMileage_Cost(modality);
             if (!mod)
             {
@@ -45,7 +49,7 @@ namespace PaqueteTuristico.Controllers
         }
 
         // PUT 
-        [HttpPut("/modality/milage_cost")]
+        [HttpPut()]
         public async Task<ActionResult<String>> PutMilageCost([FromBody] MileageCost modality)
         {
             var mod = await _mileageCostServices.UpdateMileage_Cost(modality);
@@ -57,7 +61,7 @@ namespace PaqueteTuristico.Controllers
         }
 
         //DELETE
-        [HttpDelete("/modality/milage_cost_id")]
+        [HttpDelete("{Id}")]
         public async Task<ActionResult<string>> DeleteMilageCost(int Id)
         {
             var mod = await _mileageCostServices.DeleteMileage_Cost(Id);

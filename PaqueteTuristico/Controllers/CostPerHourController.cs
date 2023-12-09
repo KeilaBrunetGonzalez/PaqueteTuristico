@@ -13,12 +13,11 @@ namespace PaqueteTuristico.Controllers
     [ApiController]
     public class CostPerHourController : ControllerBase
     {
-        private readonly conocubaContext _context;
+        
         private readonly Cost_per_hourServicescs _cost_per_hourServicescs;
 
-        public CostPerHourController(conocubaContext context, Cost_per_hourServicescs _cost_per_hourServicescs)
+        public CostPerHourController( Cost_per_hourServicescs _cost_per_hourServicescs)
         {
-            this._context = context;
             this._cost_per_hourServicescs = _cost_per_hourServicescs;
         }
 
@@ -37,6 +36,10 @@ namespace PaqueteTuristico.Controllers
         [HttpPost]
         public async Task<ActionResult<String>> PostCostPerHour([FromBody] CostPerHour modality)
         {
+            //Funcion para coger el ultimo id
+            var id = await _cost_per_hourServicescs.GetLastModalityIdAsync();
+            modality.ModalityId = ++id;
+
             var mod = await _cost_per_hourServicescs.CreateCostperhour(modality);
             if (!mod)
             {
@@ -58,7 +61,7 @@ namespace PaqueteTuristico.Controllers
         }
 
         //DELETE
-        [HttpDelete("{id}")]
+        [HttpDelete("{Id}")]
         public async Task<ActionResult<string>> DeleteCostPerHour(int Id)
         {
             var mod = await _cost_per_hourServicescs.DeleteCostPerHour(Id);
@@ -67,7 +70,7 @@ namespace PaqueteTuristico.Controllers
             {
                 return BadRequest("Cost Per Hour not found");
             }
-            return Ok("Cost Per Hour not removed");
+            return Ok("Cost Per Hour removed");
         }
 
 

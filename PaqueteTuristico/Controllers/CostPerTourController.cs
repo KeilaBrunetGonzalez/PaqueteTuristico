@@ -12,18 +12,18 @@ namespace PaqueteTuristico.Controllers
     [ApiController]
     public class CostPerTourController : ControllerBase
     {
-        private readonly conocubaContext _context;
+        
         private readonly Cost_per_tourServices _services;
 
-        public CostPerTourController(conocubaContext context, Cost_per_tourServices _services)
+        public CostPerTourController(Cost_per_tourServices _services)
         {
-            this._context = context;
+            
             this._services = _services;
         }
 
         // GET
 
-        [HttpGet("/modality/cos_per_tour")]
+        [HttpGet()]
 
         public async Task<ActionResult<List<Models.CostPerTour>>> GetCostPerTour()
         {
@@ -33,9 +33,13 @@ namespace PaqueteTuristico.Controllers
         }
 
         //POST
-        [HttpPost("/modality/cos_per_tour")]
+        [HttpPost()]
         public async Task<ActionResult<String>> PostCostPerTour([FromBody] CostPerTour modality)
         {
+            //Funcion para coger el ultimo id
+            var id = await  _services.GetLastModalityIdAsync();
+            modality.ModalityId = ++id;
+
             var mod = await _services.CreateCostperTour(modality);
             if (!mod)
             {
@@ -45,7 +49,7 @@ namespace PaqueteTuristico.Controllers
         }
 
         // PUT 
-        [HttpPut("/modality/cos_per_tour")]
+        [HttpPut()]
         public async Task<ActionResult<String>> PutCostPerTour([FromBody] CostPerTour modality)
         {
             var mod = await _services.UpdateCostPerTour(modality);
@@ -57,7 +61,7 @@ namespace PaqueteTuristico.Controllers
         }
 
         //DELETE
-        [HttpDelete("/modality/cos_per_tour_id")]
+        [HttpDelete("{Id}")]
         public async Task<ActionResult<string>> DeleteCostPerTour(int Id)
         {
             var mod = await _services.DeleteCostPerTour(Id);
