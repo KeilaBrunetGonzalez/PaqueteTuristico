@@ -1,31 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace PaqueteTuristico.Models
 {
     public class User
     {
-        [Key]
+        
         public int Id { get; set; }
 
-        [Column(TypeName = "varchar")]
-        [MaxLength(100)]
-        [Required]
-        public string Name { get; set; } = "";
+        
+        public string UserName { get; set; } = "";
 
-        [Column(TypeName = "varchar")]
-        [MaxLength(100)]
-        [Required]
-        public string PasswordHash { get; set; } = "";
+        
+        public string Password { get; set; } = "";
 
-        [Column(TypeName = "varchar")]
-        [MaxLength(100)]
-        [Required]
-        public string PasswordSalt { get; set; } = "";
-
-        [Column(TypeName = "varchar")]
-        [MaxLength(100)]
-        [Required]
-        public string Gmail { get; set; } = "";
+        public string Email { get; set; } = "";
     }
 }

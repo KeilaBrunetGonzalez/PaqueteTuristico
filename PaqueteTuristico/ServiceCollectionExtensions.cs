@@ -23,6 +23,7 @@ namespace PaqueteTuristico
             services.AddScoped<Cost_per_tourServices, Cost_per_tourServices>();
             services.AddScoped<TransportServices, TransportServices>();
             services.AddScoped<SeasonServices, SeasonServices>();
+            services.AddScoped<InitializationServices, InitializationServices>();
 
 
             return services;

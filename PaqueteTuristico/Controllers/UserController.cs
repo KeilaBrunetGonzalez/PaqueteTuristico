@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
+using PaqueteTuristico.Utils;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -13,53 +15,73 @@ namespace PaqueteTuristico.Controllers
     public class UserController : Controller
     {
         private readonly conocubaContext _context;
-
-        public UserController(conocubaContext context)
+        private readonly IConfiguration configuration;
+        private readonly UserManager<IdentityUser> userManager;
+        
+        public UserController(IConfiguration config, conocubaContext context, UserManager<IdentityUser> user)
         {
             _context = context;
+            configuration = config;
+            userManager = user;
+
         }
-
-        [HttpPost("api/register")]
-        public IActionResult Register(User user)
+        [HttpPost]
+        public async Task<IActionResult> Register([FromBody]User user)
         {
-            // Crea un hash y una sal para la contraseña
-            using var hmac = new HMACSHA512();
-
-            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(user.PasswordHash));
-             user.PasswordSalt = hmac.Key;
-
-
-            // Guarda el usuario en la base de datos
-            _context.UserSet.Add(user);
-            _context.SaveChanges();
-
-            return Ok();
-        }
-
-       /* [HttpPost("api/login")]
-        public IActionResult Login(string username, string password)
-        {
-            // Busca al usuario en la base de datos
-            var user = _context.UserSet.SingleOrDefault(u => u.Name == username);
-            if (user == null)
+            if(await userManager.FindByEmailAsync(user.Email) == null)
             {
-                return Unauthorized("Usuario no válido");
-            }
-
-            // Verifica la contraseña
-            using var hmac = new HMACSHA512(user.PasswordSalt);
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            for (int i = 0; i < computedHash.Length; i++)
-            {
-                if (computedHash[i] != user.PasswordHash[i])
+                var tempuser = new IdentityUser { UserName= user.UserName , Email = user.Email};
+                var result = await userManager.CreateAsync(tempuser, user.Password);
+                if (result.Succeeded)
                 {
-                    return Unauthorized("Contraseña no válida");
-                }
+                    await userManager.AddToRoleAsync(tempuser, "User");
+                    _context.SaveChanges();
+
+                } else
+                {
+                    return BadRequest(result);
+                        }
+
+                return Ok("User registered");
+                
             }
+            return Unauthorized();
+        }
 
-            // Si la contraseña es correcta, devuelve un token de acceso (aquí deberías generar y devolver un token JWT o similar)
+        [HttpPost("api/login/{userName}/{password}")]
+            public async Task<IActionResult> Login(string userName, string password)
+            {
+            var user = await userManager.FindByNameAsync(userName);
+            if (user != null && await userManager.CheckPasswordAsync(user, password))
+            {
 
-            return Ok();
-        }*/
+                var jwt = configuration.GetSection("Jwt").Get<Jwt>();
+                var claims = new[]
+                {
+               new Claim(JwtRegisteredClaimNames.Sub, jwt.Subject),
+               new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+               new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+               new Claim("Id", user.Id),
+
+            };
+                // Obtener la llave privada encriptada
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key));
+
+                // Se establece la llave de la firma y el metodo de seguridad
+                var sining = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                // Creacion del token
+                var token = new JwtSecurityToken(
+                    jwt.Insuer,
+                    jwt.Audience,
+                    claims,
+                    expires: DateTime.Now.AddMinutes(60),
+                    signingCredentials: sining
+                    );
+                //el token se devuelve en formato de string
+                return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+            }
+            return Unauthorized();
+        }
     }
 }
