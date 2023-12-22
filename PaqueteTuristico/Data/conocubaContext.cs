@@ -12,7 +12,6 @@ namespace PaqueteTuristico.Data
         public DbSet<Hotel> HotelSet { get; set; }
         public DbSet<Room> RoomSet { get; set; }
         public DbSet<Meal> MealSet { get; set; }
-        //public DbSet<User> UserSet { get; set; }
         public DbSet<EContract> EContractSet { get; set; }
         public DbSet<ComplementaryContract> ComplementaryContractSet { get; set; }
         public DbSet<HotelContract> HotelContractSet { get; set; }

@@ -86,7 +86,7 @@ using (var scope = app.Services.CreateScope())
     {
         var myServices = services.GetRequiredService<InitializationServices>();
         await myServices.CreateRoles();
-        await myServices.CreateUsers();
+        //await myServices.CreateUsers();
     }
     catch (Exception ex)
     {

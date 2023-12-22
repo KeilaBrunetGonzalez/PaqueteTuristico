@@ -24,7 +24,7 @@ namespace PaqueteTuristico.Services
             }
         }
 
-        public async Task CreateUsers()
+       /* public async Task CreateUsers()
         {
             
                 var franco = new IdentityUser { UserName = "Franco", Email = "admin@example.com" };
@@ -80,6 +80,6 @@ namespace PaqueteTuristico.Services
                 }
             }
 
-        }
+        }*/
     }
 }
