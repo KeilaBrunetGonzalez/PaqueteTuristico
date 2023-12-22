@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PaqueteTuristico.Data;
@@ -9,6 +10,7 @@ using PaqueteTuristico.Services;
 
 namespace PaqueteTuristico.Controllers
 {
+    [Authorize(Roles = "SuperAdmin,Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class RoomController : ControllerBase

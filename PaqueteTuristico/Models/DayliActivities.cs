@@ -1,10 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 namespace PaqueteTuristico.Models
 {
     [Table("Dayli_Activities")]
     public class DayliActivities
     {
+        public DayliActivities() { 
+            this.Complementary = new HashSet<ComplementaryContract>();
+            this.Province = new Province();
+        }
         [Key]
         public int ActivityId { get; set; }
         [Required]
@@ -15,6 +20,14 @@ namespace PaqueteTuristico.Models
         public string Description { get; set; } = "";
         
         [Required]
-        public float Price { get; set; }
+        [Column(TypeName = "money")]
+        public decimal Price { get; set; }
+
+        [Required]
+        public int ProvinceId { get; set; }
+        [JsonIgnore]
+        public ICollection<ComplementaryContract> Complementary { get; set; }
+        [JsonIgnore]
+        public Province Province { get; set; }
     }
 }

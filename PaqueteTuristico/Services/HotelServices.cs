@@ -19,7 +19,7 @@ namespace PaqueteTuristico.Services
         //Get
         public async Task<Hotel?> GetHotelAsync(int HotelId)
         {
-            var existingHotel = await _context.HotelSet.FirstAsync(H => H.Id == HotelId);
+            var existingHotel = await _context.HotelSet.FirstAsync(H => H.HotelId == HotelId);
             if (existingHotel == null)
             {
                 return null;
@@ -38,7 +38,7 @@ namespace PaqueteTuristico.Services
         //Insert
         public async Task<bool> InsertHotelAsync(Hotel hotel)
         {
-            var existingHotel = await _context.HotelSet.FindAsync(hotel.Id);
+            var existingHotel = await _context.HotelSet.FindAsync(hotel.HotelId);
             var find = false;
             if (existingHotel == null)
             {
@@ -53,7 +53,7 @@ namespace PaqueteTuristico.Services
         //Update
         public async Task<bool> UpdateHotelAsync(Hotel hotel)
         {
-            var existingHotel = await _context.HotelSet.FindAsync(hotel.Id);
+            var existingHotel = await _context.HotelSet.FindAsync(hotel.HotelId);
             var find = false;
             if (existingHotel != null)
             {
@@ -83,7 +83,7 @@ namespace PaqueteTuristico.Services
         public async Task<int> GetLastHotelIdAsync()
         {
             int ultimoId = await _context.HotelSet.AnyAsync()
-                ? await _context.HotelSet.MaxAsync(e => e.Id)
+                ? await _context.HotelSet.MaxAsync(e => e.HotelId)
                 : 0;
 
             return ultimoId;

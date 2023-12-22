@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PaqueteTuristico.Models;
 using PaqueteTuristico.Services;
@@ -8,6 +9,7 @@ using PaqueteTuristico.Services;
 
 namespace PaqueteTuristico.Controllers
 {
+    [Authorize(Roles = "SuperAdmin,Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class HotelController : ControllerBase
@@ -54,7 +56,7 @@ namespace PaqueteTuristico.Controllers
         public async Task<ActionResult<String>> PostHotel([FromBody] Hotel hotel)
         {
             var id = await _services.GetLastHotelIdAsync();
-            hotel.Id = ++id;
+            hotel.HotelId = ++id;
 
             var inserted = await _services.InsertHotelAsync(hotel);
 

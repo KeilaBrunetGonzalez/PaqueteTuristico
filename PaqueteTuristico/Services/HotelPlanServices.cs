@@ -20,7 +20,7 @@ namespace PaqueteTuristico.Services
             }
             try
             {
-                var hoteltemp = await context.HotelSet.FirstAsync(s => s.Id == hotel.HotelId);
+                var hoteltemp = await context.HotelSet.FirstAsync(s => s.HotelId == hotel.HotelId);
                 var seasontemp = await context.SeasonSet.FirstAsync(s => s.SeasonId == hotel.SeasonId);
                 hotel.Hotel = hoteltemp;
                 hotel.Season = seasontemp;

@@ -26,6 +26,9 @@ namespace PaqueteTuristico.Data
         public DbSet<DayliActivities> DayliActivitieSet { get; set; }
         public DbSet<Transport> TransportSet { get; set; }
         public DbSet<Vehicle> VehicleSet { get; set; }
+        public DbSet<TrasportWithContract> TrasportWithContractsSet { get; set; }
+        public DbSet<TourPackage> TourPackagesSet { get; set; }
+        public DbSet<Province> ProvinceSet { get; set; }
 
         public conocubaContext(DbContextOptions<conocubaContext> options)
         : base(options)
@@ -49,6 +52,17 @@ namespace PaqueteTuristico.Data
                 .WithOne()
                 .HasForeignKey(r => r.HotelId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Hotel>()
+                .HasOne(p => p.Province)
+                .WithMany(h => h.Hotels)
+                .HasForeignKey(i => i.ProvinceId);
+
+            modelBuilder.Entity<Hotel>()
+                .HasMany(t => t.TourPackages)
+                .WithOne(t => t.Hotel)
+                .HasForeignKey(t => t.HotelId);
+            
 
             modelBuilder.Entity<HotelPlan>()
                 .HasKey(p => new
@@ -84,7 +98,44 @@ namespace PaqueteTuristico.Data
                 .WithMany(n => n.Transports)
                 .HasForeignKey(r => r.ModalityId);
 
+            modelBuilder.Entity<HotelContract>()
+                .HasOne(s => s.Plan)
+                .WithMany(p => p.Contracts)
+                .HasForeignKey(n => new
+                {
+                    n.Seasonid,
+                    n.Hotelid
+                });
+            modelBuilder.Entity<ComplementaryContract>()
+                .HasMany(d => d.DayliActivities)
+                .WithMany(c => c.Complementary)
+                .UsingEntity(j => j.ToTable("ActivitiesWhithContracts"));
 
+            modelBuilder.Entity<TransportationContract>()
+                .HasMany(s => s.Transports)
+                .WithMany(x => x.Contract)
+                .UsingEntity<TrasportWithContract>( j => 
+                j.HasKey(t => new
+                {
+                    t.id,
+                    t.Modalityid,
+                    t.Vehicleid
+                }));
+
+            
+
+            modelBuilder.Entity<TourPackage>()
+                .HasOne(y => y.Transport)
+                .WithMany()
+                .HasForeignKey(x => new
+                {
+                    x.ModalityId,
+                    x.VehicleId
+                });
+            modelBuilder.Entity<TourPackage>()
+                .HasOne(d => d.DayliActivities)
+                .WithMany()
+                .HasForeignKey(j => j.ActivityId);
 
             base.OnModelCreating(modelBuilder);
         }          

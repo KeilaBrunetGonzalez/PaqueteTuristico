@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +13,8 @@ using System.Security.Cryptography;
 using System.Text;
 namespace PaqueteTuristico.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class UserController : Controller
     {
         private readonly conocubaContext _context;
@@ -48,7 +51,7 @@ namespace PaqueteTuristico.Controllers
             return Unauthorized();
         }
 
-        [HttpPost("api/login/{userName}/{password}")]
+        [HttpPost("login/{userName}/{password}")]
             public async Task<IActionResult> Login(string userName, string password)
             {
             var user = await userManager.FindByNameAsync(userName);
@@ -72,7 +75,7 @@ namespace PaqueteTuristico.Controllers
 
                 // Creacion del token
                 var token = new JwtSecurityToken(
-                    jwt.Insuer,
+                    jwt.Issuer,
                     jwt.Audience,
                     claims,
                     expires: DateTime.Now.AddMinutes(60),
@@ -83,5 +86,21 @@ namespace PaqueteTuristico.Controllers
             }
             return Unauthorized();
         }
+        [HttpDelete("{userid}")]
+        [Authorize(Roles = "SuperAdmin,Admin")]
+        public async Task<IActionResult> DeleteUser(string userid)
+        {
+           var user = await userManager.FindByIdAsync(userid);
+            if(user != null)
+            {
+                await userManager.DeleteAsync(user);
+                return Ok("El usuario ha sido eliminado");
+            }
+            else { 
+                return BadRequest("El usuario a eliminar no se encuentra registrado");
+            }
+            return Unauthorized();
+        }
+
     }
 }

@@ -6,6 +6,9 @@ namespace PaqueteTuristico.Models
     [Table("TransportationContract")]
     public class TransportationContract: EContract
     {
+        public TransportationContract() {
+           this.Transports = new HashSet<Transport>(); 
+        }
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
         [Required]
@@ -17,6 +20,7 @@ namespace PaqueteTuristico.Models
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
         [Required]
-        public string LicensePlateNumber { get; set; } = "";
+        
+        public ICollection<Transport> Transports { get; set; }
     }
 }

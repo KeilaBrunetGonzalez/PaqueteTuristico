@@ -4,10 +4,12 @@ using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
 using PaqueteTuristico.Services;
 using PaqueteTuristico.Dtos;
+using Microsoft.AspNetCore.Authorization;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PaqueteTuristico.Controllers
 {
+    [Authorize(Roles = "SuperAdmin,Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class HotelPlanController : ControllerBase

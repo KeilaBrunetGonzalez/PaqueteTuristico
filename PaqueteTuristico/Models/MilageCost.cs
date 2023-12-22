@@ -7,11 +7,14 @@ namespace PaqueteTuristico.Models
     public class MileageCost : Modality
     {
         [Required]
-        public float cost_per_kilometer { get; set; }
+        [Column(TypeName = "money")]
+        public decimal cost_per_kilometer { get; set; }
         [Required]
-        public float cost_per_round_trip { get; set; }
+        [Column(TypeName = "money")]
+        public decimal cost_per_round_trip { get; set; }
         [Required]
-        public float cost_per_waiting_hour { get; set; }
+        [Column(TypeName = "money")]
+        public decimal cost_per_waiting_hour { get; set; }
     }
 }
 

@@ -22,6 +22,21 @@ namespace PaqueteTuristico.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("ComplementaryContractDayliActivities", b =>
+                {
+                    b.Property<int>("ComplementaryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("DayliActivitiesActivityId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ComplementaryId", "DayliActivitiesActivityId");
+
+                    b.HasIndex("DayliActivitiesActivityId");
+
+                    b.ToTable("ActivitiesWhithContracts", (string)null);
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -234,10 +249,15 @@ namespace PaqueteTuristico.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("money");
+
+                    b.Property<int>("ProvinceId")
+                        .HasColumnType("integer");
 
                     b.HasKey("ActivityId");
+
+                    b.HasIndex("ProvinceId");
 
                     b.ToTable("Dayli_Activities");
                 });
@@ -276,11 +296,11 @@ namespace PaqueteTuristico.Migrations
 
             modelBuilder.Entity("PaqueteTuristico.Models.Hotel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("HotelId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("HotelId"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -333,12 +353,12 @@ namespace PaqueteTuristico.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("money");
 
-                    b.Property<string>("Province")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar");
+                    b.Property<int>("ProvinceId")
+                        .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.HasKey("HotelId");
+
+                    b.HasIndex("ProvinceId");
 
                     b.ToTable("Hotel");
                 });
@@ -404,6 +424,24 @@ namespace PaqueteTuristico.Migrations
                     b.UseTptMappingStrategy();
                 });
 
+            modelBuilder.Entity("PaqueteTuristico.Models.Province", b =>
+                {
+                    b.Property<int>("ProvinceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ProvinceId"));
+
+                    b.Property<string>("ProvinceName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.HasKey("ProvinceId");
+
+                    b.ToTable("ProvinceSet");
+                });
+
             modelBuilder.Entity("PaqueteTuristico.Models.Room", b =>
                 {
                     b.Property<int>("Id")
@@ -456,6 +494,57 @@ namespace PaqueteTuristico.Migrations
                     b.ToTable("Season");
                 });
 
+            modelBuilder.Entity("PaqueteTuristico.Models.TourPackage", b =>
+                {
+                    b.Property<int>("PackageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PackageId"));
+
+                    b.Property<int>("ActivityId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("HotelId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ModalityId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProvinceId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<decimal>("Totalprice")
+                        .HasColumnType("money");
+
+                    b.Property<int?>("TransportModalityId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("TransportVehicleId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("PackageId");
+
+                    b.HasIndex("ActivityId");
+
+                    b.HasIndex("HotelId");
+
+                    b.HasIndex("ModalityId", "VehicleId");
+
+                    b.HasIndex("TransportModalityId", "TransportVehicleId");
+
+                    b.ToTable("TourPackagesSet");
+                });
+
             modelBuilder.Entity("PaqueteTuristico.Models.Transport", b =>
                 {
                     b.Property<int>("ModalityId")
@@ -464,14 +553,37 @@ namespace PaqueteTuristico.Migrations
                     b.Property<int>("VehicleId")
                         .HasColumnType("integer");
 
-                    b.Property<float>("Transport_Cost")
-                        .HasColumnType("real");
+                    b.Property<decimal>("Transport_Cost")
+                        .HasColumnType("money");
 
                     b.HasKey("ModalityId", "VehicleId");
 
                     b.HasIndex("VehicleId");
 
                     b.ToTable("TransportSet");
+                });
+
+            modelBuilder.Entity("PaqueteTuristico.Models.TrasportWithContract", b =>
+                {
+                    b.Property<int>("id")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Modalityid")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Vehicleid")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TransportationId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("id", "Modalityid", "Vehicleid");
+
+                    b.HasIndex("TransportationId");
+
+                    b.HasIndex("Modalityid", "Vehicleid");
+
+                    b.ToTable("TrasportWithContractsSet");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.Vehicle", b =>
@@ -503,6 +615,9 @@ namespace PaqueteTuristico.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar");
 
+                    b.Property<int>("ProvinceId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Total_Capacity")
                         .HasColumnType("integer");
 
@@ -510,6 +625,8 @@ namespace PaqueteTuristico.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("VehicleId");
+
+                    b.HasIndex("ProvinceId");
 
                     b.ToTable("vehicles");
                 });
@@ -546,6 +663,14 @@ namespace PaqueteTuristico.Migrations
                     b.Property<decimal>("HotelTotalPrice")
                         .HasColumnType("money");
 
+                    b.Property<int>("Hotelid")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Seasonid")
+                        .HasColumnType("integer");
+
+                    b.HasIndex("Seasonid", "Hotelid");
+
                     b.ToTable("HotelContract");
                 });
 
@@ -555,11 +680,6 @@ namespace PaqueteTuristico.Migrations
 
                     b.Property<int>("IncluedVehicles")
                         .HasColumnType("integer");
-
-                    b.Property<string>("LicensePlateNumber")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar");
 
                     b.Property<string>("TransportationProvider")
                         .IsRequired()
@@ -573,17 +693,17 @@ namespace PaqueteTuristico.Migrations
                 {
                     b.HasBaseType("PaqueteTuristico.Models.Modality");
 
-                    b.Property<float>("cost_per_hour")
-                        .HasColumnType("real");
+                    b.Property<decimal>("cost_per_hour")
+                        .HasColumnType("money");
 
-                    b.Property<float>("cost_per_kilometer_traveled")
-                        .HasColumnType("real");
+                    b.Property<decimal>("cost_per_kilometer_traveled")
+                        .HasColumnType("money");
 
-                    b.Property<float>("extra_hour_cost")
-                        .HasColumnType("real");
+                    b.Property<decimal>("extra_hour_cost")
+                        .HasColumnType("money");
 
-                    b.Property<float>("extra_kilometer_cost")
-                        .HasColumnType("real");
+                    b.Property<decimal>("extra_kilometer_cost")
+                        .HasColumnType("money");
 
                     b.ToTable("CostPerHour");
                 });
@@ -592,16 +712,16 @@ namespace PaqueteTuristico.Migrations
                 {
                     b.HasBaseType("PaqueteTuristico.Models.Modality");
 
-                    b.Property<float>("round_trip_cost")
-                        .HasColumnType("real");
+                    b.Property<decimal>("round_trip_cost")
+                        .HasColumnType("money");
 
                     b.Property<string>("rout_description")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar");
 
-                    b.Property<float>("route_cost")
-                        .HasColumnType("real");
+                    b.Property<decimal>("route_cost")
+                        .HasColumnType("money");
 
                     b.ToTable("CostPerTour");
                 });
@@ -610,16 +730,31 @@ namespace PaqueteTuristico.Migrations
                 {
                     b.HasBaseType("PaqueteTuristico.Models.Modality");
 
-                    b.Property<float>("cost_per_kilometer")
-                        .HasColumnType("real");
+                    b.Property<decimal>("cost_per_kilometer")
+                        .HasColumnType("money");
 
-                    b.Property<float>("cost_per_round_trip")
-                        .HasColumnType("real");
+                    b.Property<decimal>("cost_per_round_trip")
+                        .HasColumnType("money");
 
-                    b.Property<float>("cost_per_waiting_hour")
-                        .HasColumnType("real");
+                    b.Property<decimal>("cost_per_waiting_hour")
+                        .HasColumnType("money");
 
                     b.ToTable("MileageCost");
+                });
+
+            modelBuilder.Entity("ComplementaryContractDayliActivities", b =>
+                {
+                    b.HasOne("PaqueteTuristico.Models.ComplementaryContract", null)
+                        .WithMany()
+                        .HasForeignKey("ComplementaryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PaqueteTuristico.Models.DayliActivities", null)
+                        .WithMany()
+                        .HasForeignKey("DayliActivitiesActivityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -673,6 +808,28 @@ namespace PaqueteTuristico.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PaqueteTuristico.Models.DayliActivities", b =>
+                {
+                    b.HasOne("PaqueteTuristico.Models.Province", "Province")
+                        .WithMany("DaylActivities")
+                        .HasForeignKey("ProvinceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Province");
+                });
+
+            modelBuilder.Entity("PaqueteTuristico.Models.Hotel", b =>
+                {
+                    b.HasOne("PaqueteTuristico.Models.Province", "Province")
+                        .WithMany("Hotels")
+                        .HasForeignKey("ProvinceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Province");
+                });
+
             modelBuilder.Entity("PaqueteTuristico.Models.HotelPlan", b =>
                 {
                     b.HasOne("PaqueteTuristico.Models.Hotel", "Hotel")
@@ -710,6 +867,37 @@ namespace PaqueteTuristico.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PaqueteTuristico.Models.TourPackage", b =>
+                {
+                    b.HasOne("PaqueteTuristico.Models.DayliActivities", "DayliActivities")
+                        .WithMany()
+                        .HasForeignKey("ActivityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PaqueteTuristico.Models.Hotel", "Hotel")
+                        .WithMany("TourPackages")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PaqueteTuristico.Models.Transport", "Transport")
+                        .WithMany()
+                        .HasForeignKey("ModalityId", "VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PaqueteTuristico.Models.Transport", null)
+                        .WithMany("TourPackages")
+                        .HasForeignKey("TransportModalityId", "TransportVehicleId");
+
+                    b.Navigation("DayliActivities");
+
+                    b.Navigation("Hotel");
+
+                    b.Navigation("Transport");
+                });
+
             modelBuilder.Entity("PaqueteTuristico.Models.Transport", b =>
                 {
                     b.HasOne("PaqueteTuristico.Models.Modality", "Modality")
@@ -729,6 +917,36 @@ namespace PaqueteTuristico.Migrations
                     b.Navigation("Vehicle");
                 });
 
+            modelBuilder.Entity("PaqueteTuristico.Models.TrasportWithContract", b =>
+                {
+                    b.HasOne("PaqueteTuristico.Models.TransportationContract", "Transportation")
+                        .WithMany()
+                        .HasForeignKey("TransportationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PaqueteTuristico.Models.Transport", "Transport")
+                        .WithMany()
+                        .HasForeignKey("Modalityid", "Vehicleid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Transport");
+
+                    b.Navigation("Transportation");
+                });
+
+            modelBuilder.Entity("PaqueteTuristico.Models.Vehicle", b =>
+                {
+                    b.HasOne("PaqueteTuristico.Models.Province", "Province")
+                        .WithMany("Vehicles")
+                        .HasForeignKey("ProvinceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Province");
+                });
+
             modelBuilder.Entity("PaqueteTuristico.Models.ComplementaryContract", b =>
                 {
                     b.HasOne("PaqueteTuristico.Models.EContract", null)
@@ -745,6 +963,14 @@ namespace PaqueteTuristico.Migrations
                         .HasForeignKey("PaqueteTuristico.Models.HotelContract", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("PaqueteTuristico.Models.HotelPlan", "Plan")
+                        .WithMany("Contracts")
+                        .HasForeignKey("Seasonid", "Hotelid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Plan");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.TransportationContract", b =>
@@ -790,6 +1016,13 @@ namespace PaqueteTuristico.Migrations
                     b.Navigation("Plans");
 
                     b.Navigation("Rooms");
+
+                    b.Navigation("TourPackages");
+                });
+
+            modelBuilder.Entity("PaqueteTuristico.Models.HotelPlan", b =>
+                {
+                    b.Navigation("Contracts");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.Modality", b =>
@@ -797,9 +1030,23 @@ namespace PaqueteTuristico.Migrations
                     b.Navigation("Transports");
                 });
 
+            modelBuilder.Entity("PaqueteTuristico.Models.Province", b =>
+                {
+                    b.Navigation("DaylActivities");
+
+                    b.Navigation("Hotels");
+
+                    b.Navigation("Vehicles");
+                });
+
             modelBuilder.Entity("PaqueteTuristico.Models.Season", b =>
                 {
                     b.Navigation("Plans");
+                });
+
+            modelBuilder.Entity("PaqueteTuristico.Models.Transport", b =>
+                {
+                    b.Navigation("TourPackages");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.Vehicle", b =>

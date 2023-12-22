@@ -11,10 +11,12 @@ namespace PaqueteTuristico.Models
             this.Rooms = new HashSet<Room>();
             this.Meals = new HashSet<Meal>();
             this.Plans = new HashSet<HotelPlan>();
+            this.TourPackages = new HashSet<TourPackage>(); 
+            this.Province = new Province();
         }
 
         [Key]
-        public int Id { get; set; }
+        public int HotelId { get; set; }
 
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
@@ -25,11 +27,6 @@ namespace PaqueteTuristico.Models
         [MaxLength(100)]
         [Required]
         public string Chain { get; set; } = "";
-
-        [Column(TypeName = "varchar")]
-        [MaxLength(100)]
-        [Required]
-        public string Province { get; set; } = "";
 
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
@@ -47,6 +44,8 @@ namespace PaqueteTuristico.Models
         [Required]
         public int NumberOfRooms { get; set; }
 
+        [Required]
+        public int ProvinceId {  get; set; }
 
         [Required]
         public int DisNearCity { get; set; }
@@ -73,7 +72,9 @@ namespace PaqueteTuristico.Models
 
         [Column(TypeName = "boolean")]
         public bool Enabled { get; set; } = true;
+        [JsonIgnore]
 
+        public Province Province { get; set; }
         [JsonIgnore]
         public virtual ICollection<HotelPlan> Plans { get; set; }
 
@@ -81,7 +82,11 @@ namespace PaqueteTuristico.Models
         public virtual ICollection<Room> Rooms { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<Meal> Meals { get; set; }    
+        public virtual ICollection<Meal> Meals { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<TourPackage> TourPackages { get; set; }
+
 
     }
 }

@@ -6,6 +6,6 @@ namespace PaqueteTuristico.Dtos
     {
         public int ModalityId { get; set; }
         public int VehicleId { get; set; }
-        public float Transport_Cost { get; set; }
+        public decimal Transport_Cost { get; set; }
     }
 }

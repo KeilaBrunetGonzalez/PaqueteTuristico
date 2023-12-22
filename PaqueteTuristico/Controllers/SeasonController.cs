@@ -6,11 +6,13 @@ using System.Linq.Expressions;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Services;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PaqueteTuristico.Controllers
 {
+    [Authorize(Roles = "SuperAdmin,Admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class SeasonController : ControllerBase

@@ -13,6 +13,7 @@ namespace PaqueteTuristico.Models
         {
             this.Hotel = new Hotel();
             this.Season = new Season();
+            this.Contracts = new HashSet<HotelContract>();
         }
         [Key]
         public int HotelId { get; set; }
@@ -25,5 +26,8 @@ namespace PaqueteTuristico.Models
         
         [JsonIgnore]
         public Season Season { get; set; }
+
+        [JsonIgnore]
+        public ICollection<HotelContract> Contracts { get; set; }
     }
 }

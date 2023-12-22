@@ -11,8 +11,10 @@ namespace PaqueteTuristico.Models
         [MaxLength(100)]
         public string rout_description { get; set; } = "";
         [Required]
-        public float route_cost { get; set; }
+        [Column(TypeName = "money")]
+        public decimal route_cost { get; set; }
         [Required]
-        public float round_trip_cost { get; set; }
+        [Column(TypeName = "money")]
+        public decimal round_trip_cost { get; set; }
     }
 }

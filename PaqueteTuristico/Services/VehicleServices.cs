@@ -101,7 +101,7 @@ namespace PaqueteTuristico.Services
         public async Task<int> ObtenerUltimoIdVehicleAsync()
         {
             int ultimoId = await context.VehicleSet.AnyAsync()
-                ? await context.HotelSet.MaxAsync(e => e.Id)
+                ? await context.HotelSet.MaxAsync(e => e.HotelId)
                 : 0;
 
             return ultimoId;
