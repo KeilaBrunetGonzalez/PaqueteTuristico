@@ -23,7 +23,7 @@ namespace PaqueteTuristico.Controllers
 
 
         // GET 
-        [HttpGet("{id}")]
+        [HttpGet("{HotelId}")]
         public async Task<ActionResult<Hotel>> GetHotelAsync(int HotelId)
         {
                 var hotel = await _services.GetHotelAsync(HotelId);

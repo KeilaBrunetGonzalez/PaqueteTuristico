@@ -15,10 +15,10 @@ namespace PaqueteTuristico.Models
         public string Subject { get; set; } = "Reserva exitosa";
 
         [JsonIgnore]
-        public string Body { get; set; } = "Nos complace informarte que tu reserva ha sido exitosa. Estamos emocionados de recibirte en nuestro destino en Cuba. Esperamos que disfrutes de unas vacaciones increíbles con nosotros.\n\n" +
+        public string Body { get; set; } = "Nos complace informarle que su reserva ha sido exitosa. Estamos emocionados de recibirte en nuestro destino en Cuba. Esperamos que disfrutes de unas vacaciones increíbles con nosotros.\n\n" +
            "¡Esperamos verte pronto!\n" +
            "Saludos cordiales,\n" +
-           "El Equipo de Conoce Cuba" +
+           "El Equipo de Conoce Cuba \n" + 
             "Si necesitas cancelar tu reserva, por favor haz clic en el siguiente enlace:\n\n" +
            "<a href=\"http://localhost:9000/#/\">Cancelar Reserva</a>";
 
