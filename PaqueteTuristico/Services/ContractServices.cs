@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
 
@@ -25,5 +27,14 @@ namespace PaqueteTuristico.Services
             return contract;
         }
 
+        public async Task<List<EContract>?> GetAllContractsAsync()
+        {
+            var list = await _context.EContractSet.ToListAsync();
+
+            return list;
+        }
+
     }
+
+
 }
