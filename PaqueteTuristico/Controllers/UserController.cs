@@ -107,5 +107,33 @@ namespace PaqueteTuristico.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<ActionResult> GetAllUsersWithRol()
+        {
+            var users = await userManager.Users.ToListAsync();
+
+            if (users != null)
+            {
+                var usersWithRol = new List<object>();
+                foreach (var user in users)
+                {
+                    var roles = await userManager.GetRolesAsync(user);
+
+                    var userWithRole = new
+                    {
+                        UserId = user.Id,
+                        UserName = user.UserName,
+                        Email = user.Email,
+                        Roles = roles
+                    };
+
+                    usersWithRol.Add(userWithRole);
+                }
+                return Ok(usersWithRol);
+            }
+
+            return NotFound();
+        }
+
     }
 }
