@@ -39,7 +39,7 @@ namespace PaqueteTuristico.Services
                                  ContractPrice = HotelContract.HotelTotalPrice
                              };
             return concilCont;
-        }
+        }*/
 
         //Reporte de listado de contratos de transporte
         /*public IQueryable<ListTransport>? GetTransportContractsList()
@@ -80,7 +80,7 @@ namespace PaqueteTuristico.Services
         }*/
 
         //Reporte de listado de temporadas de los contratos de hoteles
-        public IQueryable<SeasonHotelContract>? GetHotelContractsBySeason()
+       /* public IQueryable<SeasonHotelContract>? GetHotelContractsBySeason()
         {
             var seasonConts = from HotelContract in _context.HotelContractSet
                               join Hotel in _context.HotelSet on HotelContract.Hotelid equals Hotel.HotelId
@@ -129,4 +129,4 @@ namespace PaqueteTuristico.Services
         }
     }
 }
-*/
+       */
