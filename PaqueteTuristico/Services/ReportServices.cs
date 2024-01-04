@@ -2,7 +2,6 @@
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Dtos;
 using PaqueteTuristico.Models;
-using System.Data.Entity;
 
 namespace PaqueteTuristico.Services
 {
@@ -43,7 +42,7 @@ namespace PaqueteTuristico.Services
         }
 
         //Reporte de listado de contratos de transporte
-        public IQueryable<ListTransport>? GetTransportContractsList()
+        /*public IQueryable<ListTransport>? GetTransportContractsList()
         {
             var transpCont = from TransportationContract in _context.TransportationContractSet
                              join Vehicle in _context.VehicleSet on TransportationContract.LicensePlateNumber equals Vehicle.License_Plate_Number
@@ -78,17 +77,17 @@ namespace PaqueteTuristico.Services
 
             return transpCont;
 
-        }
+        }*/
 
         //Reporte de listado de temporadas de los contratos de hoteles
         public IQueryable<SeasonHotelContract>? GetHotelContractsBySeason()
         {
             var seasonConts = from HotelContract in _context.HotelContractSet
-                              join Hotel in _context.HotelSet on HotelContract.Address equals Hotel.Address
-                              join HotelPlan in _context.HotelPlanSet on Hotel.Id equals HotelPlan.HotelId
+                              join Hotel in _context.HotelSet on HotelContract.Hotelid equals Hotel.HotelId
+                              join HotelPlan in _context.HotelPlanSet on Hotel.HotelId equals HotelPlan.HotelId
                               join Season in _context.SeasonSet on HotelPlan.SeasonId equals Season.SeasonId
-                              join Room in _context.RoomSet on Hotel.Id equals Room.HotelId
-                              join Meal in _context.MealSet on Hotel.Id equals Meal.HotelId
+                              join Room in _context.RoomSet on Hotel.HotelId equals Room.HotelId
+                              join Meal in _context.MealSet on Hotel.HotelId equals Meal.HotelId
                               select new SeasonHotelContract
                               {
                                   HotelName = Hotel.Name,
@@ -108,13 +107,14 @@ namespace PaqueteTuristico.Services
         public IQueryable<HotelDTO>? GetActivesHotels()
         {
             var activeHotel = from Hotel in _context.HotelSet
+                              join Province in _context.ProvinceSet on Hotel.ProvinceId equals Province.ProvinceId
                               where Hotel.Enabled
                               select new HotelDTO
                               {
                                   Date = DateTime.Now,
                                   HotelName = Hotel.Name,
                                   HotelChain = Hotel.Chain,
-                                  Province = Hotel.Province,
+                                  Province = Province.ProvinceName,
                                   Category = Hotel.Category,
                                   Phone = Hotel.Phone,
                                   Address = Hotel.Address,

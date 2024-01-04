@@ -33,7 +33,7 @@ namespace PaqueteTuristico.Controllers
         }
 
         //Reporte de listado de contratos de transporte
-        [HttpGet("TransportationContractList")]
+        /*[HttpGet("TransportationContractList")]
         public IActionResult GetTransportContractsDetails()
         {
             var transpCont = _services.GetTransportContractsList();
@@ -44,7 +44,7 @@ namespace PaqueteTuristico.Controllers
             }
 
             return NotFound();
-        }
+        }*/
 
         //Reporte de listado de temporadas de los contratos de hoteles
         [HttpGet("HotelContractsBySeason")]
