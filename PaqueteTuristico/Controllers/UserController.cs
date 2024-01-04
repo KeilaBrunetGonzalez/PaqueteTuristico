@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PaqueteTuristico.Data;
+using PaqueteTuristico.Dtos;
 using PaqueteTuristico.Models;
 using PaqueteTuristico.Utils;
 using System;
@@ -19,9 +20,9 @@ namespace PaqueteTuristico.Controllers
     {
         private readonly conocubaContext _context;
         private readonly IConfiguration configuration;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<UserApp> userManager;
 
-        public UserController(IConfiguration config, conocubaContext context, UserManager<IdentityUser> user)
+        public UserController(IConfiguration config, conocubaContext context, UserManager<UserApp> user)
         {
             _context = context;
             configuration = config;
@@ -33,7 +34,7 @@ namespace PaqueteTuristico.Controllers
         {
             if (await userManager.FindByEmailAsync(user.Email) == null)
             {
-                var tempuser = new IdentityUser { UserName = user.UserName, Email = user.Email };
+                var tempuser = new UserApp { UserName = user.UserName, Email = user.Email };
                 var result = await userManager.CreateAsync(tempuser, user.Password);
                 if (result.Succeeded)
                 {
@@ -51,7 +52,7 @@ namespace PaqueteTuristico.Controllers
             return Unauthorized();
         }
 
-        [HttpPost("api/login/{userName}/{password}")]
+        [HttpPost("login/{userName}/{password}")]
         public async Task<IActionResult> Login(string userName, string password)
         {
             var user = await userManager.FindByNameAsync(userName);

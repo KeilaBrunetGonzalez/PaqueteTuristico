@@ -34,6 +34,7 @@ namespace PaqueteTuristico.Models
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
         public string Manufacturing_Mode { get; set; } = "";
+
         public int ProvinceId {  get; set; }
         [JsonIgnore]
         public ICollection<Transport> Transports { get; set; }
