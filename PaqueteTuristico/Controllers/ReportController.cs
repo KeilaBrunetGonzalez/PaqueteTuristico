@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+/*using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
@@ -74,3 +74,4 @@ namespace PaqueteTuristico.Controllers
     }
 }
 
+*/

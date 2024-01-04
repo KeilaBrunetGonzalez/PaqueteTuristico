@@ -12,7 +12,7 @@ using PaqueteTuristico.Data;
 namespace PaqueteTuristico.Migrations
 {
     [DbContext(typeof(conocubaContext))]
-    [Migration("20231225201305_InitialCreate")]
+    [Migration("20240103075338_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -310,10 +310,8 @@ namespace PaqueteTuristico.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar");
+                    b.Property<int>("Category")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Chain")
                         .IsRequired()

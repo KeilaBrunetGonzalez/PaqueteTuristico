@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+/*using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Dtos;
 using PaqueteTuristico.Models;
@@ -19,15 +19,16 @@ namespace PaqueteTuristico.Services
         public IQueryable<ConciliatedHotelContractDto>? GetConcilHotelContracts()
         {
             var concilCont = from HotelContract in _context.HotelContractSet
-                             join Hotel in _context.HotelSet on HotelContract.Address equals Hotel.Address
-                             join Room in _context.RoomSet on Hotel.Id equals Room.HotelId
-                             join Meal in _context.MealSet on Hotel.Id equals Meal.HotelId
+                             join Hotel in _context.HotelSet on HotelContract.Hotelid equals Hotel.HotelId
+                             join Room in _context.RoomSet on Hotel.HotelId equals Room.HotelId
+                             join Meal in _context.MealSet on Hotel.HotelId equals Meal.HotelId
+                             join Province in _context.ProvinceSet on Hotel.ProvinceId equals Province.ProvinceId
                              where HotelContract.Enabled && HotelContract.ConcilTime >= HotelContract.StarDate
                              select new ConciliatedHotelContractDto
                              {
                                  HotelName = Hotel.Name,
                                  HotelChain = Hotel.Chain,
-                                 Province = Hotel.Province,
+                                 Province = Province.ProvinceName,
                                  Address = Hotel.Address,
                                  Category = Hotel.Category,
                                  StartDate = HotelContract.StarDate,
@@ -128,3 +129,4 @@ namespace PaqueteTuristico.Services
         }
     }
 }
+*/

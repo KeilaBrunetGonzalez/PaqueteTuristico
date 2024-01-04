@@ -307,10 +307,8 @@ namespace PaqueteTuristico.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar");
+                    b.Property<int>("Category")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Chain")
                         .IsRequired()
