@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
@@ -9,7 +8,6 @@ using PaqueteTuristico.Services;
 
 namespace PaqueteTuristico.Controllers
 {
-    [Authorize(Roles = "SuperAdmin,Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class HotelContractController : ControllerBase
@@ -20,8 +18,8 @@ namespace PaqueteTuristico.Controllers
             this._services = services;
         }
 
-        //GET
-        [HttpGet("/contracts/HotelContract")]
+        //GET api/<HotelContract>
+        [HttpGet]
         public async Task<ActionResult<List<HotelContract>>> GetHotelContract()
         {
             var contractList = await _services.GetHotelContractAsync();
@@ -32,8 +30,8 @@ namespace PaqueteTuristico.Controllers
             return Ok(contractList);
         }
 
-        //POST
-        [HttpPost("/contracts/HotelContract")]
+        //POST api/<HotelContract>
+        [HttpPost]
         public async Task<ActionResult<string>> CreateHotelContract([FromBody] HotelContract contract)
         {
             var insertContract = await _services.InsertHotelContractAsync(contract);
@@ -47,8 +45,8 @@ namespace PaqueteTuristico.Controllers
 
         }
 
-        //PUT
-        [HttpPut("/contracts/HotelContract")]
+        //PUT api/<HotelContract>
+        [HttpPut]
         public async Task<ActionResult<string>> UpdateHotelContract([FromBody] HotelContract cont)
         {
             var upContract = await _services.UpdateHotelContractAsync(cont);
@@ -60,8 +58,8 @@ namespace PaqueteTuristico.Controllers
             return NotFound("Hotel contract not found");
         }
 
-        //DELETE
-        [HttpDelete("/contracts/HotelContract")]
+        //DELETE api/<HotelContract>
+        [HttpDelete("{id}")]
         public async Task<ActionResult<string>> DeleteHotelContract(int Id)
         {
             var removedContract = await _services.DeleteHotelContractAsync(Id);
@@ -71,6 +69,19 @@ namespace PaqueteTuristico.Controllers
                 return Ok("Hotel contract removed");
             }
             return NotFound("Hotel contract not found");
+        }
+
+
+        [HttpPatch("{id}/{enabled}")]
+        public async Task<ActionResult<String>> PatchEnabled(int id, bool enabled)
+        {
+            var updated = await _services.UpdateEnabledAsync(id, enabled);
+
+            if (updated)
+            {
+                return Ok("Contract updated");
+            }
+            return NotFound("Contract not found");
         }
     }
 }

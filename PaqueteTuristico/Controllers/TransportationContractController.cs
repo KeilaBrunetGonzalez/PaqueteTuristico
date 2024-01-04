@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PaqueteTuristico.Data;
@@ -11,7 +10,6 @@ using PaqueteTuristico.Services;
 
 namespace PaqueteTuristico.Controllers
 {
-    [Authorize(Roles = "SuperAdmin,Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class TransportationContractController : ControllerBase
@@ -24,7 +22,7 @@ namespace PaqueteTuristico.Controllers
 
         // GET 
 
-        [HttpGet("/contracts/transportationContract")]
+        [HttpGet]
 
         public async Task<ActionResult<List<TransportationContract>>> GetTransContract()
         {
@@ -38,9 +36,9 @@ namespace PaqueteTuristico.Controllers
 
 
 
-        // POST 
+        // POST api/<TransportationContract>
 
-        [HttpPost("/contracts/transportationContract")]
+        [HttpPost]
         public async Task<ActionResult<string>> CreateTransportationContract([FromBody] TransportationContract contract)
         {
             var insertContract = await _services.InsertTransportationContractAsync(contract);
@@ -53,9 +51,9 @@ namespace PaqueteTuristico.Controllers
             return Ok("Transportation contract inserted");
         }
 
-        //PUT
+        //PUT api/<TransportationContract>
 
-        [HttpPut("/contracts/transportationContract")]
+        [HttpPut]
          public async Task<ActionResult<string>> UpdateTranaportationContract([FromBody] TransportationContract cont)
         {
             var upContract = await _services.UpdateTransportationContractAsync(cont);
@@ -68,9 +66,9 @@ namespace PaqueteTuristico.Controllers
         }
 
 
-        //DELETE
+        //DELETE api/<TransportationContract>
 
-        [HttpDelete("/contracts/transportationContract")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<string>> DeleteTransportationContract(int Id)
         {
             var removedContract = await _services.DeleteTransportationContractAsync(Id);
@@ -80,6 +78,19 @@ namespace PaqueteTuristico.Controllers
                 return Ok("Transportation contract removed");
             }
             return NotFound("Transportation contract not found");
+        }
+
+
+        [HttpPatch("{id}/{enabled}")]
+        public async Task<ActionResult<String>> PatchEnabled(int id, bool enabled)
+        {
+            var updated = await _services.UpdateEnabledAsync(id, enabled);
+
+            if (updated)
+            {
+                return Ok("Contract updated");
+            }
+            return NotFound("Contract not found");
         }
 
     }

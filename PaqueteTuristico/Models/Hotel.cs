@@ -28,10 +28,9 @@ namespace PaqueteTuristico.Models
         [Required]
         public string Chain { get; set; } = "";
 
-        [Column(TypeName = "varchar")]
-        [MaxLength(100)]
+ 
         [Required]
-        public string Category { get; set; } = "";
+        public int Category { get; set; }
 
         [Required]
         public int Phone { get; set; }

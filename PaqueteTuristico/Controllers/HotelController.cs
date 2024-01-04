@@ -23,7 +23,7 @@ namespace PaqueteTuristico.Controllers
 
 
         // GET 
-        [HttpGet("{id}")]
+        [HttpGet("{HotelId}")]
         public async Task<ActionResult<Hotel>> GetHotelAsync(int HotelId)
         {
                 var hotel = await _services.GetHotelAsync(HotelId);
@@ -84,10 +84,10 @@ namespace PaqueteTuristico.Controllers
 
         // DELETE: api/Hotel
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<String>> DeleteHotel(int Id)
+        [HttpDelete("{HotelId}")]
+        public async Task<ActionResult<String>> DeleteHotel(int HotelId)
         {
-            var removed = await _services.DeleteHotelAsync(Id);
+            var removed = await _services.DeleteHotelAsync(HotelId);
 
             if (removed)
             {
@@ -98,10 +98,10 @@ namespace PaqueteTuristico.Controllers
 
         
 
-        [HttpPatch("{id}/{enabled}")]
-        public async Task<ActionResult<String>> PatchEnabled(int id, bool enabled)
+        [HttpPatch("{HotelId}/{enabled}")]
+        public async Task<ActionResult<String>> PatchEnabled(int HotelId, bool enabled)
         {
-            var updated = await _services.UpdateEnabledAsync(id, enabled);
+            var updated = await _services.UpdateEnabledAsync(HotelId, enabled);
 
             if (updated)
             {

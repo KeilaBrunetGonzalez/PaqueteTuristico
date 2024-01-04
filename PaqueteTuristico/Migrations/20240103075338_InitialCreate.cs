@@ -343,7 +343,7 @@ namespace PaqueteTuristico.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
                     Chain = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
-                    Category = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
+                    Category = table.Column<int>(type: "integer", nullable: false),
                     Phone = table.Column<int>(type: "integer", nullable: false),
                     Email = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
                     NumberOfRooms = table.Column<int>(type: "integer", nullable: false),

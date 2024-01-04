@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PaqueteTuristico.Data;
@@ -12,7 +11,6 @@ namespace PaqueteTuristico.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "SuperAdmin,Admin")]
     public class ComplementaryContractController : ControllerBase
     {
         private readonly ComplementaryContractServices _services;
@@ -22,7 +20,7 @@ namespace PaqueteTuristico.Controllers
             this._services = services;
         }
         //GET
-        [HttpGet("/contracts/complementaryContract")]
+        [HttpGet]
         public async Task<ActionResult<List<ComplementaryContract>>> GetCompContract()
         {
             var contractList = await _services.GetComplementaryContractsAsync();
@@ -33,8 +31,8 @@ namespace PaqueteTuristico.Controllers
             return Ok(contractList);
         }
 
-        //POST
-        [HttpPost("/contracts/complementaryContract")]
+        //POST api/<ComplementaryContract>
+        [HttpPost]
         public async Task<ActionResult<string>> CreateComplementaryContract([FromBody] ComplementaryContract contract)
         {
             var insertContract = await _services.InsertComplementaryContractAsync(contract);
@@ -48,8 +46,8 @@ namespace PaqueteTuristico.Controllers
 
         }
 
-        //PUT
-        [HttpPut("/contracts/complementaryContract")]
+        //PUT api/<ComplementaryContract>
+        [HttpPut]
 
         public async Task<ActionResult<string>> UpdateComplementaryContract([FromBody] ComplementaryContract cont)
         {
@@ -62,8 +60,8 @@ namespace PaqueteTuristico.Controllers
             return NotFound("Complementary contract not found");
         }
 
-        //Delete
-        [HttpDelete("/contracts/complementaryContract")]
+        //Delete api/<ComplementaryContract>
+        [HttpDelete("{id}")]
 
         public async Task<ActionResult<string>> DeleteComplementaryContract(int Id)
         {
@@ -74,6 +72,19 @@ namespace PaqueteTuristico.Controllers
                 return Ok("Complementary contract removed");
             }
             return NotFound("Complementary contract not found");
+        }
+
+
+        [HttpPatch("{id}/{enabled}")]
+        public async Task<ActionResult<String>> PatchEnabled(int id, bool enabled)
+        {
+            var updated = await _services.UpdateEnabledAsync(id, enabled);
+
+            if (updated)
+            {
+                return Ok("Contract updated");
+            }
+            return NotFound("Contract not found");
         }
 
     }
