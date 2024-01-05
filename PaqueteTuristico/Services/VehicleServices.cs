@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Controllers;
 using PaqueteTuristico.Data;
+using PaqueteTuristico.Dtos;
 using PaqueteTuristico.Models;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Transactions;
 
 namespace PaqueteTuristico.Services
@@ -105,6 +107,25 @@ namespace PaqueteTuristico.Services
                 : 0;
 
             return ultimoId;
+        }
+
+        public IQueryable<VehicleDTO>? GetAllVehicle()
+        {
+            var vehicles = from Vehicle in context.VehicleSet
+                         join Province in context.ProvinceSet on Vehicle.ProvinceId equals Province.ProvinceId
+                         select new VehicleDTO
+                         {
+                             VehicleId = Vehicle.VehicleId,
+                             License_Plate_Number = Vehicle.License_Plate_Number,
+                             Brand = Vehicle.Brand,
+                             Capacity_Without_Equipement = Vehicle.Capacity_Without_Equipement,
+                             Capacity_With_Equipement = Vehicle.Capacity_With_Equipement,
+                             Total_Capacity = Vehicle.Total_Capacity,
+                             Year_of_Manufacture = Vehicle.Year_of_Manufacture,
+                             Manufacturing_Mode = Vehicle.Manufacturing_Mode,
+                             ProvinceName = Province.ProvinceName
+                         };
+            return vehicles;
         }
     }
 }

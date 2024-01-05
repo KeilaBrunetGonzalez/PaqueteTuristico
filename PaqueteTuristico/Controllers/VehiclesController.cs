@@ -80,5 +80,18 @@ namespace PaqueteTuristico.Controllers
             }
             return Ok("Vehicle Deleted");
         }
+
+        [HttpGet("GetVehicles")]
+        public IActionResult GetVehicles()
+        {
+            var vehicles = _vehicleServices.GetAllVehicle();
+
+            if (vehicles != null)
+            {
+                return Ok(vehicles);
+            }
+
+            return NotFound();
+        }
     }
 }

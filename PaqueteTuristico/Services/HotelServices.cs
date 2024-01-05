@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using PaqueteTuristico.Data;
+using PaqueteTuristico.Dtos;
 using PaqueteTuristico.Models;
+using System.Net;
 
 namespace PaqueteTuristico.Services
 {
@@ -91,7 +93,7 @@ namespace PaqueteTuristico.Services
         internal async Task<bool> UpdateEnabledAsync(int hotelId, bool enb)
         {
             try
-            {  
+            {
                 var existingHotel = await _context.HotelSet.FindAsync(hotelId);
 
                 if (existingHotel != null)
@@ -100,20 +102,45 @@ namespace PaqueteTuristico.Services
 
                     await _context.SaveChangesAsync();
 
-                    return true; 
+                    return true;
                 }
 
-                return false; 
+                return false;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return false;
             }
+
         }
 
-
-
+        public IQueryable<HotelDTO>? GetAllHotels()
+        {
+            var hotels = from Hotel in _context.HotelSet
+                              join Province in _context.ProvinceSet on Hotel.ProvinceId equals Province.ProvinceId
+                              select new HotelDTO
+                              {
+                                  HotelId = Hotel.HotelId,
+                                  HotelName = Hotel.Name,
+                                  HotelChain = Hotel.Chain,
+                                  Category = Hotel.Category,
+                                  Phone = Hotel.Phone,
+                                  Email = Hotel.Email,
+                                  NumberOfRooms = Hotel.NumberOfRooms,
+                                  ProvinceName = Province.ProvinceName,
+                                  DisNearCity = Hotel.DisNearCity,
+                                  DisAirport = Hotel.DisAirport,
+                                  NumberOfFloors = Hotel.NumberOfFloors,
+                                  Address = Hotel.Address,
+                                  ComercializationMode = Hotel.ComercializationMode,
+                                  Price = Hotel.Price,
+                                  Enabled = Hotel.Enabled
+                              };
+            return hotels;
+        }
 
     }
+
+
 }

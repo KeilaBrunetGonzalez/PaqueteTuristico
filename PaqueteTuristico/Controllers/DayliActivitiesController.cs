@@ -88,5 +88,18 @@ namespace PaqueteTuristico.Controllers
             return Ok("Activity Deleted");
 
         }
+
+        [HttpGet("GetActivities")]
+        public IActionResult GetHotels()
+        {
+            var activities = _services.GetAllActivities();
+
+            if (activities != null)
+            {
+                return Ok(activities);
+            }
+
+            return NotFound();
+        }
     }
 }
