@@ -9,7 +9,7 @@ namespace PaqueteTuristico.Dtos
         public string? HotelName { get; set; }
         public string? HotelChain { get; set; }
         public string? ProvinceName { get; set; }
-        public string? Category { get; set; }
+        public int Category { get; set; }
         public int Phone { get; set; }
         public string? Address { get; set; }
         public string? Email { get; set; }

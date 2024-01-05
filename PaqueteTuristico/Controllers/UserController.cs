@@ -69,6 +69,7 @@ namespace PaqueteTuristico.Controllers
                     new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                     new Claim("UserName", user.UserName),
                     new Claim("Email", user.Email),
+                    new Claim("UserId", user.Id)
                     
                 }
                   .Concat(roles.Select(role => new Claim(ClaimTypes.Role, role)))
