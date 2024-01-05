@@ -112,14 +112,8 @@ namespace PaqueteTuristico.Data
 
             modelBuilder.Entity<TransportationContract>()
                 .HasMany(s => s.Transports)
-                .WithMany(x => x.Contract)
-                .UsingEntity<TrasportWithContract>( j => 
-                j.HasKey(t => new
-                {
-                    t.id,
-                    t.Modalityid,
-                    t.Vehicleid
-                }));
+                .WithOne(x => x.Contract)
+                .HasForeignKey(j => j.ContractId);
 
             
 

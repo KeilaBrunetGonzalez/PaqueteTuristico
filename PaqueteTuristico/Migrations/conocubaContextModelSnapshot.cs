@@ -399,6 +399,9 @@ namespace PaqueteTuristico.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AmountofPeople")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -514,10 +517,15 @@ namespace PaqueteTuristico.Migrations
                     b.Property<int>("VehicleId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("ContractId")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("Transport_Cost")
                         .HasColumnType("money");
 
                     b.HasKey("ModalityId", "VehicleId");
+
+                    b.HasIndex("ContractId");
 
                     b.HasIndex("VehicleId");
 
@@ -527,22 +535,31 @@ namespace PaqueteTuristico.Migrations
             modelBuilder.Entity("PaqueteTuristico.Models.TrasportWithContract", b =>
                 {
                     b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
                     b.Property<int>("Modalityid")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Vehicleid")
+                    b.Property<int>("TransportModalityId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TransportVehicleId")
                         .HasColumnType("integer");
 
                     b.Property<int>("TransportationId")
                         .HasColumnType("integer");
 
-                    b.HasKey("id", "Modalityid", "Vehicleid");
+                    b.Property<int>("Vehicleid")
+                        .HasColumnType("integer");
+
+                    b.HasKey("id");
 
                     b.HasIndex("TransportationId");
 
-                    b.HasIndex("Modalityid", "Vehicleid");
+                    b.HasIndex("TransportModalityId", "TransportVehicleId");
 
                     b.ToTable("TrasportWithContractsSet");
                 });
@@ -944,6 +961,12 @@ namespace PaqueteTuristico.Migrations
 
             modelBuilder.Entity("PaqueteTuristico.Models.Transport", b =>
                 {
+                    b.HasOne("PaqueteTuristico.Models.TransportationContract", "Contract")
+                        .WithMany("Transports")
+                        .HasForeignKey("ContractId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("PaqueteTuristico.Models.Modality", "Modality")
                         .WithMany("Transports")
                         .HasForeignKey("ModalityId")
@@ -955,6 +978,8 @@ namespace PaqueteTuristico.Migrations
                         .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Contract");
 
                     b.Navigation("Modality");
 
@@ -971,7 +996,7 @@ namespace PaqueteTuristico.Migrations
 
                     b.HasOne("PaqueteTuristico.Models.Transport", "Transport")
                         .WithMany()
-                        .HasForeignKey("Modalityid", "Vehicleid")
+                        .HasForeignKey("TransportModalityId", "TransportVehicleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1099,6 +1124,11 @@ namespace PaqueteTuristico.Migrations
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.Vehicle", b =>
+                {
+                    b.Navigation("Transports");
+                });
+
+            modelBuilder.Entity("PaqueteTuristico.Models.TransportationContract", b =>
                 {
                     b.Navigation("Transports");
                 });

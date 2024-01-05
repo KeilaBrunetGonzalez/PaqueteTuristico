@@ -23,6 +23,8 @@ namespace PaqueteTuristico.Models
         [Required]
         public decimal Price { get; set; }
 
+        public int AmountofPeople { get; set; }
+
         [Required]
         [ForeignKey(nameof(Room))]
         public int HotelId { get; set; }
