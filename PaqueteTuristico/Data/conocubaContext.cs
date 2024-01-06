@@ -53,11 +53,6 @@ namespace PaqueteTuristico.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Hotel>()
-                .HasOne(p => p.Province)
-                .WithMany(h => h.Hotels)
-                .HasForeignKey(i => i.ProvinceId);
-
-            modelBuilder.Entity<Hotel>()
                 .HasMany(t => t.TourPackages)
                 .WithOne(t => t.Hotel)
                 .HasForeignKey(t => t.HotelId);
@@ -135,6 +130,22 @@ namespace PaqueteTuristico.Data
                 .HasOne(u => u.User)
                 .WithMany()
                 .HasForeignKey(x => x.UserId);
+
+            modelBuilder.Entity<Province>()
+                .HasMany(h => h.Hotels)
+                .WithOne()
+                .HasForeignKey(x => x.ProvinceId);
+
+            modelBuilder.Entity<Province>()
+                .HasMany(h => h.DaylActivities)
+                .WithOne()
+                .HasForeignKey(x => x.ProvinceId);
+
+            modelBuilder.Entity<Province>()
+                .HasMany(h => h.Vehicles)
+                .WithOne()
+                .HasForeignKey(x => x.ProvinceId);
+           
 
             base.OnModelCreating(modelBuilder);
         }          

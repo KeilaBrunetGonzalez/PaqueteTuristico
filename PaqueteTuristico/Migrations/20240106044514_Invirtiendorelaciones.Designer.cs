@@ -12,8 +12,8 @@ using PaqueteTuristico.Data;
 namespace PaqueteTuristico.Migrations
 {
     [DbContext(typeof(conocubaContext))]
-    [Migration("20240105053408_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240106044514_Invirtiendorelaciones")]
+    partial class Invirtiendorelaciones
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -870,24 +870,20 @@ namespace PaqueteTuristico.Migrations
 
             modelBuilder.Entity("PaqueteTuristico.Models.DayliActivities", b =>
                 {
-                    b.HasOne("PaqueteTuristico.Models.Province", "Province")
+                    b.HasOne("PaqueteTuristico.Models.Province", null)
                         .WithMany("DaylActivities")
                         .HasForeignKey("ProvinceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Province");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.Hotel", b =>
                 {
-                    b.HasOne("PaqueteTuristico.Models.Province", "Province")
+                    b.HasOne("PaqueteTuristico.Models.Province", null)
                         .WithMany("Hotels")
                         .HasForeignKey("ProvinceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Province");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.HotelPlan", b =>
@@ -1010,13 +1006,11 @@ namespace PaqueteTuristico.Migrations
 
             modelBuilder.Entity("PaqueteTuristico.Models.Vehicle", b =>
                 {
-                    b.HasOne("PaqueteTuristico.Models.Province", "Province")
+                    b.HasOne("PaqueteTuristico.Models.Province", null)
                         .WithMany("Vehicles")
                         .HasForeignKey("ProvinceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Province");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.ComplementaryContract", b =>

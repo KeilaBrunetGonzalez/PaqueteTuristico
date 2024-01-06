@@ -12,7 +12,6 @@ namespace PaqueteTuristico.Models
             this.Meals = new HashSet<Meal>();
             this.Plans = new HashSet<HotelPlan>();
             this.TourPackages = new HashSet<TourPackage>(); 
-            this.Province = new Province();
         }
 
         [Key]
@@ -71,9 +70,7 @@ namespace PaqueteTuristico.Models
 
         [Column(TypeName = "boolean")]
         public bool Enabled { get; set; } = true;
-        [JsonIgnore]
-
-        public Province Province { get; set; }
+        
         [JsonIgnore]
         public virtual ICollection<HotelPlan> Plans { get; set; }
 

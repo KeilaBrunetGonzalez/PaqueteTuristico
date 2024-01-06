@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PaqueteTuristico.Data;
@@ -11,9 +12,11 @@ using PaqueteTuristico.Data;
 namespace PaqueteTuristico.Migrations
 {
     [DbContext(typeof(conocubaContext))]
-    partial class conocubaContextModelSnapshot : ModelSnapshot
+    [Migration("20240106051717_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -867,20 +870,24 @@ namespace PaqueteTuristico.Migrations
 
             modelBuilder.Entity("PaqueteTuristico.Models.DayliActivities", b =>
                 {
-                    b.HasOne("PaqueteTuristico.Models.Province", null)
+                    b.HasOne("PaqueteTuristico.Models.Province", "Province")
                         .WithMany("DaylActivities")
                         .HasForeignKey("ProvinceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Province");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.Hotel", b =>
                 {
-                    b.HasOne("PaqueteTuristico.Models.Province", null)
+                    b.HasOne("PaqueteTuristico.Models.Province", "Province")
                         .WithMany("Hotels")
                         .HasForeignKey("ProvinceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Province");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.HotelPlan", b =>
@@ -1003,11 +1010,13 @@ namespace PaqueteTuristico.Migrations
 
             modelBuilder.Entity("PaqueteTuristico.Models.Vehicle", b =>
                 {
-                    b.HasOne("PaqueteTuristico.Models.Province", null)
+                    b.HasOne("PaqueteTuristico.Models.Province", "Province")
                         .WithMany("Vehicles")
                         .HasForeignKey("ProvinceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Province");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.ComplementaryContract", b =>
