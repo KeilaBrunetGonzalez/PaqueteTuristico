@@ -139,8 +139,6 @@ namespace PaqueteTuristico.Services
                               };
             return hotels;
         }
-
-    }
         public async Task<List<Hotel>?> GetProvinceActiveHotelAsync(int ProvinceId)
         {
             var list = await _context.HotelSet
@@ -149,6 +147,8 @@ namespace PaqueteTuristico.Services
 
             return list;
         }
+    }
+       
 
 
 
