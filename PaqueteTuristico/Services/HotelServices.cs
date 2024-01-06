@@ -90,7 +90,7 @@ namespace PaqueteTuristico.Services
 
             return ultimoId;
         }
-        internal async Task<bool> UpdateEnabledAsync(int hotelId, bool enb)
+        public async Task<bool> UpdateEnabledAsync(int hotelId, bool enb)
         {
             try
             {
@@ -139,8 +139,17 @@ namespace PaqueteTuristico.Services
                               };
             return hotels;
         }
+        public async Task<List<Hotel>?> GetProvinceActiveHotelAsync(int ProvinceId)
+        {
+            var list = await _context.HotelSet
+            .Where(V => V.ProvinceId == ProvinceId && V.Enabled == true)
+            .ToListAsync();
 
+            return list;
+        }
     }
+       
+
 
 
 }

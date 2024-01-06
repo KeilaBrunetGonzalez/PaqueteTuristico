@@ -36,7 +36,7 @@ namespace PaqueteTuristico.Controllers
             return NotFound();
         }
 
-        [HttpGet("{hotelCode}")]
+        [HttpGet("Hotel/{hotelId}")]
         public async Task<ActionResult<List<Models.Room>>> GetRoomsByHotelId(int hotelId)
         {
             var list = await _services.GetHotelRoomsAsync(hotelId);
@@ -102,10 +102,10 @@ namespace PaqueteTuristico.Controllers
 
         //DELETE
         [HttpDelete("{roomId}")]
-        public async Task<ActionResult<string>> DeleteRoom(int RoomId)
+        public async Task<ActionResult<string>> DeleteRoom(int roomId)
         {
 
-            var removed = await _services.DeleteRoomAsync(RoomId);
+            var removed = await _services.DeleteRoomAsync(roomId);
             if (removed)
             {
                 return Ok("Hotel Room removed");
