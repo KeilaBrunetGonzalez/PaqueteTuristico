@@ -12,7 +12,7 @@ using PaqueteTuristico.Data;
 namespace PaqueteTuristico.Migrations
 {
     [DbContext(typeof(conocubaContext))]
-    [Migration("20240105053408_InitialCreate")]
+    [Migration("20240106051717_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
