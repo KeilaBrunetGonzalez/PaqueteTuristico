@@ -77,6 +77,15 @@ namespace PaqueteTuristico.Services
             return dayli;
         }
 
+        public async Task<List<DayliActivities>?> GetProvinceActivitiesAsync(int ProvinceId)
+        {
+            var list = await context.DayliActivitieSet
+            .Where(V => V.ProvinceId == ProvinceId)
+            .ToListAsync();
+
+            return list;
+        }
+
 
     }
 }

@@ -36,6 +36,16 @@ namespace PaqueteTuristico.Controllers
                 return NotFound();
         }
 
+        [HttpGet("Province/{ProvinceId}")]
+        public async Task<ActionResult<List<Hotel>>> GetHotelByProvinceId(int ProvinceId)
+        {
+            var list = await _services.GetProvinceActiveHotelAsync(ProvinceId);
+            if (list.IsNullOrEmpty())
+            {
+                return NotFound();
+            }
+            return Ok(list);
+        }
 
         // DELETE: api/<Hotel>
         [HttpGet]

@@ -98,6 +98,15 @@ namespace PaqueteTuristico.Services
             return temp;
         }
 
+        public async Task<List<Vehicle>?> GetProvinceVheicleAsync(int ProvinceId)
+        {
+            var list = await context.VehicleSet
+            .Where(V => V.ProvinceId == ProvinceId)
+            .ToListAsync();
+
+            return list;
+        }
+
         public async Task<int> ObtenerUltimoIdVehicleAsync()
         {
             int ultimoId = await context.VehicleSet.AnyAsync()

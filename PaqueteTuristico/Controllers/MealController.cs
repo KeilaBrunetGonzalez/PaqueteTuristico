@@ -36,7 +36,7 @@ namespace PaqueteTuristico.Controllers
             return NotFound();
         }
 
-        [HttpGet("{hotelId}")]
+        [HttpGet("Hotel/{hotelId}")]
         public async Task<ActionResult<List<Models.Meal>>> GetMealsByHotelId(int hotelId)
         {
             var list = await _services.GetMealsAsync(hotelId);

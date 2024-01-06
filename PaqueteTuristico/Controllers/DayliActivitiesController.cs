@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
 using PaqueteTuristico.Services;
@@ -41,6 +42,17 @@ namespace PaqueteTuristico.Controllers
                 return BadRequest();
             }
             return Ok(temp);
+        }
+
+        [HttpGet("Province/{ProvinceId}")]
+        public async Task<ActionResult<List<DayliActivities>>> GetActivitiesByProvinceId(int ProvinceId)
+        {
+            var list = await _services.GetProvinceActivitiesAsync(ProvinceId);
+            if (list.IsNullOrEmpty())
+            {
+                return NotFound();
+            }
+            return Ok(list);
         }
 
         // POST api/<DayliActivitiesControler>
