@@ -78,7 +78,14 @@ namespace PaqueteTuristico.Services
             return dayli;
         }
 
+        public async Task<int> ObtenerUltimoIdActivitiesAsync()
+        {
+            int ultimoId = await context.DayliActivitieSet.AnyAsync()
+                ? await context.DayliActivitieSet.MaxAsync(e => e.ActivityId)
+                : 0;
 
+            return ultimoId;
+        }
         public IQueryable<DayliActivitiesDTO>? GetAllActivities()
         {
             var activities = from DayliActivities in context.DayliActivitieSet

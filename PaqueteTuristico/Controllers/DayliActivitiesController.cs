@@ -46,8 +46,11 @@ namespace PaqueteTuristico.Controllers
         // POST api/<DayliActivitiesControler>
         [HttpPost]
         public async Task<ActionResult<string>> Post([FromBody] DayliActivities dayli)
+
         {
-             var temp = await _services.CreateDayliActivitie(dayli);
+            var id = await _services.ObtenerUltimoIdActivitiesAsync();
+            dayli.ActivityId = ++id;
+            var temp = await _services.CreateDayliActivitie(dayli);
             if (!temp)
             {
                 return BadRequest();
