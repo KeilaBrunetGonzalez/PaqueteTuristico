@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using PaqueteTuristico.Models;
 
 namespace PaqueteTuristico.Services
 {
     public class InitializationServices
     {
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<UserApp> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
-        public InitializationServices(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager) { 
+        public InitializationServices(UserManager<UserApp> userManager, RoleManager<IdentityRole> roleManager) { 
             this.userManager = userManager;
             this.roleManager = roleManager;
         }
@@ -24,14 +25,14 @@ namespace PaqueteTuristico.Services
             }
         }
 
-       /* public async Task CreateUsers()
+        public async Task CreateUsers()
         {
             
-                var franco = new IdentityUser { UserName = "Franco", Email = "admin@example.com" };
-                var keila = new IdentityUser { UserName = "Keila", Email = "keilabrunet@gmail.com" };
-                var dalia = new IdentityUser { UserName = "Dalia", Email = "daliareyes@gmail.com" };
-                var dario = new IdentityUser { UserName = "Dario", Email = "ivandario@gmail.com" };
-                var relleno = new IdentityUser { UserName = "Supremo" };
+                var franco = new UserApp { UserName = "Franco", Email = "admin@example.com" };
+                var keila = new UserApp { UserName = "Keila", Email = "keilabrunet@gmail.com" };
+                var dalia = new UserApp { UserName = "Dalia", Email = "daliareyes@gmail.com" };
+                var dario = new UserApp { UserName = "Dario", Email = "ivandario@gmail.com" };
+                var relleno = new UserApp { UserName = "Supremo" };
             if (await userManager.FindByNameAsync(franco.UserName) == null)
             {
                 var result = await userManager.CreateAsync(franco, "franco123");
@@ -80,6 +81,6 @@ namespace PaqueteTuristico.Services
                 }
             }
 
-        }*/
+        }
     }
 }

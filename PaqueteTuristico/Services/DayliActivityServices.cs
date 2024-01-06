@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
+using PaqueteTuristico.Dtos;
 using PaqueteTuristico.Models;
 
 namespace PaqueteTuristico.Services
@@ -87,5 +88,21 @@ namespace PaqueteTuristico.Services
         }
 
 
+        public IQueryable<DayliActivitiesDTO>? GetAllActivities()
+        {
+            var activities = from DayliActivities in context.DayliActivitieSet
+                         join Province in context.ProvinceSet on DayliActivities.ProvinceId equals Province.ProvinceId
+                         select new DayliActivitiesDTO
+                         {
+                             ActivityId = DayliActivities.ActivityId,
+                             Day = DayliActivities.Day,
+                             Description = DayliActivities.Description,
+                             Price = DayliActivities.Price,
+                             ProvinceName = Province.ProvinceName,
+                         };
+            return activities;
+        }
     }
+
+    
 }

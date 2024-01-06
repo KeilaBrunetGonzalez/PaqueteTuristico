@@ -472,6 +472,7 @@ namespace PaqueteTuristico.Migrations
                     Name = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
                     Price = table.Column<decimal>(type: "money", nullable: false),
+                    AmountofPeople = table.Column<int>(type: "integer", nullable: false),
                     HotelId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -491,7 +492,8 @@ namespace PaqueteTuristico.Migrations
                 {
                     ModalityId = table.Column<int>(type: "integer", nullable: false),
                     VehicleId = table.Column<int>(type: "integer", nullable: false),
-                    Transport_Cost = table.Column<decimal>(type: "money", nullable: false)
+                    Transport_Cost = table.Column<decimal>(type: "money", nullable: false),
+                    ContractId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -501,6 +503,12 @@ namespace PaqueteTuristico.Migrations
                         column: x => x.ModalityId,
                         principalTable: "Modality",
                         principalColumn: "ModalityId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TransportSet_TransportationContract_ContractId",
+                        column: x => x.ContractId,
+                        principalTable: "TransportationContract",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TransportSet_vehicles_VehicleId",
@@ -548,20 +556,28 @@ namespace PaqueteTuristico.Migrations
                     VehicleId = table.Column<int>(type: "integer", nullable: false),
                     ModalityId = table.Column<int>(type: "integer", nullable: false),
                     ActivityId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    PeopleCant = table.Column<int>(type: "integer", nullable: false),
                     StartDate = table.Column<DateTime>(type: "date", nullable: false),
                     EndDate = table.Column<DateTime>(type: "date", nullable: false),
                     Totalprice = table.Column<decimal>(type: "money", nullable: false),
                     TransportModalityId = table.Column<int>(type: "integer", nullable: true),
-                    TransportVehicleId = table.Column<int>(type: "integer", nullable: true)
+                    TransportVehicleId = table.Column<int>(type: "integer", nullable: true),
+                    UserAppId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TourPackagesSet", x => x.PackageId);
                     table.ForeignKey(
-                        name: "FK_TourPackagesSet_Dayli_Activities_ActivityId",
-                        column: x => x.ActivityId,
-                        principalTable: "Dayli_Activities",
-                        principalColumn: "ActivityId",
+                        name: "FK_TourPackagesSet_AspNetUsers_UserAppId",
+                        column: x => x.UserAppId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_TourPackagesSet_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TourPackagesSet_Hotel_HotelId",
@@ -586,17 +602,20 @@ namespace PaqueteTuristico.Migrations
                 name: "TrasportWithContractsSet",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "integer", nullable: false),
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TransportationId = table.Column<int>(type: "integer", nullable: false),
                     Vehicleid = table.Column<int>(type: "integer", nullable: false),
                     Modalityid = table.Column<int>(type: "integer", nullable: false),
-                    TransportationId = table.Column<int>(type: "integer", nullable: false)
+                    TransportModalityId = table.Column<int>(type: "integer", nullable: false),
+                    TransportVehicleId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TrasportWithContractsSet", x => new { x.id, x.Modalityid, x.Vehicleid });
+                    table.PrimaryKey("PK_TrasportWithContractsSet", x => x.id);
                     table.ForeignKey(
-                        name: "FK_TrasportWithContractsSet_TransportSet_Modalityid_Vehicleid",
-                        columns: x => new { x.Modalityid, x.Vehicleid },
+                        name: "FK_TrasportWithContractsSet_TransportSet_TransportModalityId_T~",
+                        columns: x => new { x.TransportModalityId, x.TransportVehicleId },
                         principalTable: "TransportSet",
                         principalColumns: new[] { "ModalityId", "VehicleId" },
                         onDelete: ReferentialAction.Cascade);
@@ -607,6 +626,35 @@ namespace PaqueteTuristico.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "ActivitiesperPackage",
+                columns: table => new
+                {
+                    DayliActivitiesActivityId = table.Column<int>(type: "integer", nullable: false),
+                    TourPackagePackageId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ActivitiesperPackage", x => new { x.DayliActivitiesActivityId, x.TourPackagePackageId });
+                    table.ForeignKey(
+                        name: "FK_ActivitiesperPackage_Dayli_Activities_DayliActivitiesActivi~",
+                        column: x => x.DayliActivitiesActivityId,
+                        principalTable: "Dayli_Activities",
+                        principalColumn: "ActivityId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ActivitiesperPackage_TourPackagesSet_TourPackagePackageId",
+                        column: x => x.TourPackagePackageId,
+                        principalTable: "TourPackagesSet",
+                        principalColumn: "PackageId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ActivitiesperPackage_TourPackagePackageId",
+                table: "ActivitiesperPackage",
+                column: "TourPackagePackageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ActivitiesWhithContracts_DayliActivitiesActivityId",
@@ -681,11 +729,6 @@ namespace PaqueteTuristico.Migrations
                 column: "HotelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TourPackagesSet_ActivityId",
-                table: "TourPackagesSet",
-                column: "ActivityId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TourPackagesSet_HotelId",
                 table: "TourPackagesSet",
                 column: "HotelId");
@@ -701,19 +744,34 @@ namespace PaqueteTuristico.Migrations
                 columns: new[] { "TransportModalityId", "TransportVehicleId" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_TourPackagesSet_UserAppId",
+                table: "TourPackagesSet",
+                column: "UserAppId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TourPackagesSet_UserId",
+                table: "TourPackagesSet",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransportSet_ContractId",
+                table: "TransportSet",
+                column: "ContractId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TransportSet_VehicleId",
                 table: "TransportSet",
                 column: "VehicleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrasportWithContractsSet_Modalityid_Vehicleid",
-                table: "TrasportWithContractsSet",
-                columns: new[] { "Modalityid", "Vehicleid" });
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TrasportWithContractsSet_TransportationId",
                 table: "TrasportWithContractsSet",
                 column: "TransportationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TrasportWithContractsSet_TransportModalityId_TransportVehic~",
+                table: "TrasportWithContractsSet",
+                columns: new[] { "TransportModalityId", "TransportVehicleId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_vehicles_ProvinceId",
@@ -724,6 +782,9 @@ namespace PaqueteTuristico.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ActivitiesperPackage");
+
             migrationBuilder.DropTable(
                 name: "ActivitiesWhithContracts");
 
@@ -761,31 +822,28 @@ namespace PaqueteTuristico.Migrations
                 name: "Room");
 
             migrationBuilder.DropTable(
-                name: "TourPackagesSet");
+                name: "TrasportWithContractsSet");
 
             migrationBuilder.DropTable(
-                name: "TrasportWithContractsSet");
+                name: "TourPackagesSet");
 
             migrationBuilder.DropTable(
                 name: "ComplementaryContract");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "Dayli_Activities");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Hotel_Plan");
 
             migrationBuilder.DropTable(
-                name: "Dayli_Activities");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "TransportSet");
-
-            migrationBuilder.DropTable(
-                name: "TransportationContract");
 
             migrationBuilder.DropTable(
                 name: "Hotel");
@@ -795,6 +853,9 @@ namespace PaqueteTuristico.Migrations
 
             migrationBuilder.DropTable(
                 name: "Modality");
+
+            migrationBuilder.DropTable(
+                name: "TransportationContract");
 
             migrationBuilder.DropTable(
                 name: "vehicles");

@@ -9,7 +9,7 @@ namespace PaqueteTuristico.Models
         public Transport() {
             this.Modality = new Modality();
             this.Vehicle = new Vehicle();
-            this.Contract = new HashSet<TransportationContract>();
+            this.Contract = new TransportationContract();
             this.TourPackages = new HashSet<TourPackage>();
         }
         [Key] 
@@ -19,12 +19,14 @@ namespace PaqueteTuristico.Models
         [Required]
         [Column(TypeName = "money")]
         public decimal Transport_Cost { get; set; }
+        public int ContractId { get; set; }
         [JsonIgnore]
         public Vehicle Vehicle { get; set; }
         [JsonIgnore]
         public Modality Modality { get; set; }
+        
 
-        public virtual ICollection<TransportationContract> Contract { get; set; }
+        public virtual TransportationContract Contract { get; set; }
         public virtual ICollection<TourPackage> TourPackages { get; set; }
 
     }

@@ -114,7 +114,7 @@ namespace PaqueteTuristico.Services
                                   Date = DateTime.Now,
                                   HotelName = Hotel.Name,
                                   HotelChain = Hotel.Chain,
-                                  Province = Province.ProvinceName,
+                                  ProvinceName = Province.ProvinceName,
                                   Category = Hotel.Category,
                                   Phone = Hotel.Phone,
                                   Address = Hotel.Address,

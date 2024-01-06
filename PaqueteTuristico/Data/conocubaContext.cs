@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace PaqueteTuristico.Data
 {
-    public class conocubaContext : IdentityDbContext<IdentityUser,IdentityRole,string>
+    public class conocubaContext : IdentityDbContext<UserApp,IdentityRole,string>
     {
         public DbSet<Hotel> HotelSet { get; set; }
         public DbSet<Room> RoomSet { get; set; }
@@ -112,14 +112,8 @@ namespace PaqueteTuristico.Data
 
             modelBuilder.Entity<TransportationContract>()
                 .HasMany(s => s.Transports)
-                .WithMany(x => x.Contract)
-                .UsingEntity<TrasportWithContract>( j => 
-                j.HasKey(t => new
-                {
-                    t.id,
-                    t.Modalityid,
-                    t.Vehicleid
-                }));
+                .WithOne(x => x.Contract)
+                .HasForeignKey(j => j.ContractId);
 
             
 
@@ -131,10 +125,16 @@ namespace PaqueteTuristico.Data
                     x.ModalityId,
                     x.VehicleId
                 });
+
             modelBuilder.Entity<TourPackage>()
-                .HasOne(d => d.DayliActivities)
+                .HasMany(d => d.DayliActivities)
                 .WithMany()
-                .HasForeignKey(j => j.ActivityId);
+                .UsingEntity(j => j.ToTable("ActivitiesperPackage"));
+
+            modelBuilder.Entity<TourPackage>()
+                .HasOne(u => u.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId);
 
             base.OnModelCreating(modelBuilder);
         }          

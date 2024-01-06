@@ -37,6 +37,21 @@ namespace PaqueteTuristico.Migrations
                     b.ToTable("ActivitiesWhithContracts", (string)null);
                 });
 
+            modelBuilder.Entity("DayliActivitiesTourPackage", b =>
+                {
+                    b.Property<int>("DayliActivitiesActivityId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TourPackagePackageId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("DayliActivitiesActivityId", "TourPackagePackageId");
+
+                    b.HasIndex("TourPackagePackageId");
+
+                    b.ToTable("ActivitiesperPackage", (string)null);
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -86,70 +101,6 @@ namespace PaqueteTuristico.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -448,6 +399,9 @@ namespace PaqueteTuristico.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AmountofPeople")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -512,6 +466,9 @@ namespace PaqueteTuristico.Migrations
                     b.Property<int>("ModalityId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("PeopleCant")
+                        .HasColumnType("integer");
+
                     b.Property<int>("ProvinceId")
                         .HasColumnType("integer");
 
@@ -527,14 +484,23 @@ namespace PaqueteTuristico.Migrations
                     b.Property<int?>("TransportVehicleId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("UserAppId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("VehicleId")
                         .HasColumnType("integer");
 
                     b.HasKey("PackageId");
 
-                    b.HasIndex("ActivityId");
-
                     b.HasIndex("HotelId");
+
+                    b.HasIndex("UserAppId");
+
+                    b.HasIndex("UserId");
 
                     b.HasIndex("ModalityId", "VehicleId");
 
@@ -551,10 +517,15 @@ namespace PaqueteTuristico.Migrations
                     b.Property<int>("VehicleId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("ContractId")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("Transport_Cost")
                         .HasColumnType("money");
 
                     b.HasKey("ModalityId", "VehicleId");
+
+                    b.HasIndex("ContractId");
 
                     b.HasIndex("VehicleId");
 
@@ -564,24 +535,97 @@ namespace PaqueteTuristico.Migrations
             modelBuilder.Entity("PaqueteTuristico.Models.TrasportWithContract", b =>
                 {
                     b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
                     b.Property<int>("Modalityid")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Vehicleid")
+                    b.Property<int>("TransportModalityId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TransportVehicleId")
                         .HasColumnType("integer");
 
                     b.Property<int>("TransportationId")
                         .HasColumnType("integer");
 
-                    b.HasKey("id", "Modalityid", "Vehicleid");
+                    b.Property<int>("Vehicleid")
+                        .HasColumnType("integer");
+
+                    b.HasKey("id");
 
                     b.HasIndex("TransportationId");
 
-                    b.HasIndex("Modalityid", "Vehicleid");
+                    b.HasIndex("TransportModalityId", "TransportVehicleId");
 
                     b.ToTable("TrasportWithContractsSet");
+                });
+
+            modelBuilder.Entity("PaqueteTuristico.Models.UserApp", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.Vehicle", b =>
@@ -755,6 +799,21 @@ namespace PaqueteTuristico.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DayliActivitiesTourPackage", b =>
+                {
+                    b.HasOne("PaqueteTuristico.Models.DayliActivities", null)
+                        .WithMany()
+                        .HasForeignKey("DayliActivitiesActivityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PaqueteTuristico.Models.TourPackage", null)
+                        .WithMany()
+                        .HasForeignKey("TourPackagePackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -766,7 +825,7 @@ namespace PaqueteTuristico.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("PaqueteTuristico.Models.UserApp", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -775,7 +834,7 @@ namespace PaqueteTuristico.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("PaqueteTuristico.Models.UserApp", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -790,7 +849,7 @@ namespace PaqueteTuristico.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("PaqueteTuristico.Models.UserApp", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -799,7 +858,7 @@ namespace PaqueteTuristico.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("PaqueteTuristico.Models.UserApp", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -867,15 +926,19 @@ namespace PaqueteTuristico.Migrations
 
             modelBuilder.Entity("PaqueteTuristico.Models.TourPackage", b =>
                 {
-                    b.HasOne("PaqueteTuristico.Models.DayliActivities", "DayliActivities")
-                        .WithMany()
-                        .HasForeignKey("ActivityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("PaqueteTuristico.Models.Hotel", "Hotel")
                         .WithMany("TourPackages")
                         .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PaqueteTuristico.Models.UserApp", null)
+                        .WithMany("Packages")
+                        .HasForeignKey("UserAppId");
+
+                    b.HasOne("PaqueteTuristico.Models.UserApp", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -889,15 +952,21 @@ namespace PaqueteTuristico.Migrations
                         .WithMany("TourPackages")
                         .HasForeignKey("TransportModalityId", "TransportVehicleId");
 
-                    b.Navigation("DayliActivities");
-
                     b.Navigation("Hotel");
 
                     b.Navigation("Transport");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.Transport", b =>
                 {
+                    b.HasOne("PaqueteTuristico.Models.TransportationContract", "Contract")
+                        .WithMany("Transports")
+                        .HasForeignKey("ContractId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("PaqueteTuristico.Models.Modality", "Modality")
                         .WithMany("Transports")
                         .HasForeignKey("ModalityId")
@@ -909,6 +978,8 @@ namespace PaqueteTuristico.Migrations
                         .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Contract");
 
                     b.Navigation("Modality");
 
@@ -925,7 +996,7 @@ namespace PaqueteTuristico.Migrations
 
                     b.HasOne("PaqueteTuristico.Models.Transport", "Transport")
                         .WithMany()
-                        .HasForeignKey("Modalityid", "Vehicleid")
+                        .HasForeignKey("TransportModalityId", "TransportVehicleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1047,7 +1118,17 @@ namespace PaqueteTuristico.Migrations
                     b.Navigation("TourPackages");
                 });
 
+            modelBuilder.Entity("PaqueteTuristico.Models.UserApp", b =>
+                {
+                    b.Navigation("Packages");
+                });
+
             modelBuilder.Entity("PaqueteTuristico.Models.Vehicle", b =>
+                {
+                    b.Navigation("Transports");
+                });
+
+            modelBuilder.Entity("PaqueteTuristico.Models.TransportationContract", b =>
                 {
                     b.Navigation("Transports");
                 });
