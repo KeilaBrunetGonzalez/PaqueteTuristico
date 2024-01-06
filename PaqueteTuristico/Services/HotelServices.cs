@@ -36,7 +36,7 @@ namespace PaqueteTuristico.Services
 
             return list;
         }
-
+        
         //Insert
         public async Task<bool> InsertHotelAsync(Hotel hotel)
         {

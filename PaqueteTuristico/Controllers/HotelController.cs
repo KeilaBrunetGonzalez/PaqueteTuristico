@@ -120,7 +120,7 @@ namespace PaqueteTuristico.Controllers
             return NotFound("Hotel not found");
         }
 
-        [HttpGet("GetHotels")]
+        /*[HttpGet]
         public IActionResult GetHotels()
         {
             var hotel = _services.GetAllHotels();
@@ -131,7 +131,7 @@ namespace PaqueteTuristico.Controllers
             }
 
             return NotFound();
-        }
+        }*/
     }
 
     
