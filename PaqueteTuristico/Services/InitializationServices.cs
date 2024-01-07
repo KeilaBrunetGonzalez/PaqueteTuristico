@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Models;
 
 namespace PaqueteTuristico.Services
@@ -12,11 +11,13 @@ namespace PaqueteTuristico.Services
         private readonly UserManager<UserApp> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly conocubaContext context;
-        public InitializationServices(UserManager<UserApp> userManager, RoleManager<IdentityRole> roleManager, conocubaContext context)
+        private readonly ProvinceSetService  _services;
+        public InitializationServices(UserManager<UserApp> userManager, RoleManager<IdentityRole> roleManager, conocubaContext context, ProvinceSetService _services)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.context = context;
+            this._services = _services;
         }
         //Funcion que iniciali
         public async Task CreateRoles()

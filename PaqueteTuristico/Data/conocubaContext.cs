@@ -103,13 +103,10 @@ namespace PaqueteTuristico.Data
                 .HasForeignKey(r => r.ModalityId);
 
             modelBuilder.Entity<HotelContract>()
-                .HasOne(s => s.Plan)
-                .WithMany(p => p.Contracts)
-                .HasForeignKey(n => new
-                {
-                    n.Seasonid,
-                    n.Hotelid
-                });
+                .HasOne(s => s.Hotel)
+                .WithOne()
+                .HasForeignKey<HotelContract>(n => n.Hotelid
+                );
 
             modelBuilder.Entity<ComplementaryContract>()
                 .HasOne(a => a.Activity)
