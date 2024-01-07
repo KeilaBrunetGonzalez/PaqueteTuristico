@@ -7,7 +7,7 @@ namespace PaqueteTuristico.Models
     public class DayliActivities
     {
         public DayliActivities() { 
-            this.Complementary = new HashSet<ComplementaryContract>();
+            
             
         }
         [Key]
@@ -25,8 +25,7 @@ namespace PaqueteTuristico.Models
 
         [Required]
         public int ProvinceId { get; set; }
-        [JsonIgnore]
-        public ICollection<ComplementaryContract> Complementary { get; set; }
+        
         
     }
 }

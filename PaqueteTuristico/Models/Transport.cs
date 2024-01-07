@@ -9,7 +9,6 @@ namespace PaqueteTuristico.Models
         public Transport() {
             this.Modality = new Modality();
             this.Vehicle = new Vehicle();
-            this.Contract = new TransportationContract();
             this.TourPackages = new HashSet<TourPackage>();
         }
         [Key] 
@@ -24,9 +23,6 @@ namespace PaqueteTuristico.Models
         public Vehicle Vehicle { get; set; }
         [JsonIgnore]
         public Modality Modality { get; set; }
-
-        [JsonIgnore]
-        public virtual TransportationContract Contract { get; set; }
         [JsonIgnore]
         public virtual ICollection<TourPackage> TourPackages { get; set; }
 

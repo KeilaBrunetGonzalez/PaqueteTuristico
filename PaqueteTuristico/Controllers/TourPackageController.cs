@@ -36,7 +36,7 @@ namespace PaqueteTuristico.Controllers
             return NotFound();
         }
 
-        [HttpPost]
+       /* [HttpPost]
         public async Task<ActionResult<string>> PostRoom([FromBody] TourPackage tp, ICollection<DayliActivities> das)
         {
             var id = await _services.GetLastTourPackageIdAsync();
@@ -50,7 +50,7 @@ namespace PaqueteTuristico.Controllers
             }
 
             return Ok("Tour Package created");
-        }
+        }*/
 
     }
 
