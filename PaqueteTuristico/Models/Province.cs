@@ -15,6 +15,7 @@ namespace PaqueteTuristico.Models
         [Required]
         [StringLength(50)]
         public string ProvinceName { get; set; } = "";
+        public string ProvinceDesc { get; set; } = "";
 
         [JsonIgnore]
         public virtual ICollection<Hotel> Hotels { get; set; }

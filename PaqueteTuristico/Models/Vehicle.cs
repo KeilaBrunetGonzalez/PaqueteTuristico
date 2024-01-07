@@ -10,6 +10,7 @@ namespace PaqueteTuristico.Models
         public Vehicle()
         {
             this.Transports = new HashSet<Transport>();
+            
         }
         [Key]
         public int VehicleId { get; set; }
@@ -38,7 +39,7 @@ namespace PaqueteTuristico.Models
         public string Manufacturing_Mode { get; set; } = "";
 
         public int ProvinceId {  get; set; }
-        
+        public int ContractId { get; set; }
         public ICollection<Transport> Transports { get; set; }
         
     }

@@ -361,3 +361,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/PaqueteTuristico/Migrations/20240106064532_InitialCreate.Designer.cs

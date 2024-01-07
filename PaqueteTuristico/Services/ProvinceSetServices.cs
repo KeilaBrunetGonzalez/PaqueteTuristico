@@ -51,12 +51,16 @@ namespace PaqueteTuristico.Services
         public async Task<bool> UpdateProvinceAsync(Province province)
         {
             var existingProvince = await context.ProvinceSet.FindAsync(province.ProvinceId);
+            var existingP = await context.ProvinceSet.FindAsync(province.ProvinceName);
             var find = false;
             if (existingProvince != null)
             {
-                context.Entry(existingProvince).CurrentValues.SetValues(province);
-                await context.SaveChangesAsync();
-                find = true;
+                if(existingP == null)
+                {
+                    context.Entry(existingProvince).CurrentValues.SetValues(province);
+                    await context.SaveChangesAsync();
+                    find = true;
+                }
 
             }
             return find;

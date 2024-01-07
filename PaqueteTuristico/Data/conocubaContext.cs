@@ -27,7 +27,6 @@ namespace PaqueteTuristico.Data
         public DbSet<DayliActivities> DayliActivitieSet { get; set; }
         public DbSet<Transport> TransportSet { get; set; }
         public DbSet<Vehicle> VehicleSet { get; set; }
-        public DbSet<TrasportWithContract> TrasportWithContractsSet { get; set; }
         public DbSet<TourPackage> TourPackagesSet { get; set; }
         public DbSet<Province> ProvinceSet { get; set; }
 
@@ -87,17 +86,23 @@ namespace PaqueteTuristico.Data
                 .WithMany(n => n.Transports)
                 .HasForeignKey(r => r.ModalityId);
 
+            modelBuilder.Entity<HotelContract>()
+                .HasOne(s => s.Plan)
+                .WithMany(p => p.Contracts)
+                .HasForeignKey(n => new
+                {
+                    n.Seasonid,
+                    n.Hotelid
+                });
             modelBuilder.Entity<ComplementaryContract>()
-                .HasMany(d => d.DayliActivities)
-                .WithMany(c => c.Complementary)
-                .UsingEntity(j => j.ToTable("ActivitiesWhithContracts"));
+                .HasOne(a => a.Activity)
+                .WithOne()
+                .HasForeignKey<ComplementaryContract>(c => c.ActivityId);
 
             modelBuilder.Entity<TransportationContract>()
-                .HasMany(s => s.Transports)
-                .WithOne(x => x.Contract)
+                .HasMany(s => s.Vehicles)
+                .WithOne()
                 .HasForeignKey(j => j.ContractId);
-
-            
 
             modelBuilder.Entity<Transport>()
                 .HasMany(y => y.TourPackages)
