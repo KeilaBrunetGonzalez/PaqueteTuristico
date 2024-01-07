@@ -44,10 +44,10 @@ namespace PaqueteTuristico.Controllers
             return Ok(temp);
         }
 
-        [HttpGet("Province/{ProvinceId}")]
-        public async Task<ActionResult<List<DayliActivities>>> GetActivitiesByProvinceId(int ProvinceId)
+        [HttpGet("Province/{ProvinceId}/{startDate}/{endDate}")]
+        public async Task<ActionResult<List<DayliActivities>>> GetActivitiesByProvinceId(int ProvinceId, DateTime startDate, DateTime endDate)
         {
-            var list = await _services.GetProvinceActivitiesAsync(ProvinceId);
+            var list = await _services.GetProvinceActivitiesAsync(ProvinceId,startDate,endDate);
             if (list.IsNullOrEmpty())
             {
                 return NotFound();
