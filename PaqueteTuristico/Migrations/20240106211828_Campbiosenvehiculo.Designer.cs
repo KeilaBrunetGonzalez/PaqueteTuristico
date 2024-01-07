@@ -12,12 +12,17 @@ using PaqueteTuristico.Data;
 namespace PaqueteTuristico.Migrations
 {
     [DbContext(typeof(conocubaContext))]
+<<<<<<<< HEAD:PaqueteTuristico/Migrations/20240106064532_InitialCreate.Designer.cs
 <<<<<<<< HEAD:PaqueteTuristico/Migrations/20240107174540_InitialCreate.Designer.cs
     [Migration("20240107174540_InitialCreate")]
 ========
     [Migration("20240106064532_InitialCreate")]
 >>>>>>>> 65e0bea2f874bde20704e1e8a2f76dc4cab211c6:PaqueteTuristico/Migrations/20240106064532_InitialCreate.Designer.cs
     partial class InitialCreate
+========
+    [Migration("20240106211828_Campbiosenvehiculo")]
+    partial class Campbiosenvehiculo
+>>>>>>>> 65e0bea2f874bde20704e1e8a2f76dc4cab211c6:PaqueteTuristico/Migrations/20240106211828_Campbiosenvehiculo.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -667,6 +672,9 @@ namespace PaqueteTuristico.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("money");
 
                     b.Property<int>("ProvinceId")
                         .HasColumnType("integer");
