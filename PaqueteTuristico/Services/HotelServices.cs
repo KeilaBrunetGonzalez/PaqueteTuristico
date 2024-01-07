@@ -99,7 +99,6 @@ namespace PaqueteTuristico.Services
                 if (existingHotel != null)
                 {
                     existingHotel.Enabled = enb;
-
                     await _context.SaveChangesAsync();
 
                     return true;
