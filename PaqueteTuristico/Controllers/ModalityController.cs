@@ -15,12 +15,12 @@ namespace PaqueteTuristico.Controllers
     [ApiController]
     public class ModalityController : ControllerBase
     {
-        private readonly conocubaContext _context;
+       
         private readonly ModalityServices _services;
 
-        public ModalityController(conocubaContext context , ModalityServices services)
+        public ModalityController(ModalityServices services)
         {
-            this._context = context;
+            
             this._services = services;
         }
 
@@ -36,6 +36,17 @@ namespace PaqueteTuristico.Controllers
             }
 
             return Ok(modality);
+        }
+        [Authorize]
+        [HttpGet("Vehicleid/{vehicleid}")]
+        public async Task<ActionResult<List<Modality>>> ModalitiesbyVehicleid( int vehicleid)
+        {
+            var list = await _services.GetModalitiesByVehicleId(vehicleid);
+            if (!list.Any())
+            {
+                return NotFound();
+            }
+            return Ok(list);
         }
     }
 }

@@ -22,5 +22,12 @@ namespace PaqueteTuristico.Services
         {
             return await context.ModalitySet.FirstAsync(c => c.ModalityId == id);
         }
+        public async Task<List<Modality>> GetModalitiesByVehicleId(int VehicleId)
+        {
+            var modalities =  await context.TransportSet.Where(v=> v.VehicleId == VehicleId)
+                .Select(v => v.Modality)
+                .ToListAsync();
+            return modalities;
+        }
     }
 }

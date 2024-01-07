@@ -35,7 +35,7 @@ namespace PaqueteTuristico.Controllers
           
                 return NotFound();
         }
-
+        [Authorize]
         [HttpGet("Province/{ProvinceId}")]
         public async Task<ActionResult<List<Hotel>>> GetHotelByProvinceId(int ProvinceId)
         {

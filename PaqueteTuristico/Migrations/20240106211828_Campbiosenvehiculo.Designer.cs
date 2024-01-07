@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PaqueteTuristico.Data;
@@ -11,9 +12,11 @@ using PaqueteTuristico.Data;
 namespace PaqueteTuristico.Migrations
 {
     [DbContext(typeof(conocubaContext))]
-    partial class conocubaContextModelSnapshot : ModelSnapshot
+    [Migration("20240106211828_Campbiosenvehiculo")]
+    partial class Campbiosenvehiculo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

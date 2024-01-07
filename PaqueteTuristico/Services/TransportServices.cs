@@ -53,9 +53,7 @@ namespace PaqueteTuristico.Services
             }
             else
             {
-                if (temp.Transport_Cost != transport.Transport_Cost)
-                    temp.Transport_Cost = transport.Transport_Cost;
-                context.TransportSet.Update(temp);
+                context.Entry(temp).CurrentValues.SetValues(transport);
                 await context.SaveChangesAsync();
             }
             return true;

@@ -53,36 +53,8 @@ namespace PaqueteTuristico.Services
             if(temp == null) {
                 return false;
             }
-            else { 
-                if(temp.Brand!= vehicle.Brand)
-                {
-                    temp.Brand = vehicle.Brand;
-                }
-                if (temp.Capacity_Without_Equipement != vehicle.Capacity_Without_Equipement)
-                {
-                    temp.Capacity_Without_Equipement = vehicle.Capacity_Without_Equipement;
-                }
-                if (temp.Capacity_With_Equipement != vehicle.Capacity_With_Equipement)
-                {
-                    temp.Capacity_With_Equipement = vehicle.Capacity_With_Equipement;
-                }
-                if (temp.Manufacturing_Mode != vehicle.Manufacturing_Mode)
-                {
-                    temp.Manufacturing_Mode = vehicle.Manufacturing_Mode;
-                }
-                if (temp.Total_Capacity != vehicle.Total_Capacity)
-                {
-                    temp.Total_Capacity = vehicle.Total_Capacity;
-                }
-                if (temp.License_Plate_Number != vehicle.License_Plate_Number)
-                {
-                    temp.License_Plate_Number = vehicle.License_Plate_Number;
-                }
-                if (temp.Year_of_Manufacture != vehicle.Year_of_Manufacture)
-                {
-                    temp.Year_of_Manufacture = vehicle.Year_of_Manufacture;
-                }
-                context.VehicleSet.Update(temp);
+            else {
+                context.Entry(temp).CurrentValues.SetValues(vehicle);
                 await context.SaveChangesAsync();
             }
             
@@ -103,8 +75,7 @@ namespace PaqueteTuristico.Services
         public async Task<List<Vehicle>?> GetProvinceVheicleAsync(int ProvinceId)
         {
             var list = await context.VehicleSet
-            .Where(V => V.ProvinceId == ProvinceId)
-            .ToListAsync();
+            .Where(V => V.ProvinceId == ProvinceId).ToListAsync();
 
             return list;
         }

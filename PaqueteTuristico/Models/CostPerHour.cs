@@ -18,6 +18,7 @@ namespace PaqueteTuristico.Models
         [Required]
         [Column(TypeName = "money")]
         public decimal extra_hour_cost { get; set; }
+        
     }
 
 }

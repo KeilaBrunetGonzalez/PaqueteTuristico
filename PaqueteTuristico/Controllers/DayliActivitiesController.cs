@@ -43,7 +43,7 @@ namespace PaqueteTuristico.Controllers
             }
             return Ok(temp);
         }
-
+        [Authorize]
         [HttpGet("Province/{ProvinceId}")]
         public async Task<ActionResult<List<DayliActivities>>> GetActivitiesByProvinceId(int ProvinceId)
         {
