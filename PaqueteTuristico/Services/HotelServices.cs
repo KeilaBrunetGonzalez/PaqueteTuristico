@@ -122,8 +122,8 @@ namespace PaqueteTuristico.Services
                               select new HotelDTO
                               {
                                   HotelId = Hotel.HotelId,
-                                  HotelName = Hotel.Name,
-                                  HotelChain = Hotel.Chain,
+                                  Name = Hotel.Name,
+                                  Chain = Hotel.Chain,
                                   Category = Hotel.Category,
                                   Phone = Hotel.Phone,
                                   Email = Hotel.Email,

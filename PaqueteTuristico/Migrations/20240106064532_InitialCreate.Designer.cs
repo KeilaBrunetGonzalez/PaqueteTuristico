@@ -12,8 +12,8 @@ using PaqueteTuristico.Data;
 namespace PaqueteTuristico.Migrations
 {
     [DbContext(typeof(conocubaContext))]
-    [Migration("20240106044514_Invirtiendorelaciones")]
-    partial class Invirtiendorelaciones
+    [Migration("20240106064532_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

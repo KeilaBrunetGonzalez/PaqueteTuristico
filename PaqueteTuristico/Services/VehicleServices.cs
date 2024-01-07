@@ -12,8 +12,10 @@ namespace PaqueteTuristico.Services
 {
     public class VehicleServices : ServiceBase
     {
-        public VehicleServices(conocubaContext context) : base(context)
+        private readonly TransportServices _services;
+        public VehicleServices(conocubaContext context, TransportServices services) : base(context)
         {
+            this._services = services;
         }
 
         public  async Task<bool> CreateVehicle(Vehicle vehicle) 
@@ -100,13 +102,18 @@ namespace PaqueteTuristico.Services
             return temp;
         }
 
-        public async Task<List<Vehicle>?> GetProvinceVheicleAsync(int ProvinceId)
+        public async Task<List<Vehicle>?> GetProvinceVheicleAsync(int ProvinceId, DateTime startDate, DateTime endDate)
         {
-            var list = await context.VehicleSet
-            .Where(V => V.ProvinceId == ProvinceId)
-            .ToListAsync();
+            var vehicleIds = await _services.GetEnabledTransportAsync(startDate,endDate);
 
-            return list;
+            if(vehicleIds != null) { 
+                var list = await context.VehicleSet
+                .Where(V => V.ProvinceId == ProvinceId && vehicleIds.Contains(V.VehicleId))
+            .   ToListAsync();
+
+                return list;
+            }
+            return null;
         }
 
         public async Task<int> ObtenerUltimoIdVehicleAsync()

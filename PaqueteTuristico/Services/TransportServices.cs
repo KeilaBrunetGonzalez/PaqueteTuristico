@@ -70,5 +70,20 @@ namespace PaqueteTuristico.Services
             Transport transport = await context.TransportSet.FirstAsync(t => t.ModalityId == modalityid && t.VehicleId == vehicleid);
             return transport;
         }
+
+        public async Task<List<int>?> GetEnabledTransportAsync(DateTime startDate, DateTime endDate)
+        {
+            var enabledRooms = await context.TransportSet
+                .Where(trans => 
+                    !trans.TourPackages.Any(reservation =>
+                        reservation.VehicleId == trans.VehicleId &&
+                        (startDate < reservation.EndDate) &&
+                        (endDate > reservation.StartDate)))
+                .Select(trans => trans.VehicleId)
+                .ToListAsync();
+
+            return enabledRooms;
+        }
+
     }
 }
