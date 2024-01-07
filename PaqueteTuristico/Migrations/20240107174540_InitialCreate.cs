@@ -86,7 +86,8 @@ namespace PaqueteTuristico.Migrations
                 {
                     ProvinceId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ProvinceName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
+                    ProvinceName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    ProvinceDesc = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

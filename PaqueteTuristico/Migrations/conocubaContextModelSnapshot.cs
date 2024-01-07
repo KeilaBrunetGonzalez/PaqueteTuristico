@@ -381,6 +381,10 @@ namespace PaqueteTuristico.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ProvinceId"));
 
+                    b.Property<string>("ProvinceDesc")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("ProvinceName")
                         .IsRequired()
                         .HasMaxLength(50)

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.Mapping;
+using System.Text.Json.Serialization;
 
 namespace PaqueteTuristico.Models
 {
@@ -25,7 +26,7 @@ namespace PaqueteTuristico.Models
         [MaxLength(100)]
         [Required]
         public string ComplementaryServiceProvince { get; set; } = "";
-
+        [JsonIgnore]
         public ICollection<DayliActivities> DayliActivities { get; set; }
     }
 }
