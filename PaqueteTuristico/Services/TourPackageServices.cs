@@ -55,7 +55,7 @@ namespace PaqueteTuristico.Services
             return ultimoId;
         }
 
-        public async Task<bool> InsertTouPackageAsync(TourPackage tp, ICollection<DayliActivities> das)
+        public async Task<bool> InsertTouPackageAsync(TourPackage tp)
         {
             var tpExists = await _context.TourPackagesSet.AnyAsync(t => t.PackageId == tp.PackageId);
 
@@ -77,12 +77,7 @@ namespace PaqueteTuristico.Services
                 var transport = await _services.GetTransportById(tp.VehicleId.Value, tp.ModalityId.Value);
                 transport?.TourPackages.Add(tp);
             }
-            if(das.Any()) {
-                foreach (var da in das)
-                {
-                    tp.DayliActivities.Add(da);
-                }
-            }
+           
             await _context.TourPackagesSet.AddAsync(tp);
             await _context.SaveChangesAsync();
 

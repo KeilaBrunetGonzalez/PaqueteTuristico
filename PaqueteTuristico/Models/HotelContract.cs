@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace PaqueteTuristico.Models
 {
@@ -19,6 +20,7 @@ namespace PaqueteTuristico.Models
         public decimal HotelTotalPrice { get; set; } = 0;
         public int Seasonid { get; set; }
         public int Hotelid { get; set; }
+        [JsonIgnore]
         public HotelPlan Plan { get; set; } 
 
     }

@@ -36,13 +36,13 @@ namespace PaqueteTuristico.Controllers
             return NotFound();
         }
 
-       /* [HttpPost]
-        public async Task<ActionResult<string>> PostRoom([FromBody] TourPackage tp, ICollection<DayliActivities> das)
+        [HttpPost]
+        public async Task<ActionResult<string>> PostRoom([FromBody] TourPackage tp)
         {
             var id = await _services.GetLastTourPackageIdAsync();
             tp.PackageId = ++id;
 
-            var option = await _services.InsertTouPackageAsync(tp,das);
+            var option = await _services.InsertTouPackageAsync(tp);
 
             if (!option)
             {
@@ -50,7 +50,7 @@ namespace PaqueteTuristico.Controllers
             }
 
             return Ok("Tour Package created");
-        }*/
+        }
 
     }
 
