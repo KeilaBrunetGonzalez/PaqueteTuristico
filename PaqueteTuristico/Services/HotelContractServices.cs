@@ -25,6 +25,7 @@ namespace PaqueteTuristico.Services
         public async Task<bool> InsertHotelContractAsync(HotelContract cont)
         {
             var econtract = await _context.HotelContractSet.FindAsync(cont.Id);
+
             var find = false;
             if (econtract != null)
             {
