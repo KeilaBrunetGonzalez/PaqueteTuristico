@@ -6,8 +6,8 @@ namespace PaqueteTuristico.Dtos
     {
         public DateTime Date { get; set; }
         public int HotelId { get; set; }
-        public string? HotelName { get; set; }
-        public string? HotelChain { get; set; }
+        public string? Name { get; set; }
+        public string? Chain { get; set; }
         public string? ProvinceName { get; set; }
         public int Category { get; set; }
         public int Phone { get; set; }

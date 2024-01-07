@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PaqueteTuristico.Models
 {
@@ -28,6 +29,9 @@ namespace PaqueteTuristico.Models
         [Required]
         [ForeignKey(nameof(Room))]
         public int HotelId { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<TourPackage> TourPackages { get; set; }
 
     }
 }

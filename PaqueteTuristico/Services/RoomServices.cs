@@ -37,6 +37,19 @@ namespace PaqueteTuristico.Services
             return list;
         }
 
+        public async Task<List<Room>?> GetEnabledRoomsAsync(int hotelCode, DateTime startDate, DateTime endDate, int countP)
+        {
+            var enabledRooms = await _context.RoomSet
+                .Where(room => room.HotelId == hotelCode && room.AmountofPeople == countP &&
+                    !room.TourPackages.Any(reservation =>
+                        reservation.RoomId == room.Id &&
+                        (startDate < reservation.EndDate) &&
+                        (endDate > reservation.StartDate)))
+                .ToListAsync();
+
+            return enabledRooms;
+        }
+
 
         public async Task<List<Room>?> GetRoomsAsync()
         {

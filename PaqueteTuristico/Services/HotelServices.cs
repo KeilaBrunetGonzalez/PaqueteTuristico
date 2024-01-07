@@ -5,6 +5,9 @@ using PaqueteTuristico.Data;
 using PaqueteTuristico.Dtos;
 using PaqueteTuristico.Models;
 using System.Net;
+using System.Linq;
+using System.Collections.Generic;
+
 
 namespace PaqueteTuristico.Services
 {
@@ -12,10 +15,11 @@ namespace PaqueteTuristico.Services
     {
 
         private readonly conocubaContext _context;
-
-        public HotelServices(conocubaContext context)
+        private readonly RoomServices _services;
+        public HotelServices(RoomServices roomServices,conocubaContext context)
         {
             this._context = context;
+            this._services = roomServices;
         }
 
         //Get
@@ -36,7 +40,7 @@ namespace PaqueteTuristico.Services
 
             return list;
         }
-
+        
         //Insert
         public async Task<bool> InsertHotelAsync(Hotel hotel)
         {
@@ -99,7 +103,6 @@ namespace PaqueteTuristico.Services
                 if (existingHotel != null)
                 {
                     existingHotel.Enabled = enb;
-
                     await _context.SaveChangesAsync();
 
                     return true;
@@ -122,8 +125,8 @@ namespace PaqueteTuristico.Services
                               select new HotelDTO
                               {
                                   HotelId = Hotel.HotelId,
-                                  HotelName = Hotel.Name,
-                                  HotelChain = Hotel.Chain,
+                                  Name = Hotel.Name,
+                                  Chain = Hotel.Chain,
                                   Category = Hotel.Category,
                                   Phone = Hotel.Phone,
                                   Email = Hotel.Email,
@@ -139,13 +142,36 @@ namespace PaqueteTuristico.Services
                               };
             return hotels;
         }
-        public async Task<List<Hotel>?> GetProvinceActiveHotelAsync(int ProvinceId)
+        private async Task<List<Hotel>?> GetInternalProvinceActiveHotelAsync(int ProvinceId)
         {
             var list = await _context.HotelSet
             .Where(V => V.ProvinceId == ProvinceId && V.Enabled == true)
             .ToListAsync();
 
             return list;
+        }
+
+
+        public async Task<List<Hotel>?> GetProvinceActiveHotelAsync(int ProvinceId, DateTime startDate, DateTime endDate, int countP)
+        {
+            var hotels = await GetInternalProvinceActiveHotelAsync(ProvinceId);
+            var activeHotels = new List<Hotel>();
+
+            if (hotels != null)
+            {
+                foreach (var hotel in hotels)
+                {
+                    var rooms = await _services.GetEnabledRoomsAsync(hotel.HotelId, startDate, endDate, countP);
+                    if (rooms != null && rooms.Any())
+                    {
+                        activeHotels.Add(hotel);
+                    }
+                }
+
+                return activeHotels;
+            }
+
+            return null;   
         }
     }
        
