@@ -661,6 +661,9 @@ namespace PaqueteTuristico.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("money");
+
                     b.Property<int>("ProvinceId")
                         .HasColumnType("integer");
 

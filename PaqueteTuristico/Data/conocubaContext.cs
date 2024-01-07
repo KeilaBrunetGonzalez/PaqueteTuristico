@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PaqueteTuristico.Dtos;
 using PaqueteTuristico.Models;
 using System.Diagnostics.Contracts;
 using System.Reflection;
@@ -54,9 +55,19 @@ namespace PaqueteTuristico.Data
 
             modelBuilder.Entity<Hotel>()
                 .HasMany(t => t.TourPackages)
-                .WithOne(t => t.Hotel)
+                .WithOne()
                 .HasForeignKey(t => t.HotelId);
-            
+
+            modelBuilder.Entity<Room>()
+               .HasMany(t => t.TourPackages)
+               .WithOne()
+               .HasForeignKey(t => t.RoomId);
+
+            modelBuilder.Entity<Meal>()
+               .HasMany(t => t.TourPackages)
+               .WithOne()
+               .HasForeignKey(t => t.MealId);
+
 
             modelBuilder.Entity<HotelPlan>()
                 .HasKey(p => new
@@ -112,9 +123,9 @@ namespace PaqueteTuristico.Data
 
             
 
-            modelBuilder.Entity<TourPackage>()
-                .HasOne(y => y.Transport)
-                .WithMany()
+            modelBuilder.Entity<Transport>()
+                .HasMany(y => y.TourPackages)
+                .WithOne()
                 .HasForeignKey(x => new
                 {
                     x.ModalityId,
@@ -126,9 +137,9 @@ namespace PaqueteTuristico.Data
                 .WithMany()
                 .UsingEntity(j => j.ToTable("ActivitiesperPackage"));
 
-            modelBuilder.Entity<TourPackage>()
-                .HasOne(u => u.User)
-                .WithMany()
+            modelBuilder.Entity<UserApp>()
+                .HasMany(u => u.TourPackages)
+                .WithOne()
                 .HasForeignKey(x => x.UserId);
 
             modelBuilder.Entity<Province>()

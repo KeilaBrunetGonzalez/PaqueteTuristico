@@ -8,17 +8,15 @@ namespace PaqueteTuristico.Models
     {
         public TourPackage() {
             this.DayliActivities = new HashSet<DayliActivities>();
-            this.Transport = new Transport();
-            this.Hotel = new Hotel();   
-            this.User = new UserApp();
         }
         [Key]
         public int PackageId { get; set; }
         public int ProvinceId { get; set; }
         public int HotelId { get; set; }
-        public int VehicleId { get; set; }
-        public int ModalityId { get; set; }
-        public int ActivityId { get; set; }
+        public int RoomId { get; set; }
+        public int MealId { get; set; }
+        public int? VehicleId { get; set; }
+        public int?  ModalityId { get; set; }
         public string UserId { get; set; } = string.Empty;
         public int PeopleCant {  get; set; }
         [Column(TypeName = "date")]
@@ -32,13 +30,8 @@ namespace PaqueteTuristico.Models
         [Column(TypeName = "money")]
         [Required]
         public decimal Totalprice { get; set; }
-        [JsonIgnore]
-        public Hotel Hotel { get; set; }
-        public UserApp User { get; set; }
-        [JsonIgnore]
-        public Transport Transport { get; set;}
-        [JsonIgnore]
-        public ICollection<DayliActivities> DayliActivities { get; set; }
+
+        public ICollection<DayliActivities>  DayliActivities { get; set; }
 
     }
 }

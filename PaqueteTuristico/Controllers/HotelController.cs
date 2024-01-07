@@ -35,11 +35,11 @@ namespace PaqueteTuristico.Controllers
           
                 return NotFound();
         }
-
-        [HttpGet("Province/{ProvinceId}")]
-        public async Task<ActionResult<List<Hotel>>> GetHotelByProvinceId(int ProvinceId)
+        [Authorize]
+        [HttpGet("Province/{ProvinceId}/{startDate}/{endDate}/{countP}")]
+        public async Task<ActionResult<List<Hotel>>> GetHotelByProvinceId(int ProvinceId, DateTime startDate, DateTime endDate, int countP)
         {
-            var list = await _services.GetProvinceActiveHotelAsync(ProvinceId);
+            var list = await _services.GetProvinceActiveHotelAsync(ProvinceId,startDate, endDate,countP);
             if (list.IsNullOrEmpty())
             {
                 return NotFound();

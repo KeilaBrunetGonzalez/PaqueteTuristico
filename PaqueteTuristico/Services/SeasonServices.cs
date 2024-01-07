@@ -48,16 +48,7 @@ namespace PaqueteTuristico.Services
             }
             else
             {
-                if (current.StartDate != season.StartDate)
-                {
-                    current.StartDate = season.StartDate;
-                }
-                if (current.SeasonName != season.SeasonName)
-                {
-                    current.SeasonName = season.SeasonName;
-                }
-
-                context.SeasonSet.Update(current);
+                context.Entry(current).CurrentValues.SetValues(season);
                 await context.SaveChangesAsync();
             }
             return true;

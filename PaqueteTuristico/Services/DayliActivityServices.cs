@@ -78,10 +78,13 @@ namespace PaqueteTuristico.Services
             return dayli;
         }
 
-        public async Task<List<DayliActivities>?> GetProvinceActivitiesAsync(int ProvinceId)
+        public async Task<ICollection<DayliActivities>?> GetProvinceActivitiesAsync(int ProvinceId, DateTime startDate, DateTime endDate)
         {
+            int starD = startDate.Day;
+            int endD = endDate.Day;
             var list = await context.DayliActivitieSet
-            .Where(V => V.ProvinceId == ProvinceId)
+            .Where(da => da.ProvinceId == ProvinceId &&
+            da.Day >= starD && da.Day <= endD)
             .ToListAsync();
 
             return list;

@@ -12,8 +12,10 @@ namespace PaqueteTuristico.Services
 {
     public class VehicleServices : ServiceBase
     {
-        public VehicleServices(conocubaContext context) : base(context)
+        private readonly TransportServices _services;
+        public VehicleServices(conocubaContext context, TransportServices services) : base(context)
         {
+            this._services = services;
         }
 
         public  async Task<bool> CreateVehicle(Vehicle vehicle) 
@@ -53,36 +55,8 @@ namespace PaqueteTuristico.Services
             if(temp == null) {
                 return false;
             }
-            else { 
-                if(temp.Brand!= vehicle.Brand)
-                {
-                    temp.Brand = vehicle.Brand;
-                }
-                if (temp.Capacity_Without_Equipement != vehicle.Capacity_Without_Equipement)
-                {
-                    temp.Capacity_Without_Equipement = vehicle.Capacity_Without_Equipement;
-                }
-                if (temp.Capacity_With_Equipement != vehicle.Capacity_With_Equipement)
-                {
-                    temp.Capacity_With_Equipement = vehicle.Capacity_With_Equipement;
-                }
-                if (temp.Manufacturing_Mode != vehicle.Manufacturing_Mode)
-                {
-                    temp.Manufacturing_Mode = vehicle.Manufacturing_Mode;
-                }
-                if (temp.Total_Capacity != vehicle.Total_Capacity)
-                {
-                    temp.Total_Capacity = vehicle.Total_Capacity;
-                }
-                if (temp.License_Plate_Number != vehicle.License_Plate_Number)
-                {
-                    temp.License_Plate_Number = vehicle.License_Plate_Number;
-                }
-                if (temp.Year_of_Manufacture != vehicle.Year_of_Manufacture)
-                {
-                    temp.Year_of_Manufacture = vehicle.Year_of_Manufacture;
-                }
-                context.VehicleSet.Update(temp);
+            else {
+                context.Entry(temp).CurrentValues.SetValues(vehicle);
                 await context.SaveChangesAsync();
             }
             
@@ -100,13 +74,18 @@ namespace PaqueteTuristico.Services
             return temp;
         }
 
-        public async Task<List<Vehicle>?> GetProvinceVheicleAsync(int ProvinceId)
+        public async Task<List<Vehicle>?> GetProvinceVheicleAsync(int ProvinceId, DateTime startDate, DateTime endDate)
         {
-            var list = await context.VehicleSet
-            .Where(V => V.ProvinceId == ProvinceId)
-            .ToListAsync();
+            var vehicleIds = await _services.GetEnabledTransportAsync(startDate,endDate);
 
-            return list;
+            if(vehicleIds != null) { 
+                var list = await context.VehicleSet
+                .Where(V => V.ProvinceId == ProvinceId && vehicleIds.Contains(V.VehicleId))
+            .   ToListAsync();
+
+                return list;
+            }
+            return null;
         }
 
         public async Task<int> ObtenerUltimoIdVehicleAsync()

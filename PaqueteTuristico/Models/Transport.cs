@@ -24,9 +24,10 @@ namespace PaqueteTuristico.Models
         public Vehicle Vehicle { get; set; }
         [JsonIgnore]
         public Modality Modality { get; set; }
-        
 
+        [JsonIgnore]
         public virtual TransportationContract Contract { get; set; }
+        [JsonIgnore]
         public virtual ICollection<TourPackage> TourPackages { get; set; }
 
     }

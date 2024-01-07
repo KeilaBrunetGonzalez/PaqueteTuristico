@@ -5,8 +5,8 @@ namespace PaqueteTuristico.Models
     public class UserApp:IdentityUser
     {
         public UserApp() { 
-        this.Packages = new HashSet<TourPackage>();
+        this.TourPackages = new HashSet<TourPackage>();
         }
-        public ICollection<TourPackage> Packages { get; set; }
+        public ICollection<TourPackage> TourPackages { get; set; }
     }
 }

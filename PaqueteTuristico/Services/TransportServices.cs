@@ -53,9 +53,7 @@ namespace PaqueteTuristico.Services
             }
             else
             {
-                if (temp.Transport_Cost != transport.Transport_Cost)
-                    temp.Transport_Cost = transport.Transport_Cost;
-                context.TransportSet.Update(temp);
+                context.Entry(temp).CurrentValues.SetValues(transport);
                 await context.SaveChangesAsync();
             }
             return true;
@@ -70,5 +68,20 @@ namespace PaqueteTuristico.Services
             Transport transport = await context.TransportSet.FirstAsync(t => t.ModalityId == modalityid && t.VehicleId == vehicleid);
             return transport;
         }
+
+        public async Task<List<int>?> GetEnabledTransportAsync(DateTime startDate, DateTime endDate)
+        {
+            var enabledRooms = await context.TransportSet
+                .Where(trans => 
+                    !trans.TourPackages.Any(reservation =>
+                        reservation.VehicleId == trans.VehicleId &&
+                        (startDate < reservation.EndDate) &&
+                        (endDate > reservation.StartDate)))
+                .Select(trans => trans.VehicleId)
+                .ToListAsync();
+
+            return enabledRooms;
+        }
+
     }
 }

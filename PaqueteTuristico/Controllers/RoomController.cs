@@ -60,6 +60,17 @@ namespace PaqueteTuristico.Controllers
             return Ok(list);
         }
 
+        [HttpGet("hoteles/{hotelId}/{fechaInicio}/{fechaFin}/{countP}")]
+        public async Task<IActionResult> GetHabitacionesDisponibles(int hotelId, DateTime fechaInicio, DateTime fechaFin,int countP)
+        {
+            var enabledRoom = await _services.GetEnabledRoomsAsync(hotelId,fechaInicio,  fechaFin, countP);
+            if (enabledRoom.IsNullOrEmpty())
+            {
+                return NotFound();
+            }
+            return Ok(enabledRoom);
+        }
+
 
         //POST
 

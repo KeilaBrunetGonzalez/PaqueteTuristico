@@ -18,6 +18,9 @@ namespace PaqueteTuristico.Models
         [MaxLength(100)]
         public string License_Plate_Number { get; set; } = "";
         [Required]
+        [Column(TypeName = "money")]
+        public decimal Price { get; set; }
+        [Required]
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
         public string Brand { get; set; } = "";
@@ -35,7 +38,7 @@ namespace PaqueteTuristico.Models
         public string Manufacturing_Mode { get; set; } = "";
 
         public int ProvinceId {  get; set; }
-        [JsonIgnore]
+        
         public ICollection<Transport> Transports { get; set; }
         
     }
