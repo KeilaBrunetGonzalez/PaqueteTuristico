@@ -34,7 +34,44 @@ namespace PaqueteTuristico.Services
             return list;
         }
 
-    }
+        public async Task<bool> UpdateEnabledAsync(int contractId, bool enb)
+        {
+            try
+            {
+                var existingContract = await _context.EContractSet.FindAsync(contractId);
 
+                if (existingContract != null)
+                {
+                    existingContract.Enabled = enb;
+
+                    await _context.SaveChangesAsync();
+
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+
+        }
+
+
+        public async Task<bool> IsContractEnabled(int contractId)
+        {
+            var EContrat = await _context.EContractSet
+            .Where(H => H.Id == contractId && H.Enabled == true)
+            .ToListAsync();
+
+            if (EContrat != null) { return false; }
+
+            return true;
+        }
+
+
+    }
 
 }

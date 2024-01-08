@@ -74,30 +74,5 @@ namespace PaqueteTuristico.Services
             return find;
         }
 
-
-        internal async Task<bool> UpdateEnabledAsync(int contractId, bool enb)
-        {
-            try
-            {
-                var existingContract = await _context.ComplementaryContractSet.FindAsync(contractId);
-
-                if (existingContract != null)
-                {
-                    existingContract.Enabled = enb;
-
-                    await _context.SaveChangesAsync();
-
-                    return true;
-                }
-
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-        }
-
     }
 }

@@ -13,9 +13,11 @@ namespace PaqueteTuristico.Services
     public class VehicleServices : ServiceBase
     {
         private readonly TransportServices _services;
-        public VehicleServices(conocubaContext context, TransportServices services) : base(context)
+        private readonly ContractServices con_services;
+        public VehicleServices(conocubaContext context, TransportServices services, ContractServices con_services) : base(context)
         {
             this._services = services;
+            this.con_services = con_services;
         }
 
         public  async Task<bool> CreateVehicle(Vehicle vehicle) 
@@ -51,7 +53,7 @@ namespace PaqueteTuristico.Services
         public async Task<bool> UpdateVehicle(Vehicle vehicle)
         {
             
-                var temp = await context.VehicleSet.FirstOrDefaultAsync(v => v.VehicleId == vehicle.VehicleId);
+            var temp = await context.VehicleSet.FirstOrDefaultAsync(v => v.VehicleId == vehicle.VehicleId);
             if(temp == null) {
                 return false;
             }
@@ -74,7 +76,7 @@ namespace PaqueteTuristico.Services
             return temp;
         }
 
-        public async Task<List<Vehicle>?> GetProvinceVheicleAsync(int ProvinceId, DateTime startDate, DateTime endDate)
+        public async Task<List<Vehicle>?> GetProvinceVehicleAsync(int ProvinceId, DateTime startDate, DateTime endDate)
         {
             var vehicleIds = await _services.GetEnabledTransportAsync(startDate,endDate);
 
@@ -83,7 +85,20 @@ namespace PaqueteTuristico.Services
                 .Where(V => V.ProvinceId == ProvinceId && vehicleIds.Contains(V.VehicleId))
             .   ToListAsync();
 
-                return list;
+                var newList = new List<Vehicle>();
+
+                if (list != null)
+                {
+                    foreach (var l in list)
+                    {
+                        if (await con_services.IsContractEnabled(l.ContractId))
+                        {
+                            newList.Add(l);
+                        }
+                    }
+
+                    return newList;
+                }
             }
             return null;
         }
