@@ -8,7 +8,7 @@ namespace PaqueteTuristico.Models
     {
         public DayliActivities() { 
             
-            
+            this.Contract = new ComplementaryContract();
         }
         [Key]
         public int ActivityId { get; set; }
@@ -25,6 +25,10 @@ namespace PaqueteTuristico.Models
 
         [Required]
         public int ProvinceId { get; set; }
+        [Required]
+        public int ContractId { get; set; }
+        public ComplementaryContract Contract { get; set; }
+
         
         
     }
