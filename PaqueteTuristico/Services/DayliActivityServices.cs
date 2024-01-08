@@ -80,6 +80,8 @@ namespace PaqueteTuristico.Services
 
         public async Task<ICollection<DayliActivities>?> GetProvinceActivitiesAsync(int ProvinceId, DateTime startDate, DateTime endDate)
         {
+            //Va aqui await con_servicesIs.IsContractEnabled(hotel.contractId)
+
             int starD = startDate.Day;
             int endD = endDate.Day;
             var list = await context.DayliActivitieSet

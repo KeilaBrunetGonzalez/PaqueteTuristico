@@ -7,6 +7,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Client;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -39,21 +40,36 @@ namespace PaqueteTuristico.Controllers
             return await services.GetAll();
         }
 
-            // GET api/<SeasonController1>/5
+        // GET api/<SeasonController1>/5
 
-            [HttpGet("/Season/Season_ID")]
+        [HttpGet("/Season/Season_ID")]
         public async Task<ActionResult<Season>> GetSeasonAsync(int id)
         {
             var season = await services.GetSeasonById(id);
-            
+
             if (season == null)
             {
-               return NotFound();
-                
+                return NotFound();
+
             }
             return Ok(season);
         }
-        //  POST api/<SeasonController1>/5
+
+        [HttpGet("{startDate}/{endDate}")]
+       public async Task<ActionResult<Season>> GetSeasonForTpAsync(DateTime startDate, DateTime endDate)
+        {
+            var season = await services.GetSeassonAsync(startDate, endDate);
+
+            if (season == null)
+            {
+                return NotFound();
+
+            }
+            return Ok(season);
+
+        }
+
+            //  POST api/<SeasonController1>/5
 
         [HttpPost]
 
