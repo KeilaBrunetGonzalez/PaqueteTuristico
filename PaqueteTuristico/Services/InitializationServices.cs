@@ -13,12 +13,19 @@ namespace PaqueteTuristico.Services
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly conocubaContext context;
         private readonly ProvinceSetService  _services;
-        public InitializationServices(UserManager<UserApp> userManager, RoleManager<IdentityRole> roleManager, conocubaContext context, ProvinceSetService _services)
+        private readonly TransportationContractServices _transportation;
+        private readonly ComplementaryContractServices _complementary;
+        private readonly HotelContractServices _hotels;
+        public InitializationServices(UserManager<UserApp> userManager, RoleManager<IdentityRole> roleManager, conocubaContext context, ProvinceSetService _services,
+            TransportationContractServices _transportation, ComplementaryContractServices _complementary, HotelContractServices _hotels)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.context = context;
             this._services = _services;
+            this._transportation = _transportation;
+            this._complementary = _complementary;
+            this._hotels = _hotels;
         }
         //Funcion que iniciali
         public async Task CreateRoles()
@@ -183,7 +190,7 @@ namespace PaqueteTuristico.Services
         public async Task CreateProvinces()
         {
 
-            var pinar_del_rio = new Province
+            var pinar_del_rio = new Province 
             {
                 ProvinceId = 1,
                 ProvinceName = "Pinar del Río",
@@ -295,63 +302,337 @@ namespace PaqueteTuristico.Services
                 ProvinceDesc = "El segundo cuerpo terrestre más grande de Cuba, famoso por sus sitios de buceo y la cría de cítricos."
             };
             await _services.InsertProvinceAsync(isla_de_la_juventud);
+            
 
         }
 
-        public async Task CreateComplementaryContracts()
+        public async Task CreateTransportContracts()
         {
-            var complementaryContracts = new List<ComplementaryContract>
-            {
-                new ComplementaryContract { ServiceType = "Servicio A", CostPerPerson = 150.00m, ComplementaryServiceProvince = "Provincia A" },
-                new ComplementaryContract { ServiceType = "Servicio B", CostPerPerson = 120.00m, ComplementaryServiceProvince = "Provincia B" },
-                new ComplementaryContract { ServiceType = "Servicio C", CostPerPerson = 100.00m, ComplementaryServiceProvince = "Provincia C"},
-                new ComplementaryContract { ServiceType = "Servicio D", CostPerPerson = 180.00m, ComplementaryServiceProvince = "Provincia D"},
-                new ComplementaryContract { ServiceType = "Servicio E", CostPerPerson = 130.00m, ComplementaryServiceProvince = "Provincia E"},
-                new ComplementaryContract { ServiceType = "Servicio F", CostPerPerson = 90.00m, ComplementaryServiceProvince = "Provincia F" },
-                new ComplementaryContract { ServiceType = "Servicio G", CostPerPerson = 160.00m, ComplementaryServiceProvince = "Provincia G" },
-                new ComplementaryContract { ServiceType = "Servicio H", CostPerPerson = 110.00m, ComplementaryServiceProvince = "Provincia H" },
-                new ComplementaryContract { ServiceType = "Servicio I", CostPerPerson = 140.00m, ComplementaryServiceProvince = "Provincia I" },
-                new ComplementaryContract { ServiceType = "Servicio J", CostPerPerson = 170.00m, ComplementaryServiceProvince = "Provincia J" },
-            };
 
-            await context.ComplementaryContractSet.AddRangeAsync(complementaryContracts);
-            await context.SaveChangesAsync();
+            var t1 = new TransportationContract
+            {
+                Id = 1,
+                Desc = "Contrato de Transporte",
+                StarDate = new DateTime(2023, 10, 27),
+                EndTime = new DateTime(2024, 10, 27),
+                ConcilTime = new DateTime(2023, 10, 30),
+                Enabled = true,
+                TransportationProvider = "Proveedor 1",
+                IncluedVehicles = 1
+            }; await _transportation.InsertTransportationContractAsync(t1);
+            var t2 = new TransportationContract
+            {
+                Id = 2,
+                Desc = "Contrato de Transporte",
+                StarDate = new DateTime(2024, 01, 05),
+                EndTime = new DateTime(2025, 01, 05),
+                ConcilTime = new DateTime(2024, 01, 10),
+                Enabled = true,
+                TransportationProvider = "Proveedor 2",
+                IncluedVehicles = 2
+            }; await _transportation.InsertTransportationContractAsync(t2);
+            var t3 = new TransportationContract
+            {
+                Id = 7,
+                Desc = "Contrato de Transporte",
+                StarDate = new DateTime(2023, 01, 02),
+                EndTime = new DateTime(2024, 01, 02),
+                ConcilTime = new DateTime(2023, 01, 05),
+                Enabled = false,
+                TransportationProvider = "Proveedor 3",
+                IncluedVehicles = 3
+            }; await _transportation.InsertTransportationContractAsync(t3);
+            var t4 = new TransportationContract
+            {
+                Id = 8,
+                Desc = "Contrato de Transporte",
+                StarDate = new DateTime(2023, 04, 15),
+                EndTime = new DateTime(2024, 04, 15),
+                ConcilTime = new DateTime(2023, 04, 30),
+                Enabled = true,
+                TransportationProvider = "Proveedor 4",
+                IncluedVehicles = 4
+            }; await _transportation.InsertTransportationContractAsync(t4);
+            var t5 = new TransportationContract
+            {
+                Id = 13,
+                Desc = "Contrato de Transporte",
+                StarDate = new DateTime(2023, 12, 04),
+                EndTime = new DateTime(2024, 12, 04),
+                ConcilTime = new DateTime(2023, 12, 12),
+                Enabled = true,
+                TransportationProvider = "Proveedor 5",
+                IncluedVehicles = 5
+            }; await _transportation.InsertTransportationContractAsync(t5);
+            var t6 = new TransportationContract
+            {
+                Id = 14,
+                Desc = "Contrato de Transporte",
+                StarDate = new DateTime(2022, 10, 04),
+                EndTime = new DateTime(2023, 10, 04),
+                ConcilTime = new DateTime(2022, 10, 12),
+                Enabled = false,
+                TransportationProvider = "Proveedor 6",
+                IncluedVehicles = 6
+            }; await _transportation.InsertTransportationContractAsync(t6);
+            var t7 = new TransportationContract
+            {
+                Id = 19,
+                Desc = "Contrato de Transporte",
+                StarDate = new DateTime(2023, 05, 04),
+                EndTime = new DateTime(2024, 05, 04),
+                ConcilTime = new DateTime(2023, 05, 12),
+                Enabled = true,
+                TransportationProvider = "Proveedor 7",
+                IncluedVehicles = 7
+            }; await _transportation.InsertTransportationContractAsync(t7);
+            var t8 = new TransportationContract
+            {
+                Id = 20,
+                Desc = "Contrato de Transporte",
+                StarDate = new DateTime(2022, 12, 04),
+                EndTime = new DateTime(2023, 12, 04),
+                ConcilTime = new DateTime(2022, 12, 12),
+                Enabled = false,
+                TransportationProvider = "Proveedor 8",
+                IncluedVehicles = 8
+            }; await _transportation.InsertTransportationContractAsync(t8);
+            var t9 = new TransportationContract
+            {
+                Id = 25,
+                Desc = "Contrato de Transporte",
+                StarDate = new DateTime(2023, 08, 04),
+                EndTime = new DateTime(2024, 08, 04),
+                ConcilTime = new DateTime(2023, 08, 12),
+                Enabled = true,
+                TransportationProvider = "Proveedor 9",
+                IncluedVehicles = 9
+            }; await _transportation.InsertTransportationContractAsync(t9);
+            var t10 = new TransportationContract
+            {
+                Id = 26,
+                Desc = "Contrato de Transporte",
+                StarDate = new DateTime(2022, 11, 04),
+                EndTime = new DateTime(2023, 11, 04),
+                ConcilTime = new DateTime(2022, 11, 12),
+                Enabled = false,
+                TransportationProvider = "Proveedor 10",
+                IncluedVehicles = 10
+            }; await _transportation.InsertTransportationContractAsync(t10);
         }
 
-        public async Task CreateTransportationContracts()
+        public async Task CreateComplementaryContract()
         {
-            var transportationContracts = new List<TransportationContract>
+            await _complementary.InsertComplementaryContractAsync(new ComplementaryContract
             {
-                new TransportationContract { TransportationProvider = "Proveedor A", IncluedVehicles = 5 },
-                new TransportationContract { TransportationProvider = "Proveedor B", IncluedVehicles = 3 },
-                new TransportationContract { TransportationProvider = "Proveedor C", IncluedVehicles = 8 },
-                new TransportationContract { TransportationProvider = "Proveedor D", IncluedVehicles = 4 },
-                new TransportationContract { TransportationProvider = "Proveedor E", IncluedVehicles = 6 },
-            };
-
-            await context.TransportationContractSet.AddRangeAsync(transportationContracts);
-            await context.SaveChangesAsync();
+                Id = 3,
+                Desc = "Contrato Complementario",
+                StarDate = new DateTime(2023, 10, 27),
+                EndTime = new DateTime(2024, 10, 27),
+                ConcilTime = new DateTime(2023, 10, 30),
+                Enabled = true,
+                ServiceType = "Museo",
+                CostPerPerson = 10.00m,
+                ComplementaryServiceProvince = "Servicio 1"
+            });
+            await _complementary.InsertComplementaryContractAsync(new ComplementaryContract
+            {
+                Id = 4,
+                Desc = "Contrato Complementario",
+                StarDate = new DateTime(2024, 01, 05),
+                EndTime = new DateTime(2025, 01, 05),
+                ConcilTime = new DateTime(2024, 01, 10),
+                Enabled = true,
+                ServiceType = "Cafetería",
+                CostPerPerson = 20.00m,
+                ComplementaryServiceProvince = "Servicio 2"
+            });
+            await _complementary.InsertComplementaryContractAsync(new ComplementaryContract
+            {
+                Id = 9,
+                Desc = "Contrato Complementario",
+                StarDate = new DateTime(2023, 01, 02),
+                EndTime = new DateTime(2024, 01, 02),
+                ConcilTime = new DateTime(2023, 01, 05),
+                Enabled = false,
+                ServiceType = "Espectáculo nocturno",
+                CostPerPerson = 30.00m,
+                ComplementaryServiceProvince = "Servicio 3"
+            });
+            await _complementary.InsertComplementaryContractAsync(new ComplementaryContract
+            {
+                Id = 10,
+                Desc = "Contrato Complementario",
+                StarDate = new DateTime(2023, 04, 15),
+                EndTime = new DateTime(2024, 04, 15),
+                ConcilTime = new DateTime(2023, 04, 30),
+                Enabled = true,
+                ServiceType = "Excursión",
+                CostPerPerson = 40.00m,
+                ComplementaryServiceProvince = "Servicio 4"
+            });
+            await _complementary.InsertComplementaryContractAsync(new ComplementaryContract
+            {
+                Id = 15,
+                Desc = "Contrato Complementario",
+                StarDate = new DateTime(2023, 12, 04),
+                EndTime = new DateTime(2024, 12, 04),
+                ConcilTime = new DateTime(2023, 12, 12),
+                Enabled = true,
+                ServiceType = "Paseo marítimo",
+                CostPerPerson = 50.00m,
+                ComplementaryServiceProvince = "Servicio 5"
+            });
+            await _complementary.InsertComplementaryContractAsync(new ComplementaryContract
+            {
+                Id = 16,
+                Desc = "Contrato Complementario",
+                StarDate = new DateTime(2022, 10, 04),
+                EndTime = new DateTime(2023, 10, 04),
+                ConcilTime = new DateTime(2022, 10, 12),
+                Enabled = false,
+                ServiceType = "Museo",
+                CostPerPerson = 60.00m,
+                ComplementaryServiceProvince = "Servicio 6"
+            });
+            await _complementary.InsertComplementaryContractAsync(new ComplementaryContract
+            {
+                Id = 21,
+                Desc = "Contrato Complementario",
+                StarDate = new DateTime(2023, 05, 04),
+                EndTime = new DateTime(2024, 05, 04),
+                ConcilTime = new DateTime(2023, 05, 12),
+                Enabled = true,
+                ServiceType = "Espectáculo nocturno",
+                CostPerPerson = 70.00m,
+                ComplementaryServiceProvince = "Servicio 7"
+            });
+            await _complementary.InsertComplementaryContractAsync(new ComplementaryContract
+            {
+                Id = 22,
+                Desc = "Contrato Complementario",
+                StarDate = new DateTime(2022, 12, 04),
+                EndTime = new DateTime(2023, 12, 04),
+                ConcilTime = new DateTime(2022, 12, 12),
+                Enabled = false,
+                ServiceType = "Excursión",
+                CostPerPerson = 80.00m,
+                ComplementaryServiceProvince = "Servicio 8"
+            });
         }
 
-        public async Task CreateHotelContracts()
+        public async Task CreateHotelContract()
         {
-            var hotelContracts = new List<HotelContract>
+            await _hotels.InsertHotelContractAsync(new HotelContract
             {
-                new HotelContract { Address = "Dirección A", HotelTotalPrice = 1500.00m },
-                new HotelContract { Address = "Dirección B", HotelTotalPrice = 1200.00m },
-                new HotelContract { Address = "Dirección C", HotelTotalPrice = 1000.00m },
-                new HotelContract { Address = "Dirección D", HotelTotalPrice = 1800.00m },
-                new HotelContract { Address = "Dirección E", HotelTotalPrice = 1300.00m },
-                new HotelContract { Address = "Dirección F", HotelTotalPrice = 900.00m },
-                new HotelContract { Address = "Dirección G", HotelTotalPrice = 1600.00m },
-                new HotelContract { Address = "Dirección H", HotelTotalPrice = 1100.00m },
-                new HotelContract { Address = "Dirección I", HotelTotalPrice = 1400.00m },
-                new HotelContract { Address = "Dirección J", HotelTotalPrice = 1700.00m },
-            };
-
-            await context.HotelContractSet.AddRangeAsync(hotelContracts);
-            await context.SaveChangesAsync();
+                Id = 5,
+                Desc = "Contrato de Hotel",
+                StarDate = new DateTime(2023, 10, 27),
+                EndTime = new DateTime(2024, 10, 27),
+                ConcilTime = new DateTime(2023, 10, 30),
+                Enabled = true,
+                Address = "Calle A, La Habana",
+                HotelTotalPrice = 120.00m
+            });
+            await _hotels.InsertHotelContractAsync(new HotelContract
+            {
+                Id = 6,
+                Desc = "Contrato de Hotel",
+                StarDate = new DateTime(2024, 01, 05),
+                EndTime = new DateTime(2025, 01, 05),
+                ConcilTime = new DateTime(2024, 01, 10),
+                Enabled = true,
+                Address = "Calle B, Santiago",
+                HotelTotalPrice = 80.00m
+            });
+            await _hotels.InsertHotelContractAsync(new HotelContract
+            {
+                Id = 11,
+                Desc = "Contrato de Hotel",
+                StarDate = new DateTime(2023, 01, 02),
+                EndTime = new DateTime(2024, 01, 02),
+                ConcilTime = new DateTime(2023, 01, 05),
+                Enabled = false,
+                Address = "Calle C, Trinidad",
+                HotelTotalPrice = 90.00m
+            });
+            await _hotels.InsertHotelContractAsync(new HotelContract
+            {
+                Id = 12,
+                Desc = "Contrato de Hotel",
+                StarDate = new DateTime(2023, 04, 15),
+                EndTime = new DateTime(2024, 04, 15),
+                ConcilTime = new DateTime(2023, 04, 30),
+                Enabled = true,
+                Address = "Calle D, Varadero",
+                HotelTotalPrice = 130.00m
+            });
+            await _hotels.InsertHotelContractAsync(new HotelContract
+            {
+                Id = 17,
+                Desc = "Contrato de Hotel",
+                StarDate = new DateTime(2023, 12, 04),
+                EndTime = new DateTime(2024, 12, 04),
+                ConcilTime = new DateTime(2023, 12, 12),
+                Enabled = true,
+                Address = "Calle E, Cienfuegos",
+                HotelTotalPrice = 100.00m
+            });
+            await _hotels.InsertHotelContractAsync(new HotelContract
+            {
+                Id = 18,
+                Desc = "Contrato de Hotel",
+                StarDate = new DateTime(2022, 10, 04),
+                EndTime = new DateTime(2023, 10, 04),
+                ConcilTime = new DateTime(2022, 10, 12),
+                Enabled = false,
+                Address = "Calle F, Camagüey",
+                HotelTotalPrice = 70.00m
+            });
+            await _hotels.InsertHotelContractAsync(new HotelContract
+            {
+                Id = 23,
+                Desc = "Contrato de Hotel",
+                StarDate = new DateTime(2023, 05, 04),
+                EndTime = new DateTime(2024, 05, 04),
+                ConcilTime = new DateTime(2023, 05, 12),
+                Enabled = true,
+                Address = "Calle G, Holguín",
+                HotelTotalPrice = 95.00m
+            });
+            await _hotels.InsertHotelContractAsync(new HotelContract
+            {
+                Id = 24,
+                Desc = "Contrato de Hotel",
+                StarDate = new DateTime(2022, 12, 04),
+                EndTime = new DateTime(2023, 12, 04),
+                ConcilTime = new DateTime(2022, 12, 12),
+                Enabled = false,
+                Address = "Calle H, Pinar del Río",
+                HotelTotalPrice = 60.00m
+            });
+            await _hotels.InsertHotelContractAsync(new HotelContract
+            {
+                Id = 27,
+                Desc = "Contrato de Hotel",
+                StarDate = new DateTime(2023, 08, 04),
+                EndTime = new DateTime(2024, 08, 04),
+                ConcilTime = new DateTime(2023, 08, 12),
+                Enabled = true,
+                Address = "Calle I, Guantánamo",
+                HotelTotalPrice = 85.00m
+            });
+            await _hotels.InsertHotelContractAsync(new HotelContract
+            {
+                Id = 28,
+                Desc = "Contrato de Hotel",
+                StarDate = new DateTime(2022, 11, 04),
+                EndTime = new DateTime(2023, 11, 04),
+                ConcilTime = new DateTime(2022, 11, 12),
+                Enabled = false,
+                Address = "Calle J, Matanzas",
+                HotelTotalPrice = 125.00m
+            });
         }
-
     }
 }

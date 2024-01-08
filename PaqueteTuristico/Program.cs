@@ -96,6 +96,9 @@ using (var scope = app.Services.CreateScope())
         await myServices.crateMeals();
         await myServices.crateActivities();
         await myServices.crateVehicles();
+        await myServices.CreateTransportContracts();
+        await myServices.CreateComplementaryContract();
+        await myServices.CreateHotelContract();
     }
     catch (Exception ex)
     {

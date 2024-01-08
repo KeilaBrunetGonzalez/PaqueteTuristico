@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PaqueteTuristico.Models
 {
@@ -20,7 +21,7 @@ namespace PaqueteTuristico.Models
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
         [Required]
-        
+        [JsonIgnore]
         public ICollection<Vehicle> Vehicles { get; set; }
     }
 }
