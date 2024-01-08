@@ -164,7 +164,7 @@ namespace PaqueteTuristico.Services
                 foreach (var hotel in hotels)
                 {
                     var rooms = await _services.GetEnabledRoomsAsync(hotel.HotelId, startDate, endDate, countP);
-                    if (rooms != null)//Va aqui await con_services.IsContractEnabled(hotel.contractId)
+                    if (rooms != null && await con_services.IsContractEnabled(hotel.ContractId))
                     {
                         activeHotels.Add(hotel);
                     }

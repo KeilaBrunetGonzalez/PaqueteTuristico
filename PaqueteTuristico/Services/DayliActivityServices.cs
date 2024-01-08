@@ -8,9 +8,11 @@ namespace PaqueteTuristico.Services
     public class DayliActivityServices
     {
         private readonly conocubaContext context;
-        public DayliActivityServices(conocubaContext context)
+        private readonly ContractServices con_services;
+        public DayliActivityServices(conocubaContext context, ContractServices con_services)
         {
             this.context = context;
+            this.con_services = con_services;
         }
         public async Task<bool> CreateDayliActivitie(DayliActivities activitie)
         {
@@ -88,6 +90,21 @@ namespace PaqueteTuristico.Services
             .Where(da => da.ProvinceId == ProvinceId &&
             da.Day >= starD && da.Day <= endD)
             .ToListAsync();
+
+            var newList = new List<DayliActivities>();
+
+            if(list != null)
+            {
+                foreach (var l in list)
+                {
+                    if ( await con_services.IsContractEnabled(l.ContractId))
+                    {
+                        newList.Add(l);
+                    }
+                }
+
+                return newList;
+            }
 
             return list;
         }
