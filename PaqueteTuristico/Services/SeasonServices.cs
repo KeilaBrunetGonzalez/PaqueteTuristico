@@ -64,5 +64,17 @@ namespace PaqueteTuristico.Services
             return season;
         }
 
+
+
+        public async Task<List<Season>> GetSeassonAsync( DateTime startDate, DateTime endDate)
+        {
+            var seasson= await context.SeasonSet
+                .Where(s => s.StartDate < endDate && s.EndDate > endDate)
+                .ToListAsync();
+
+            return seasson;
+        }
+
+
     }
 }

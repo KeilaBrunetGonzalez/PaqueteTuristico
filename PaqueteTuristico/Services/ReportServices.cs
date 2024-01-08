@@ -14,15 +14,15 @@ namespace PaqueteTuristico.Services
             this._context = context;
         }
 
-       /* //Reporte de Contrato de Hoteles conciliados
+        //Reporte de Contrato de Hoteles conciliados
         public IQueryable<ConciliatedHotelContractDto>? GetConcilHotelContracts()
         {
-            var concilCont = from HotelContract in _context.HotelContractSet
-                             join Hotel in _context.HotelSet on HotelContract.Hotelid equals Hotel.HotelId
+            var concilCont = from Hotel in _context.HotelSet
+                             join HotelContract in _context.HotelContractSet on Hotel.ContractId equals HotelContract.Id
+                             join Province in _context.ProvinceSet on Hotel.ProvinceId equals Province.ProvinceId
                              join Room in _context.RoomSet on Hotel.HotelId equals Room.HotelId
                              join Meal in _context.MealSet on Hotel.HotelId equals Meal.HotelId
-                             join Province in _context.ProvinceSet on Hotel.ProvinceId equals Province.ProvinceId
-                             where HotelContract.Enabled && HotelContract.ConcilTime >= HotelContract.StarDate
+                             where HotelContract.Enabled && HotelContract.ConcilTime >= HotelContract.StarDate && HotelContract.ConcilTime <= DateTime.Now
                              select new ConciliatedHotelContractDto
                              {
                                  HotelName = Hotel.Name,
@@ -31,22 +31,26 @@ namespace PaqueteTuristico.Services
                                  Address = Hotel.Address,
                                  Category = Hotel.Category,
                                  StartDate = HotelContract.StarDate,
-                                 EndDate = HotelContract.StarDate,
+                                 EndDate = HotelContract.EndTime,
                                  ConciliationDate = HotelContract.ConcilTime,
                                  Description = HotelContract.Desc,
-                                 RoomType = Room.Description,
-                                 MealPlan = Meal.Description,
+                                 RoomTypes = (from Room in _context.RoomSet
+                                              where Room.HotelId == Hotel.HotelId
+                                              select Room.Description).ToList(),
+                                 MealPlans = (from Meal in _context.MealSet
+                                              where Meal.HotelId == Hotel.HotelId
+                                              select Meal.Description).ToList(),
                                  ContractPrice = HotelContract.HotelTotalPrice
                              };
             return concilCont;
-        }*/
+        }
 
         //Reporte de listado de contratos de transporte
-        /*public IQueryable<ListTransport>? GetTransportContractsList()
+        public IQueryable<ListTransport>? GetTransportContractsList()
         {
             var transpCont = from TransportationContract in _context.TransportationContractSet
-                             join Vehicle in _context.VehicleSet on TransportationContract.LicensePlateNumber equals Vehicle.License_Plate_Number
-                             join Transport in _context.TransportSet on Vehicle.VehicleId equals Transport.VehicleId
+                             join Transport in _context.TransportSet on TransportationContract.Id equals Transport.ContractId
+                             join Vehicle in _context.VehicleSet on Transport.VehicleId equals Vehicle.VehicleId
                              join Modality in _context.ModalitySet on Transport.ModalityId equals Modality.ModalityId
                              let km = _context.Mileage_CostsSet.FirstOrDefault(x => x.ModalityId == Modality.ModalityId)
                              let hk = _context.Cost_Per_HoursSet.FirstOrDefault(x => x.ModalityId == Modality.ModalityId)
@@ -77,7 +81,7 @@ namespace PaqueteTuristico.Services
 
             return transpCont;
 
-        }*/
+        }
 
 
         //Reporte de listado de hoteles activos

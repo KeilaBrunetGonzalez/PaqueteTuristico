@@ -14,16 +14,16 @@ namespace PaqueteTuristico.Dtos
         public int CapacidadConEquipajes { get; set; }
         public int CapacidadTotal { get; set; }
         public int AnnoFabricacion { get; set; }
-        public float? CostoPorKilometro { get; set; }
-        public float? CostoPorKilometroIdaVuelta { get; set; }
-        public float? CostoPorHorasEspera { get; set; }
-        public float? CostoPorKilometroRecorrido { get; set; }
-        public float? CostoPorHoras { get; set; }
-        public float? CostoPorKilometrosExtras { get; set; }
-        public float? CostosPorHorasExtras { get; set; }
+        public decimal? CostoPorKilometro { get; set; }
+        public decimal? CostoPorKilometroIdaVuelta { get; set; }
+        public decimal? CostoPorHorasEspera { get; set; }
+        public decimal? CostoPorKilometroRecorrido { get; set; }
+        public decimal? CostoPorHoras { get; set; }
+        public decimal? CostoPorKilometrosExtras { get; set; }
+        public decimal? CostosPorHorasExtras { get; set; }
         public string? DescripcionRecorrido { get; set; }
-        public float? CostoRecorrido { get; set; }
-        public float? CostoPorIdaVuelta { get; set; }
+        public decimal? CostoRecorrido { get; set; }
+        public decimal? CostoPorIdaVuelta { get; set; }
 
     }
 

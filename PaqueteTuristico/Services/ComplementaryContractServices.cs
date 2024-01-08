@@ -97,6 +97,19 @@ namespace PaqueteTuristico.Services
             }
         }
 
+        public async Task<bool> IsContractDaEnabled(int daId)
+        {
+            var contract = await _context.ComplementaryContractSet.FirstOrDefaultAsync(h => h.ActivityId == daId);
+            if (contract != null)
+            {
+                return contract.Enabled;
+            }
+            else
+            {
+                throw new Exception("Contract not found");
+            }
+        }
+
 
     }
 }

@@ -12,7 +12,11 @@ using PaqueteTuristico.Data;
 namespace PaqueteTuristico.Migrations
 {
     [DbContext(typeof(conocubaContext))]
+<<<<<<<< HEAD:PaqueteTuristico/Migrations/20240108034953_InitialCreate.Designer.cs
     [Migration("20240108034953_InitialCreate")]
+========
+    [Migration("20240108031620_InitialCreate")]
+>>>>>>>> e1be62bd3ac30933d5a8210b1feb51c59f7784d4:PaqueteTuristico/Migrations/20240108031620_InitialCreate.Designer.cs
     partial class InitialCreate
     {
         /// <inheritdoc />

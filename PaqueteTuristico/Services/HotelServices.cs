@@ -16,10 +16,12 @@ namespace PaqueteTuristico.Services
 
         private readonly conocubaContext _context;
         private readonly RoomServices _services;
-        public HotelServices(RoomServices roomServices,conocubaContext context)
+        private readonly ContractServices con_services;
+        public HotelServices(RoomServices roomServices,conocubaContext context, ContractServices con_services)
         {
             this._context = context;
             this._services = roomServices;
+            this.con_services = con_services;
         }
 
         //Get
@@ -162,7 +164,7 @@ namespace PaqueteTuristico.Services
                 foreach (var hotel in hotels)
                 {
                     var rooms = await _services.GetEnabledRoomsAsync(hotel.HotelId, startDate, endDate, countP);
-                    if (rooms != null && rooms.Any())
+                    if (rooms != null && await con_services.IsContractEnabled(hotel.ContractId))
                     {
                         activeHotels.Add(hotel);
                     }

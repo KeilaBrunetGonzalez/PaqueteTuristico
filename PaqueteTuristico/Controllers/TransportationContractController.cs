@@ -15,9 +15,11 @@ namespace PaqueteTuristico.Controllers
     public class TransportationContractController : ControllerBase
     {
         private readonly TransportationContractServices _services;
-        public TransportationContractController(TransportationContractServices services)
+        private readonly ContractServices con_services;
+        public TransportationContractController(TransportationContractServices services, ContractServices con_services)
         {
             this._services = services;
+            this.con_services = con_services;
         }
 
         // GET 
@@ -84,7 +86,7 @@ namespace PaqueteTuristico.Controllers
         [HttpPatch("{id}/{enabled}")]
         public async Task<ActionResult<String>> PatchEnabled(int id, bool enabled)
         {
-            var updated = await _services.UpdateEnabledAsync(id, enabled);
+            var updated = await con_services.UpdateEnabledAsync(id, enabled);
 
             if (updated)
             {

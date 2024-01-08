@@ -22,8 +22,8 @@ namespace PaqueteTuristico.Controllers
         public VehiclesController(ILogger<HotelController> logger, VehicleServices _vehicleServices)
         {
             this.logger = logger;
-            
             this._vehicleServices = _vehicleServices;
+
         }
 
         // GET: api/<Vehicles>
@@ -49,7 +49,7 @@ namespace PaqueteTuristico.Controllers
         [HttpGet("Province/{ProvinceId}/{startDate}/{endDate}")]
         public async Task<ActionResult<List<Vehicle>>> GetRoomsByHotelId(int ProvinceId, DateTime startDate, DateTime endDate)
         {
-            var list = await _vehicleServices.GetProvinceVheicleAsync(ProvinceId,startDate,endDate);
+            var list = await _vehicleServices.GetProvinceVehicleAsync(ProvinceId,startDate,endDate);
             if (list.IsNullOrEmpty())
             {
                 return NotFound();

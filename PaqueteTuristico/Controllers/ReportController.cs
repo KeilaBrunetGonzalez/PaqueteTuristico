@@ -18,7 +18,7 @@ namespace PaqueteTuristico.Controllers
             this._services = services;
         }
 
-        /*//Reporte de contratos de hoteles conciliados
+        //Reporte de contratos de hoteles conciliados
         [HttpGet("ConcilHotelContractDetails")]
         public IActionResult GetHotelContractDetails()
         {
@@ -45,19 +45,6 @@ namespace PaqueteTuristico.Controllers
 
             return NotFound();
         }
-
-        //Reporte de listado de temporadas de los contratos de hoteles
-        [HttpGet("HotelContractsBySeason")]
-        public IActionResult GetHotelContractsBySeasonDetails()
-        {
-            var seasonConts = _services.GetHotelContractsBySeason();
-
-            if(seasonConts != null)
-            {
-                return Ok(seasonConts);
-            }
-            return NotFound();
-        }*/
 
         //Reporte de listado de hoteles activos
         [HttpGet("ActivesHotels")]
