@@ -14,7 +14,6 @@ namespace PaqueteTuristico
             services.AddScoped<ComplementaryContractServices, ComplementaryContractServices>();
             services.AddScoped<HotelContractServices, HotelContractServices>();
             services.AddScoped<TransportationContractServices, TransportationContractServices>();  
-            services.AddScoped<HotelPlanServices, HotelPlanServices>();
             services.AddScoped<DayliActivityServices, DayliActivityServices>();
             services.AddScoped<VehicleServices, VehicleServices>();
             services.AddScoped<ModalityServices, ModalityServices>();

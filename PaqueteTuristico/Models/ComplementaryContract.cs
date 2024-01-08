@@ -8,9 +8,9 @@ namespace PaqueteTuristico.Models
     [Table("ComplementaryContract")]
     public class ComplementaryContract : EContract
     {
-        public ComplementaryContract() { 
+        public ComplementaryContract() {
 
-            this.DayliActivities = new HashSet<DayliActivities>();
+            this.Activity = new DayliActivities();
         }
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
@@ -26,7 +26,7 @@ namespace PaqueteTuristico.Models
         [MaxLength(100)]
         [Required]
         public string ComplementaryServiceProvince { get; set; } = "";
-        [JsonIgnore]
-        public ICollection<DayliActivities> DayliActivities { get; set; }
+        public int ActivityId { get; set; }
+        public DayliActivities Activity { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace PaqueteTuristico.Controllers
     public class ContractController : ControllerBase
     {
         private readonly ContractServices _services;
-        private readonly ComplementaryContractServices _compservice;
+        
 
         public ContractController(ContractServices services)
         {

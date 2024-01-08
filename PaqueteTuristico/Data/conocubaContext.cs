@@ -5,6 +5,8 @@ using PaqueteTuristico.Dtos;
 using PaqueteTuristico.Models;
 using System.Diagnostics.Contracts;
 using System.Reflection;
+using System.Linq;
+
 
 namespace PaqueteTuristico.Data
 {
@@ -17,7 +19,6 @@ namespace PaqueteTuristico.Data
         public DbSet<ComplementaryContract> ComplementaryContractSet { get; set; }
         public DbSet<HotelContract> HotelContractSet { get; set; }
         public DbSet<TransportationContract> TransportationContractSet { get; set; }
-        public DbSet<HotelPlan> HotelPlanSet { get; set; }
         public DbSet<Season> SeasonSet { get; set; }
         public DbSet<Modality> ModalitySet { get; set; }
         public DbSet<CostPerHour> Cost_Per_HoursSet { get; set; }
@@ -26,7 +27,6 @@ namespace PaqueteTuristico.Data
         public DbSet<DayliActivities> DayliActivitieSet { get; set; }
         public DbSet<Transport> TransportSet { get; set; }
         public DbSet<Vehicle> VehicleSet { get; set; }
-        public DbSet<TrasportWithContract> TrasportWithContractsSet { get; set; }
         public DbSet<TourPackage> TourPackagesSet { get; set; }
         public DbSet<Province> ProvinceSet { get; set; }
 
@@ -45,7 +45,7 @@ namespace PaqueteTuristico.Data
                 .HasMany(h => h.Rooms)
                 .WithOne()
                 .HasForeignKey(r => r.HotelId)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Hotel>()
                 .HasMany(h => h.Meals)
@@ -69,23 +69,6 @@ namespace PaqueteTuristico.Data
                .HasForeignKey(t => t.MealId);
 
 
-            modelBuilder.Entity<HotelPlan>()
-                .HasKey(p => new
-                {
-                    p.HotelId,
-                    p.SeasonId
-                });
-
-            modelBuilder.Entity<HotelPlan>()
-                .HasOne(x => x.Season)
-                .WithMany(r => r.Plans)
-                .HasForeignKey(y => y.SeasonId);
-
-            modelBuilder.Entity<HotelPlan>()
-                .HasOne(n => n.Hotel)
-                .WithMany(x => x.Plans)
-                .HasForeignKey(y => y.HotelId);
-
             modelBuilder.Entity<Transport>()
                 .HasKey(n => new
                 {
@@ -104,24 +87,20 @@ namespace PaqueteTuristico.Data
                 .HasForeignKey(r => r.ModalityId);
 
             modelBuilder.Entity<HotelContract>()
-                .HasOne(s => s.Plan)
-                .WithMany(p => p.Contracts)
-                .HasForeignKey(n => new
-                {
-                    n.Seasonid,
-                    n.Hotelid
-                });
+                .HasOne(s => s.Hotel)
+                .WithOne()
+                .HasForeignKey<HotelContract>(n => n.Hotelid
+                );
+
             modelBuilder.Entity<ComplementaryContract>()
-                .HasMany(d => d.DayliActivities)
-                .WithMany(c => c.Complementary)
-                .UsingEntity(j => j.ToTable("ActivitiesWhithContracts"));
+                .HasOne(a => a.Activity)
+                .WithOne()
+                .HasForeignKey<ComplementaryContract>(c => c.ActivityId);
 
             modelBuilder.Entity<TransportationContract>()
-                .HasMany(s => s.Transports)
-                .WithOne(x => x.Contract)
+                .HasMany(s => s.Vehicles)
+                .WithOne()
                 .HasForeignKey(j => j.ContractId);
-
-            
 
             modelBuilder.Entity<Transport>()
                 .HasMany(y => y.TourPackages)
@@ -156,7 +135,7 @@ namespace PaqueteTuristico.Data
                 .HasMany(h => h.Vehicles)
                 .WithOne()
                 .HasForeignKey(x => x.ProvinceId);
-           
+
 
             base.OnModelCreating(modelBuilder);
         }          

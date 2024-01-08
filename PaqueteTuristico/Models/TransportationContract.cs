@@ -7,7 +7,7 @@ namespace PaqueteTuristico.Models
     public class TransportationContract: EContract
     {
         public TransportationContract() {
-           this.Transports = new HashSet<Transport>(); 
+           this.Vehicles = new HashSet<Vehicle>(); 
         }
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
@@ -21,6 +21,6 @@ namespace PaqueteTuristico.Models
         [MaxLength(100)]
         [Required]
         
-        public ICollection<Transport> Transports { get; set; }
+        public ICollection<Vehicle> Vehicles { get; set; }
     }
 }
