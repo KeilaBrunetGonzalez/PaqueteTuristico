@@ -88,6 +88,11 @@ using (var scope = app.Services.CreateScope())
         await myServices.CreateRoles();
         await myServices.CreateUsers();
         await myServices.CreateProvinces();
+        await myServices.createDataHotels();
+        await myServices.createRooms();
+        await myServices.crateMeals();
+        await myServices.crateActivities();
+        await myServices.crateVehicles();
     }
     catch (Exception ex)
     {
