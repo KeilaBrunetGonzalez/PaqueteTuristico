@@ -9,6 +9,8 @@ namespace PaqueteTuristico.Models
     public class ComplementaryContract : EContract
     {
 
+            this.Activity = new DayliActivities();
+        }
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
         [Required]

@@ -10,6 +10,8 @@ namespace PaqueteTuristico.Dtos
         public decimal Price { get; set; }
         public int ProvinceId { get; set; }
         public string? ProvinceName { get; set; }
+
+        public int ContractId {  get; set; }
     }
 
 }
