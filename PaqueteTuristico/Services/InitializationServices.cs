@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
 using Microsoft.AspNetCore.Mvc;
 using PaqueteTuristico.Models;
+using System.Diagnostics.Contracts;
 
 namespace PaqueteTuristico.Services
 {
@@ -93,16 +94,16 @@ namespace PaqueteTuristico.Services
         }
         public async Task createDataHotels()
         {
-            var list = new List<Hotel> { new Hotel { HotelId = 1, Name = "Hotel Habana", Chain = "Cadena A", Category = 5, Phone = 123456789, Email = "habana@hotel.cu", NumberOfRooms = 200, ProvinceId = 1, DisNearCity = 0, DisAirport = 20, NumberOfFloors = 10, Address = "Calle A, Habana", ComercializationMode = "All Inclusive", Price = 120.00m },
-            new Hotel { HotelId = 2, Name = "Hotel Santiago", Chain = "Cadena B", Category = 4, Phone = 123456789, Email = "santiago@hotel.cu", NumberOfRooms = 150, ProvinceId = 2, DisNearCity = 10, DisAirport = 30, NumberOfFloors = 8, Address = "Calle B, Santiago", ComercializationMode = "Bed & Breakfast", Price = 80.00m },
-            new Hotel { HotelId = 3, Name = "Hotel Trinidad", Chain = "Cadena C", Category = 3, Phone = 123456789, Email = "trinidad@hotel.cu", NumberOfRooms = 100, ProvinceId = 3, DisNearCity = 15, DisAirport = 35, NumberOfFloors = 6, Address = "Calle C, Trinidad", ComercializationMode = "Half Board", Price = 90.00m },
-            new Hotel { HotelId = 4, Name = "Hotel Varadero", Chain = "Cadena D", Category = 5, Phone = 123456789, Email = "varadero@hotel.cu", NumberOfRooms = 250, ProvinceId = 4, DisNearCity = 5, DisAirport = 25, NumberOfFloors = 12, Address = "Calle D, Varadero", ComercializationMode = "All Inclusive", Price = 130.00m },
-            new Hotel { HotelId = 5, Name = "Hotel Cienfuegos", Chain = "Cadena E", Category = 4, Phone = 123456789, Email = "cienfuegos@hotel.cu", NumberOfRooms = 120, ProvinceId = 5, DisNearCity = 10, DisAirport = 30, NumberOfFloors = 7, Address = "Calle E, Cienfuegos", ComercializationMode = "Full Board", Price = 100.00m },
-            new Hotel { HotelId = 6, Name = "Hotel Camagüey", Chain = "Cadena F", Category = 3, Phone = 123456789, Email = "camaguey@hotel.cu", NumberOfRooms = 90, ProvinceId = 6, DisNearCity = 20, DisAirport = 40, NumberOfFloors = 5, Address = "Calle F, Camagüey", ComercializationMode = "Bed & Breakfast", Price = 70.00m },
-            new Hotel { HotelId = 7, Name = "Hotel Holguín", Chain = "Cadena G", Category = 4, Phone = 123456789, Email = "holguin@hotel.cu", NumberOfRooms = 140, ProvinceId = 7, DisNearCity = 15, DisAirport = 35, NumberOfFloors = 8, Address = "Calle G, Holguín", ComercializationMode = "Half Board", Price = 95.00m },
-            new Hotel { HotelId = 8, Name = "Hotel Pinar del Río", Chain = "Cadena H", Category = 3, Phone = 123456789, Email = "pinardelrio@hotel.cu", NumberOfRooms = 80, ProvinceId = 8, DisNearCity = 25, DisAirport = 45, NumberOfFloors = 4, Address = "Calle H, Pinar del Río", ComercializationMode = "Bed & Breakfast", Price = 60.00m } ,
-            new Hotel { HotelId = 9, Name = "Hotel Guantánamo", Chain = "Cadena I", Category = 4, Phone = 123456789, Email = "guantanamo@hotel.cu", NumberOfRooms = 130, ProvinceId = 9, DisNearCity = 15, DisAirport = 35, NumberOfFloors = 7, Address = "Calle I, Guantánamo", ComercializationMode = "Full Board", Price = 85.00m } ,
-            new Hotel { HotelId = 10, Name = "Hotel Matanzas", Chain = "Cadena J", Category = 5, Phone = 123456789, Email = "matanzas@hotel.cu", NumberOfRooms = 210, ProvinceId = 10, DisNearCity = 10, DisAirport = 30, NumberOfFloors = 11, Address = "Calle J, Matanzas", ComercializationMode = "All Inclusive", Price = 125.00m },
+            var list = new List<Hotel> { new Hotel { HotelId = 1, Name = "Hotel Habana", Chain = "Cadena A", Category = 5, Phone = 123456789, Email = "habana@hotel.cu", NumberOfRooms = 200, ProvinceId = 1, DisNearCity = 0, DisAirport = 20, NumberOfFloors = 10, Address = "Calle A, Habana", ComercializationMode = "All Inclusive", Price = 120.00m ,ContractId = 1},
+            new Hotel { HotelId = 2, Name = "Hotel Santiago", Chain = "Cadena B", Category = 4, Phone = 123456789, Email = "santiago@hotel.cu", NumberOfRooms = 150, ProvinceId = 2, DisNearCity = 10, DisAirport = 30, NumberOfFloors = 8, Address = "Calle B, Santiago", ComercializationMode = "Bed & Breakfast", Price = 80.00m,ContractId = 2 },
+            new Hotel { HotelId = 3, Name = "Hotel Trinidad", Chain = "Cadena C", Category = 3, Phone = 123456789, Email = "trinidad@hotel.cu", NumberOfRooms = 100, ProvinceId = 3, DisNearCity = 15, DisAirport = 35, NumberOfFloors = 6, Address = "Calle C, Trinidad", ComercializationMode = "Half Board", Price = 90.00m,ContractId = 3 },
+            new Hotel { HotelId = 4, Name = "Hotel Varadero", Chain = "Cadena D", Category = 5, Phone = 123456789, Email = "varadero@hotel.cu", NumberOfRooms = 250, ProvinceId = 4, DisNearCity = 5, DisAirport = 25, NumberOfFloors = 12, Address = "Calle D, Varadero", ComercializationMode = "All Inclusive", Price = 130.00m,ContractId = 4 },
+            new Hotel { HotelId = 5, Name = "Hotel Cienfuegos", Chain = "Cadena E", Category = 4, Phone = 123456789, Email = "cienfuegos@hotel.cu", NumberOfRooms = 120, ProvinceId = 5, DisNearCity = 10, DisAirport = 30, NumberOfFloors = 7, Address = "Calle E, Cienfuegos", ComercializationMode = "Full Board", Price = 100.00m,ContractId = 5 },
+            new Hotel { HotelId = 6, Name = "Hotel Camagüey", Chain = "Cadena F", Category = 3, Phone = 123456789, Email = "camaguey@hotel.cu", NumberOfRooms = 90, ProvinceId = 6, DisNearCity = 20, DisAirport = 40, NumberOfFloors = 5, Address = "Calle F, Camagüey", ComercializationMode = "Bed & Breakfast", Price = 70.00m,ContractId = 6 },
+            new Hotel { HotelId = 7, Name = "Hotel Holguín", Chain = "Cadena G", Category = 4, Phone = 123456789, Email = "holguin@hotel.cu", NumberOfRooms = 140, ProvinceId = 7, DisNearCity = 15, DisAirport = 35, NumberOfFloors = 8, Address = "Calle G, Holguín", ComercializationMode = "Half Board", Price = 95.00m,ContractId = 7 },
+            new Hotel { HotelId = 8, Name = "Hotel Pinar del Río", Chain = "Cadena H", Category = 3, Phone = 123456789, Email = "pinardelrio@hotel.cu", NumberOfRooms = 80, ProvinceId = 8, DisNearCity = 25, DisAirport = 45, NumberOfFloors = 4, Address = "Calle H, Pinar del Río", ComercializationMode = "Bed & Breakfast", Price = 60.00m,ContractId = 8 } ,
+            new Hotel { HotelId = 9, Name = "Hotel Guantánamo", Chain = "Cadena I", Category = 4, Phone = 123456789, Email = "guantanamo@hotel.cu", NumberOfRooms = 130, ProvinceId = 9, DisNearCity = 15, DisAirport = 35, NumberOfFloors = 7, Address = "Calle I, Guantánamo", ComercializationMode = "Full Board", Price = 85.00m,ContractId = 9 } ,
+            new Hotel { HotelId = 10, Name = "Hotel Matanzas", Chain = "Cadena J", Category = 5, Phone = 123456789, Email = "matanzas@hotel.cu", NumberOfRooms = 210, ProvinceId = 10, DisNearCity = 10, DisAirport = 30, NumberOfFloors = 11, Address = "Calle J, Matanzas", ComercializationMode = "All Inclusive", Price = 125.00m,ContractId = 10 },
         };
             await context.HotelSet.AddRangeAsync(list);
             await context.SaveChangesAsync();
@@ -146,16 +147,17 @@ namespace PaqueteTuristico.Services
         {
             var list = new List<Vehicle>
             {
-             new Vehicle { VehicleId = 1, License_Plate_Number = "ABC123", Price = 20000.00m, Brand = "Marca A", Capacity_Without_Equipement = 4, Capacity_With_Equipement = 2, Total_Capacity = 6, Year_of_Manufacture = 2015, Manufacturing_Mode = "Manual", ProvinceId = 1 },
-             new Vehicle { VehicleId = 2, License_Plate_Number = "DEF456", Price = 25000.00m, Brand = "Marca B", Capacity_Without_Equipement = 5, Capacity_With_Equipement = 3, Total_Capacity = 8, Year_of_Manufacture = 2016, Manufacturing_Mode = "Automático", ProvinceId = 2 },
-             new Vehicle { VehicleId = 3, License_Plate_Number = "GHI789", Price = 30000.00m, Brand = "Marca C", Capacity_Without_Equipement = 6, Capacity_With_Equipement = 4, Total_Capacity = 10, Year_of_Manufacture = 2017, Manufacturing_Mode = "Manual", ProvinceId = 3 },
-             new Vehicle { VehicleId = 4, License_Plate_Number = "JKL012", Price = 35000.00m, Brand = "Marca D", Capacity_Without_Equipement = 7, Capacity_With_Equipement = 5, Total_Capacity = 12, Year_of_Manufacture = 2018, Manufacturing_Mode = "Automático", ProvinceId = 4 },
-             new Vehicle { VehicleId = 5, License_Plate_Number = "MNO345", Price = 40000.00m, Brand = "Marca E", Capacity_Without_Equipement = 8, Capacity_With_Equipement = 6, Total_Capacity = 14, Year_of_Manufacture = 2019, Manufacturing_Mode = "Manual", ProvinceId = 5 },
-             new Vehicle { VehicleId = 6, License_Plate_Number = "PQR678", Price = 45000.00m, Brand = "Marca F", Capacity_Without_Equipement = 9, Capacity_With_Equipement = 7, Total_Capacity = 16, Year_of_Manufacture = 2020, Manufacturing_Mode = "Automático", ProvinceId = 6 },
-             new Vehicle { VehicleId = 7, License_Plate_Number = "STU901", Price = 50000.00m, Brand = "Marca G", Capacity_Without_Equipement = 10, Capacity_With_Equipement = 8, Total_Capacity = 18, Year_of_Manufacture = 2021, Manufacturing_Mode = "Manual", ProvinceId = 7 },
-             new Vehicle { VehicleId = 8, License_Plate_Number = "VWX234", Price = 55000.00m, Brand = "Marca H", Capacity_Without_Equipement = 11, Capacity_With_Equipement = 9, Total_Capacity = 20, Year_of_Manufacture = 2022, Manufacturing_Mode = "Automático", ProvinceId = 8 },
-             new Vehicle { VehicleId = 9, License_Plate_Number = "YZA567", Price = 60000.00m, Brand = "Marca I", Capacity_Without_Equipement = 12, Capacity_With_Equipement = 10, Total_Capacity = 22, Year_of_Manufacture = 2023, Manufacturing_Mode = "Manual", ProvinceId = 9 },
-             new Vehicle { VehicleId = 10, License_Plate_Number = "BCD890", Price = 65000.00m, Brand = "Marca J", Capacity_Without_Equipement = 13, Capacity_With_Equipement = 11, Total_Capacity = 24, Year_of_Manufacture = 2024, Manufacturing_Mode = "Automático", ProvinceId = 10 },
+             new Vehicle { VehicleId = 1, License_Plate_Number = "ABC123", Price = 20000.00m, Brand = "Marca A", Capacity_Without_Equipement = 4, Capacity_With_Equipement = 2, Total_Capacity = 6, Year_of_Manufacture = 2015, Manufacturing_Mode = "Manual", ProvinceId = 1,ContractId = 21 },
+             new Vehicle { VehicleId = 2, License_Plate_Number = "DEF456", Price = 25000.00m, Brand = "Marca B", Capacity_Without_Equipement = 5, Capacity_With_Equipement = 3, Total_Capacity = 8, Year_of_Manufacture = 2016, Manufacturing_Mode = "Automático", ProvinceId = 2,ContractId = 21 },
+             new Vehicle { VehicleId = 3, License_Plate_Number = "GHI789", Price = 30000.00m, Brand = "Marca C", Capacity_Without_Equipement = 6, Capacity_With_Equipement = 4, Total_Capacity = 10, Year_of_Manufacture = 2017, Manufacturing_Mode = "Manual", ProvinceId = 3,ContractId = 22 },
+             new Vehicle { VehicleId = 4, License_Plate_Number = "JKL012", Price = 35000.00m, Brand = "Marca D", Capacity_Without_Equipement = 7, Capacity_With_Equipement = 5, Total_Capacity = 12, Year_of_Manufacture = 2018, Manufacturing_Mode = "Automático", ProvinceId = 4,ContractId = 22 },
+             new Vehicle { VehicleId = 5, License_Plate_Number = "MNO345", Price = 40000.00m, Brand = "Marca E", Capacity_Without_Equipement = 8, Capacity_With_Equipement = 6, Total_Capacity = 14, Year_of_Manufacture = 2019, Manufacturing_Mode = "Manual", ProvinceId = 5,ContractId = 23 },
+             new Vehicle { VehicleId = 6, License_Plate_Number = "PQR678", Price = 45000.00m, Brand = "Marca F", Capacity_Without_Equipement = 9, Capacity_With_Equipement = 7, Total_Capacity = 16, Year_of_Manufacture = 2020, Manufacturing_Mode = "Automático", ProvinceId = 6,ContractId = 23 },
+             new Vehicle { VehicleId = 7, License_Plate_Number = "STU901", Price = 50000.00m, Brand = "Marca G", Capacity_Without_Equipement = 10, Capacity_With_Equipement = 8, Total_Capacity = 18, Year_of_Manufacture = 2021, Manufacturing_Mode = "Manual", ProvinceId = 7,ContractId = 24 },
+             new Vehicle { VehicleId = 8, License_Plate_Number = "VWX234", Price = 55000.00m, Brand = "Marca H", Capacity_Without_Equipement = 11, Capacity_With_Equipement = 9, Total_Capacity = 20, Year_of_Manufacture = 2022, Manufacturing_Mode = "Automático", ProvinceId = 8 ,ContractId = 24},
+             new Vehicle { VehicleId = 9, License_Plate_Number = "YZA567", Price = 60000.00m, Brand = "Marca I", Capacity_Without_Equipement = 12, Capacity_With_Equipement = 10, Total_Capacity = 22, Year_of_Manufacture = 2023, Manufacturing_Mode = "Manual", ProvinceId = 9,ContractId = 25 },
+             new Vehicle { VehicleId = 10, License_Plate_Number = "BCD890", Price = 65000.00m, Brand = "Marca J", Capacity_Without_Equipement = 13, Capacity_With_Equipement = 11, Total_Capacity = 24, Year_of_Manufacture = 2024, Manufacturing_Mode = "Automático", ProvinceId = 10,ContractId = 25 },
+             new Vehicle { VehicleId = 10, License_Plate_Number = "BCD890", Price = 65000.00m, Brand = "Marca J", Capacity_Without_Equipement = 13, Capacity_With_Equipement = 11, Total_Capacity = 24, Year_of_Manufacture = 2024, Manufacturing_Mode = "Automático", ProvinceId = 10,ContractId = 25 },
         };
             await context.VehicleSet.AddRangeAsync(list);
             await context.SaveChangesAsync();
@@ -164,16 +166,16 @@ namespace PaqueteTuristico.Services
         {
             var list = new List<DayliActivities>
             {
-                 new DayliActivities { ActivityId = 1, Day = 1, Description = "Actividad 1", Price = 10.00m, ProvinceId = 1 },
-            new DayliActivities { ActivityId = 2, Day = 2, Description = "Actividad 2", Price = 20.00m, ProvinceId = 2 },
-             new DayliActivities { ActivityId = 3, Day = 3, Description = "Actividad 3", Price = 30.00m, ProvinceId = 3 },
-             new DayliActivities { ActivityId = 4, Day = 4, Description = "Actividad 4", Price = 40.00m, ProvinceId = 4 },
-             new DayliActivities { ActivityId = 5, Day = 5, Description = "Actividad 5", Price = 50.00m, ProvinceId = 5 },
-             new DayliActivities { ActivityId = 6, Day = 6, Description = "Actividad 6", Price = 60.00m, ProvinceId = 6 },
-             new DayliActivities { ActivityId = 7, Day = 7, Description = "Actividad 7", Price = 70.00m, ProvinceId = 7 },
-             new DayliActivities { ActivityId = 8, Day = 8, Description = "Actividad 8", Price = 80.00m, ProvinceId = 8 },
-             new DayliActivities { ActivityId = 9, Day = 9, Description = "Actividad 9", Price = 90.00m, ProvinceId = 9 },
-             new DayliActivities { ActivityId = 10, Day = 10, Description = "Actividad 10", Price = 100.00m, ProvinceId = 10 },
+                 new DayliActivities { ActivityId = 1, Day = 1, Description = "Actividad 1", Price = 10.00m, ProvinceId = 1,ContractId = 11 },
+            new DayliActivities { ActivityId = 2, Day = 2, Description = "Actividad 2", Price = 20.00m, ProvinceId = 2,ContractId = 12 },
+             new DayliActivities { ActivityId = 3, Day = 3, Description = "Actividad 3", Price = 30.00m, ProvinceId = 3,ContractId = 13 },
+             new DayliActivities { ActivityId = 4, Day = 4, Description = "Actividad 4", Price = 40.00m, ProvinceId = 4,ContractId = 14 },
+             new DayliActivities { ActivityId = 5, Day = 5, Description = "Actividad 5", Price = 50.00m, ProvinceId = 5,ContractId = 15 },
+             new DayliActivities { ActivityId = 6, Day = 6, Description = "Actividad 6", Price = 60.00m, ProvinceId = 6,ContractId = 16},
+             new DayliActivities { ActivityId = 7, Day = 7, Description = "Actividad 7", Price = 70.00m, ProvinceId = 7,ContractId = 17 },
+             new DayliActivities { ActivityId = 8, Day = 8, Description = "Actividad 8", Price = 80.00m, ProvinceId = 8,ContractId = 18 },
+             new DayliActivities { ActivityId = 9, Day = 9, Description = "Actividad 9", Price = 90.00m, ProvinceId = 9 ,ContractId = 19},
+             new DayliActivities { ActivityId = 10, Day = 10, Description = "Actividad 10", Price = 100.00m, ProvinceId = 10,ContractId = 20 },
         };
             await context.DayliActivitieSet.AddRangeAsync(list);
             await context.SaveChangesAsync();
@@ -181,17 +183,17 @@ namespace PaqueteTuristico.Services
         public async Task CreateProvinces()
         {
 
-            var pinar_del_rio = new Province 
+            var pinar_del_rio = new Province
             {
-                ProvinceId = 1, 
-                ProvinceName = "Pinar del Río", 
-                ProvinceDesc = "Esta provincia es famosa por sus paisajes naturales y la producción de tabaco. Es el hogar del Valle de Viñales, un sitio del Patrimonio Mundial de la UNESCO." 
+                ProvinceId = 1,
+                ProvinceName = "Pinar del Río",
+                ProvinceDesc = "Esta provincia es famosa por sus paisajes naturales y la producción de tabaco. Es el hogar del Valle de Viñales, un sitio del Patrimonio Mundial de la UNESCO."
             };
             await _services.InsertProvinceAsync(pinar_del_rio);
-            var artemisa = new Province 
-            { 
-                ProvinceId = 2, 
-                ProvinceName = "Artemisa", 
+            var artemisa = new Province
+            {
+                ProvinceId = 2,
+                ProvinceName = "Artemisa",
                 ProvinceDesc = "Una de las provincias más jóvenes de Cuba, Artemisa es conocida por su desarrollo industrial y agrícola."
             };
             await _services.InsertProvinceAsync(artemisa);
@@ -295,5 +297,61 @@ namespace PaqueteTuristico.Services
             await _services.InsertProvinceAsync(isla_de_la_juventud);
 
         }
+
+        public async Task CreateComplementaryContracts()
+        {
+            var complementaryContracts = new List<ComplementaryContract>
+            {
+                new ComplementaryContract { ServiceType = "Servicio A", CostPerPerson = 150.00m, ComplementaryServiceProvince = "Provincia A" },
+                new ComplementaryContract { ServiceType = "Servicio B", CostPerPerson = 120.00m, ComplementaryServiceProvince = "Provincia B" },
+                new ComplementaryContract { ServiceType = "Servicio C", CostPerPerson = 100.00m, ComplementaryServiceProvince = "Provincia C"},
+                new ComplementaryContract { ServiceType = "Servicio D", CostPerPerson = 180.00m, ComplementaryServiceProvince = "Provincia D"},
+                new ComplementaryContract { ServiceType = "Servicio E", CostPerPerson = 130.00m, ComplementaryServiceProvince = "Provincia E"},
+                new ComplementaryContract { ServiceType = "Servicio F", CostPerPerson = 90.00m, ComplementaryServiceProvince = "Provincia F" },
+                new ComplementaryContract { ServiceType = "Servicio G", CostPerPerson = 160.00m, ComplementaryServiceProvince = "Provincia G" },
+                new ComplementaryContract { ServiceType = "Servicio H", CostPerPerson = 110.00m, ComplementaryServiceProvince = "Provincia H" },
+                new ComplementaryContract { ServiceType = "Servicio I", CostPerPerson = 140.00m, ComplementaryServiceProvince = "Provincia I" },
+                new ComplementaryContract { ServiceType = "Servicio J", CostPerPerson = 170.00m, ComplementaryServiceProvince = "Provincia J" },
+            };
+
+            await context.ComplementaryContractSet.AddRangeAsync(complementaryContracts);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task CreateTransportationContracts()
+        {
+            var transportationContracts = new List<TransportationContract>
+            {
+                new TransportationContract { TransportationProvider = "Proveedor A", IncluedVehicles = 5 },
+                new TransportationContract { TransportationProvider = "Proveedor B", IncluedVehicles = 3 },
+                new TransportationContract { TransportationProvider = "Proveedor C", IncluedVehicles = 8 },
+                new TransportationContract { TransportationProvider = "Proveedor D", IncluedVehicles = 4 },
+                new TransportationContract { TransportationProvider = "Proveedor E", IncluedVehicles = 6 },
+            };
+
+            await context.TransportationContractSet.AddRangeAsync(transportationContracts);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task CreateHotelContracts()
+        {
+            var hotelContracts = new List<HotelContract>
+            {
+                new HotelContract { Address = "Dirección A", HotelTotalPrice = 1500.00m },
+                new HotelContract { Address = "Dirección B", HotelTotalPrice = 1200.00m },
+                new HotelContract { Address = "Dirección C", HotelTotalPrice = 1000.00m },
+                new HotelContract { Address = "Dirección D", HotelTotalPrice = 1800.00m },
+                new HotelContract { Address = "Dirección E", HotelTotalPrice = 1300.00m },
+                new HotelContract { Address = "Dirección F", HotelTotalPrice = 900.00m },
+                new HotelContract { Address = "Dirección G", HotelTotalPrice = 1600.00m },
+                new HotelContract { Address = "Dirección H", HotelTotalPrice = 1100.00m },
+                new HotelContract { Address = "Dirección I", HotelTotalPrice = 1400.00m },
+                new HotelContract { Address = "Dirección J", HotelTotalPrice = 1700.00m },
+            };
+
+            await context.HotelContractSet.AddRangeAsync(hotelContracts);
+            await context.SaveChangesAsync();
+        }
+
     }
 }
