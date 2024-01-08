@@ -26,22 +26,26 @@ namespace PaqueteTuristico.Services
             var package = from TourPackage in _context.TourPackagesSet
                               join Province in _context.ProvinceSet on TourPackage.ProvinceId equals Province.ProvinceId
                               join Hotel in _context.HotelSet on TourPackage.HotelId equals Hotel.HotelId
+                              join Room in _context.RoomSet on TourPackage.RoomId equals Room.Id
+                              join Meal in _context.MealSet on TourPackage.MealId equals Meal.Id
                               join Vehicle in _context.VehicleSet on TourPackage.VehicleId equals Vehicle.VehicleId
-                              //join DayliActivities in _context.DayliActivitieSet on TourPackage.ActivityId equals DayliActivities.ActivityId
+                              join Modality in _context.ModalitySet on TourPackage.ModalityId equals Modality.ModalityId
                               join User in _context.Users on TourPackage.UserId equals User.Id
+                              
                               select new TourPackageDTO
                               {
                                   PackageId = TourPackage.PackageId,
                                   ProvinceName = Province.ProvinceName,
                                   HotelName = Hotel.Name,
+                                  RoomName = Room.Name,
+                                  MealName = Meal.Name,
                                   Vehicle = Vehicle.License_Plate_Number,
-                                  //Modality = TourPackage.ModalityId.Value,
-                                 // Activity = DayliActivities.Description,
+                                  Modality = Modality.ModalityId,
+                                  UserName = User.UserName,
+                                  PeopleCant = TourPackage.PeopleCant,
                                   StartDate = TourPackage.StartDate,
                                   EndDate = TourPackage.EndDate,
                                   Totalprice = TourPackage.Totalprice,
-                                  UserName = User.UserName,
-                                  Email = User.Email,
                               };
             return package;
         }

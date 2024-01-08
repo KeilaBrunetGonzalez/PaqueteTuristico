@@ -1,4 +1,4 @@
-/*using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Models;
@@ -18,7 +18,7 @@ namespace PaqueteTuristico.Controllers
             this._services = services;
         }
 
-        //Reporte de contratos de hoteles conciliados
+        /*//Reporte de contratos de hoteles conciliados
         [HttpGet("ConcilHotelContractDetails")]
         public IActionResult GetHotelContractDetails()
         {
@@ -57,7 +57,7 @@ namespace PaqueteTuristico.Controllers
                 return Ok(seasonConts);
             }
             return NotFound();
-        }
+        }*/
 
         //Reporte de listado de hoteles activos
         [HttpGet("ActivesHotels")]
@@ -74,4 +74,3 @@ namespace PaqueteTuristico.Controllers
     }
 }
 
-*/

@@ -1,4 +1,4 @@
-/*using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PaqueteTuristico.Data;
 using PaqueteTuristico.Dtos;
 using PaqueteTuristico.Models;
@@ -14,7 +14,7 @@ namespace PaqueteTuristico.Services
             this._context = context;
         }
 
-        //Reporte de Contrato de Hoteles conciliados
+       /* //Reporte de Contrato de Hoteles conciliados
         public IQueryable<ConciliatedHotelContractDto>? GetConcilHotelContracts()
         {
             var concilCont = from HotelContract in _context.HotelContractSet
@@ -79,29 +79,6 @@ namespace PaqueteTuristico.Services
 
         }*/
 
-        //Reporte de listado de temporadas de los contratos de hoteles
-       /* public IQueryable<SeasonHotelContract>? GetHotelContractsBySeason()
-        {
-            var seasonConts = from HotelContract in _context.HotelContractSet
-                              join Hotel in _context.HotelSet on HotelContract.Hotelid equals Hotel.HotelId
-                              join HotelPlan in _context.HotelPlanSet on Hotel.HotelId equals HotelPlan.HotelId
-                              join Season in _context.SeasonSet on HotelPlan.SeasonId equals Season.SeasonId
-                              join Room in _context.RoomSet on Hotel.HotelId equals Room.HotelId
-                              join Meal in _context.MealSet on Hotel.HotelId equals Meal.HotelId
-                              select new SeasonHotelContract
-                              {
-                                  HotelName = Hotel.Name,
-                                  StartDate = HotelContract.StarDate,
-                                  EndDate = HotelContract.EndTime,
-                                  ConciliationDate = HotelContract.ConcilTime,
-                                  SeasonStartDate = Season.StartDate,
-                                  SeasonName = Season.SeasonName,
-                                  RoomType = Room.Description,
-                                  MealPlan = Meal.Description,
-                                  ContractPrice = HotelContract.HotelTotalPrice
-                              };
-            return seasonConts;
-        }
 
         //Reporte de listado de hoteles activos
         public IQueryable<HotelDTO>? GetActivesHotels()
@@ -112,8 +89,9 @@ namespace PaqueteTuristico.Services
                               select new HotelDTO
                               {
                                   Date = DateTime.Now,
-                                  HotelName = Hotel.Name,
-                                  HotelChain = Hotel.Chain,
+                                  HotelId = Hotel.HotelId,
+                                  Name = Hotel.Name,
+                                  Chain = Hotel.Chain,
                                   ProvinceName = Province.ProvinceName,
                                   Category = Hotel.Category,
                                   Phone = Hotel.Phone,
@@ -124,9 +102,9 @@ namespace PaqueteTuristico.Services
                                   NumberOfRooms = Hotel.NumberOfRooms,
                                   NumberOfFloors = Hotel.NumberOfFloors,
                                   ComercializationMode = Hotel.ComercializationMode
+                                  
                               };
             return activeHotel;
         }
     }
 }
-       */

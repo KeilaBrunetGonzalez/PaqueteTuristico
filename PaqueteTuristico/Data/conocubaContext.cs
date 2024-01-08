@@ -58,6 +58,11 @@ namespace PaqueteTuristico.Data
                 .WithOne()
                 .HasForeignKey(t => t.HotelId);
 
+            modelBuilder.Entity<Hotel>()
+                .HasOne(h => h.Contract)
+                .WithOne()
+                .HasForeignKey<Hotel>(r => r.HotelId);
+
             modelBuilder.Entity<Room>()
                .HasMany(t => t.TourPackages)
                .WithOne()
@@ -86,16 +91,7 @@ namespace PaqueteTuristico.Data
                 .WithMany(n => n.Transports)
                 .HasForeignKey(r => r.ModalityId);
 
-            modelBuilder.Entity<HotelContract>()
-                .HasOne(s => s.Hotel)
-                .WithOne()
-                .HasForeignKey<HotelContract>(n => n.Hotelid
-                );
-
-            modelBuilder.Entity<ComplementaryContract>()
-                .HasOne(a => a.Activity)
-                .WithOne()
-                .HasForeignKey<ComplementaryContract>(c => c.ActivityId);
+            
 
             modelBuilder.Entity<TransportationContract>()
                 .HasMany(s => s.Vehicles)
@@ -136,6 +132,10 @@ namespace PaqueteTuristico.Data
                 .WithOne()
                 .HasForeignKey(x => x.ProvinceId);
 
+            modelBuilder.Entity<DayliActivities>()
+                .HasOne(d => d.Contract)
+                .WithOne()
+                .HasForeignKey<DayliActivities>(d => d.ActivityId);
 
             base.OnModelCreating(modelBuilder);
         }          
