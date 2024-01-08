@@ -5,6 +5,8 @@ using PaqueteTuristico.Dtos;
 using PaqueteTuristico.Models;
 using System.Diagnostics.Contracts;
 using System.Reflection;
+using System.Linq;
+
 
 namespace PaqueteTuristico.Data
 {
@@ -17,7 +19,6 @@ namespace PaqueteTuristico.Data
         public DbSet<ComplementaryContract> ComplementaryContractSet { get; set; }
         public DbSet<HotelContract> HotelContractSet { get; set; }
         public DbSet<TransportationContract> TransportationContractSet { get; set; }
-        public DbSet<HotelPlan> HotelPlanSet { get; set; }
         public DbSet<Season> SeasonSet { get; set; }
         public DbSet<Modality> ModalitySet { get; set; }
         public DbSet<CostPerHour> Cost_Per_HoursSet { get; set; }
@@ -44,7 +45,7 @@ namespace PaqueteTuristico.Data
                 .HasMany(h => h.Rooms)
                 .WithOne()
                 .HasForeignKey(r => r.HotelId)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Hotel>()
                 .HasMany(h => h.Meals)
@@ -67,23 +68,6 @@ namespace PaqueteTuristico.Data
                .WithOne()
                .HasForeignKey(t => t.MealId);
 
-
-            modelBuilder.Entity<HotelPlan>()
-                .HasKey(p => new
-                {
-                    p.HotelId,
-                    p.SeasonId
-                });
-
-            modelBuilder.Entity<HotelPlan>()
-                .HasOne(x => x.Season)
-                .WithMany(r => r.Plans)
-                .HasForeignKey(y => y.SeasonId);
-
-            modelBuilder.Entity<HotelPlan>()
-                .HasOne(n => n.Hotel)
-                .WithMany(x => x.Plans)
-                .HasForeignKey(y => y.HotelId);
 
             modelBuilder.Entity<Transport>()
                 .HasKey(n => new
@@ -151,7 +135,7 @@ namespace PaqueteTuristico.Data
                 .HasMany(h => h.Vehicles)
                 .WithOne()
                 .HasForeignKey(x => x.ProvinceId);
-           
+
 
             base.OnModelCreating(modelBuilder);
         }          
