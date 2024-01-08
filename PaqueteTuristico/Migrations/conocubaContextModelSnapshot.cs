@@ -629,9 +629,6 @@ namespace PaqueteTuristico.Migrations
                 {
                     b.HasBaseType("PaqueteTuristico.Models.EContract");
 
-                    b.Property<int>("ActivityId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("ComplementaryServiceProvince")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -644,8 +641,6 @@ namespace PaqueteTuristico.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar");
-
-                    b.HasIndex("ActivityId");
 
                     b.ToTable("ComplementaryContract");
                 });
@@ -918,19 +913,11 @@ namespace PaqueteTuristico.Migrations
 
             modelBuilder.Entity("PaqueteTuristico.Models.ComplementaryContract", b =>
                 {
-                    b.HasOne("PaqueteTuristico.Models.DayliActivities", "Activity")
-                        .WithMany()
-                        .HasForeignKey("ActivityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("PaqueteTuristico.Models.EContract", null)
                         .WithOne()
                         .HasForeignKey("PaqueteTuristico.Models.ComplementaryContract", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Activity");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.HotelContract", b =>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using PaqueteTuristico.Dtos;
 using PaqueteTuristico.Models;
 using PaqueteTuristico.Services;
 
@@ -63,12 +64,28 @@ namespace PaqueteTuristico.Controllers
 
         // POST : api/<Hotel>
         [HttpPost]
-        public async Task<ActionResult<String>> PostHotel([FromBody] Hotel hotel)
+        public async Task<ActionResult<String>> PostHotel([FromBody] HotelDTO hotel)
         {
+            var hotel1 = new Hotel();
+            hotel1.Phone = hotel.Phone;
+            hotel1.Chain = hotel.Chain;
+            hotel1.Address = hotel.Address;
+            hotel1.Price = hotel.Price;
+            hotel1.Category = hotel.Category;
+            hotel1.ComercializationMode = hotel1.ComercializationMode;
+            hotel1.DisAirport = hotel.DisAirport;
+            hotel1.DisNearCity = hotel.DisNearCity;
+            hotel1.Email = hotel.Email;
+            hotel1.Name = hotel.Name;
+            hotel1.NumberOfRooms = hotel.NumberOfRooms;
+            hotel1.NumberOfFloors = hotel.NumberOfFloors;
+            hotel1.Enabled = hotel1.Enabled;
+            hotel1.ContractId = hotel1.ContractId;
+            hotel1.ProvinceId = hotel.ProvinceId;
             var id = await _services.GetLastHotelIdAsync();
             hotel.HotelId = ++id;
 
-            var inserted = await _services.InsertHotelAsync(hotel);
+            var inserted = await _services.InsertHotelAsync(hotel1);
 
             if (inserted)
             {
@@ -80,9 +97,26 @@ namespace PaqueteTuristico.Controllers
 
         // PUT: api/<Hotel>
         [HttpPut]
-        public async Task<ActionResult<String>> PutHotel([FromBody] Hotel hotel)
+        public async Task<ActionResult<String>> PutHotel([FromBody] HotelDTO hotel)
         {
-            var updated = await _services.UpdateHotelAsync(hotel);
+            var hotel1 = new Hotel();
+            hotel1.Phone = hotel.Phone;
+            hotel1.Chain = hotel.Chain;
+            hotel1.Address = hotel.Address;
+            hotel1.Price = hotel.Price;
+            hotel1.Category = hotel.Category;
+            hotel1.ComercializationMode = hotel1.ComercializationMode;
+            hotel1.DisAirport = hotel.DisAirport;
+            hotel1.DisNearCity = hotel.DisNearCity;
+            hotel1.Email = hotel.Email;
+            hotel1.Name = hotel.Name;
+            hotel1.NumberOfRooms = hotel.NumberOfRooms;
+            hotel1.NumberOfFloors = hotel.NumberOfFloors;
+            hotel1.Enabled = hotel1.Enabled;
+            hotel1.ContractId = hotel1.ContractId;
+            hotel1.ProvinceId = hotel.ProvinceId;
+            hotel1.HotelId = hotel.HotelId;
+            var updated = await _services.UpdateHotelAsync(hotel1);
 
             if (updated)
             {

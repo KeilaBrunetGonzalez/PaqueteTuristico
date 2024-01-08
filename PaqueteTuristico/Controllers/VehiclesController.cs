@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PaqueteTuristico.Data;
+using PaqueteTuristico.Dtos;
 using PaqueteTuristico.Models;
 using PaqueteTuristico.Services;
 
@@ -58,11 +59,23 @@ namespace PaqueteTuristico.Controllers
 
         // POST api/<Vehicles>
         [HttpPost]
-        public async Task<ActionResult<string>> Post([FromBody] Vehicle vehicle)
-        {
+        public async Task<ActionResult<string>> Post([FromBody] VehicleDTO vehicle)
+        {   
+            
+            var vehicle1 = new Vehicle();
+            vehicle1.Brand = vehicle.Brand;
+            vehicle1.Year_of_Manufacture = vehicle.Year_of_Manufacture;
+            vehicle1.Total_Capacity = vehicle.Total_Capacity;
+            vehicle1.Capacity_Without_Equipement = vehicle.Capacity_Without_Equipement;
+            vehicle1.Capacity_With_Equipement = vehicle.Capacity_With_Equipement;
+            vehicle1.Price = vehicle.Price;
+            vehicle1.License_Plate_Number = vehicle.License_Plate_Number;
+            vehicle1.ProvinceId = vehicle.ProvinceId;
+            vehicle1.Manufacturing_Mode = vehicle.Manufacturing_Mode;
+            vehicle1.ContractId = vehicle.ContractId;
             var id = await _vehicleServices.ObtenerUltimoIdVehicleAsync();
-            vehicle.VehicleId = ++id;
-            var temp = await _vehicleServices.CreateVehicle(vehicle);
+            vehicle1.VehicleId = ++id;
+            var temp = await _vehicleServices.CreateVehicle(vehicle1);
             if(!temp)
                return BadRequest();
             return Ok("Vehicle Inserted");
@@ -70,9 +83,22 @@ namespace PaqueteTuristico.Controllers
 
         // PUT api/<Vehicles>/5
         [HttpPut]
-        public  async Task<ActionResult<string>> Put([FromBody] Vehicle vehicle)
+        public  async Task<ActionResult<string>> Put([FromBody] VehicleDTO vehicle)
         {
-            var temp =  await _vehicleServices.UpdateVehicle(vehicle);
+            var vehicle1 = new Vehicle();
+            vehicle1.Brand = vehicle.Brand;
+            vehicle1.Year_of_Manufacture = vehicle.Year_of_Manufacture;
+            vehicle1.Total_Capacity = vehicle.Total_Capacity;
+            vehicle1.Capacity_Without_Equipement = vehicle.Capacity_Without_Equipement;
+            vehicle1.Capacity_With_Equipement = vehicle.Capacity_With_Equipement;
+            vehicle1.Price = vehicle.Price;
+            vehicle1.License_Plate_Number = vehicle.License_Plate_Number;
+            vehicle1.ProvinceId = vehicle.ProvinceId;
+            vehicle1.Manufacturing_Mode = vehicle.Manufacturing_Mode;
+            vehicle1.ContractId = vehicle.ContractId;
+            vehicle1.VehicleId = vehicle.VehicleId;
+
+            var temp =  await _vehicleServices.UpdateVehicle(vehicle1);
             if (temp)
             {
                 return Ok("Vehicle Updated");

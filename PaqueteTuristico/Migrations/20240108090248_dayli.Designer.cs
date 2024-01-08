@@ -12,8 +12,8 @@ using PaqueteTuristico.Data;
 namespace PaqueteTuristico.Migrations
 {
     [DbContext(typeof(conocubaContext))]
-    [Migration("20240108030515_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240108090248_dayli")]
+    partial class dayli
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -632,9 +632,6 @@ namespace PaqueteTuristico.Migrations
                 {
                     b.HasBaseType("PaqueteTuristico.Models.EContract");
 
-                    b.Property<int>("ActivityId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("ComplementaryServiceProvince")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -647,8 +644,6 @@ namespace PaqueteTuristico.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar");
-
-                    b.HasIndex("ActivityId");
 
                     b.ToTable("ComplementaryContract");
                 });
@@ -921,19 +916,11 @@ namespace PaqueteTuristico.Migrations
 
             modelBuilder.Entity("PaqueteTuristico.Models.ComplementaryContract", b =>
                 {
-                    b.HasOne("PaqueteTuristico.Models.DayliActivities", "Activity")
-                        .WithMany()
-                        .HasForeignKey("ActivityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("PaqueteTuristico.Models.EContract", null)
                         .WithOne()
                         .HasForeignKey("PaqueteTuristico.Models.ComplementaryContract", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Activity");
                 });
 
             modelBuilder.Entity("PaqueteTuristico.Models.HotelContract", b =>

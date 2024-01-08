@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PaqueteTuristico.Data;
+using PaqueteTuristico.Dtos;
 using PaqueteTuristico.Models;
 using PaqueteTuristico.Services;
 
@@ -57,12 +58,18 @@ namespace PaqueteTuristico.Controllers
 
         // POST api/<DayliActivitiesControler>
         [HttpPost]
-        public async Task<ActionResult<string>> Post([FromBody] DayliActivities dayli)
+        public async Task<ActionResult<string>> Post([FromBody] DayliActivitiesDTO dayli)
 
         {
+            var activity = new DayliActivities();
+            activity.Price = dayli.Price;
+            activity.ProvinceId = dayli.ProvinceId;
+            activity.ContractId = dayli.ContractId;
+            activity.Day = dayli.Day;
+            activity.Description = dayli.Description;
             var id = await _services.ObtenerUltimoIdActivitiesAsync();
             dayli.ActivityId = ++id;
-            var temp = await _services.CreateDayliActivitie(dayli);
+            var temp = await _services.CreateDayliActivitie(activity);
             if (!temp)
             {
                 return BadRequest();
@@ -75,6 +82,13 @@ namespace PaqueteTuristico.Controllers
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] DayliActivities dayli)
         {
+            var activity = new DayliActivities();
+            activity.Price = dayli.Price;
+            activity.ProvinceId = dayli.ProvinceId;
+            activity.ContractId = dayli.ContractId;
+            activity.Day = dayli.Day;
+            activity.Description = dayli.Description;
+            activity.ActivityId = dayli.ActivityId;
             var current = await _services.UpdateDayliActivities(dayli);
 
             if (!current)

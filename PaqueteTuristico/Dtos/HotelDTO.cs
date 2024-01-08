@@ -20,6 +20,8 @@ namespace PaqueteTuristico.Dtos
         public string? ComercializationMode { get; set; }
         public decimal Price { get; set; }
         public bool Enabled { get; set; } = true;
+        public  int ProvinceId { get; set; }
+        public int ContracId { get; set; }
     }
 
 }
