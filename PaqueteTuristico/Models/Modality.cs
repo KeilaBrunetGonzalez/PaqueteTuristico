@@ -14,7 +14,7 @@ namespace PaqueteTuristico.Models
         [Key]
         public virtual int ModalityId { get; set; }
         [Required]
-        [Column(TypeName = "varhar")]
+        [Column(TypeName = "varchar")]
         public virtual string Type { get; set; } = string.Empty;
         [JsonIgnore]
         public virtual ICollection<Transport> Transports { get; set; }

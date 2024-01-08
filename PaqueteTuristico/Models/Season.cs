@@ -17,7 +17,9 @@ namespace PaqueteTuristico.Models
         [Required]
         [Column(TypeName = "date")]
         public DateTime StartDate { get; set; }
-
+        [Required]
+        [Column(TypeName = "date")]
+        public DateTime EndDate { get; set; }
         [Required]
         public decimal Porcent { get; set; }
 
