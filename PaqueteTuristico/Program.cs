@@ -85,9 +85,6 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var myServices = services.GetRequiredService<InitializationServices>();
-        await myServices.CreateHotelContracts();
-        await myServices.CreateComplementaryContracts();
-        await myServices.CreateTransportationContracts();
         await myServices.CreateRoles();
         await myServices.CreateUsers();
         await myServices.CreateProvinces();

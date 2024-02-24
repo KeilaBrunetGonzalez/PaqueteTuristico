@@ -8,9 +8,6 @@ namespace PaqueteTuristico.Models
     [Table("ComplementaryContract")]
     public class ComplementaryContract : EContract
     {
-
-            this.Activity = new DayliActivities();
-        }
         [Column(TypeName = "varchar")]
         [MaxLength(100)]
         [Required]
@@ -25,6 +22,7 @@ namespace PaqueteTuristico.Models
         [MaxLength(100)]
         [Required]
         public string ComplementaryServiceProvince { get; set; } = "";
-
     }
+
 }
+
